@@ -23,6 +23,7 @@ class Flipboard extends Component {
     this.startMoving = this.startMoving.bind(this)
     this.moveGesture = this.moveGesture.bind(this)
     this.stopMoving = this.stopMoving.bind(this)
+    this.reset = this.reset.bind(this)
   }
 
   isLastPage () {
@@ -125,18 +126,13 @@ class Flipboard extends Component {
       )
 
     // reset everything
+    this.reset()
     this.setState({
-      startY: -1,
-      direction: '',
-      angle: 0,
-
       bottomStyle: {
-        transition: `transform ${this.props.animationDuration / 1000}s ease-in-out`,
         transform: goNext ? `perspective(${this.props.perspective}) rotateX(180deg)` : ''
       },
 
       topStyle: {
-        transition: `transform ${this.props.animationDuration / 1000}s ease-in-out`,
         transform: goPrevious ? `perspective(${this.props.perspective}) rotateX(-180deg)` : '',
         zIndex: goPrevious ? 2 : 'auto'
       }
@@ -156,6 +152,22 @@ class Flipboard extends Component {
             page: this.state.page - 1
           })
         }, this.props.animationDuration)
+      }
+    })
+  }
+
+  reset () {
+    this.setState({
+      startY: -1,
+      angle: 0,
+      rotate: 0,
+      direction: '',
+      lastDirection: '',
+      bottomStyle: {
+        transition: `transform ${this.props.animationDuration / 1000}s ease-in-out`
+      },
+      topStyle: {
+        transition: `transform ${this.props.animationDuration / 1000}s ease-in-out`
       }
     })
   }
@@ -280,6 +292,7 @@ class Flipboard extends Component {
         onTouchMove={this.moveGesture}
         onMouseUp={this.stopMoving}
         onTouchEnd={this.stopMoving}
+        onMouseLeave={this.reset}
         style={container}
         >
         <div style={m(part, before, cut)}>
