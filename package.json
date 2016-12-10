@@ -1,8 +1,8 @@
 {
   "name": "react-flipboard",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "A React.js implementation of the Flipboard page swipe.",
-  "main": "src/flipboard.js",
+  "main": "dist/flipboard.js",
   "scripts": {
     "build": "webpack",
     "build:watch": "webpack --watch"
