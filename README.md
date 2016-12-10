@@ -53,4 +53,5 @@ There are a few properties that define the behaviour of the component, here they
 | `pageBackground` | `string` | `#fff` | Background of the pages. This can be overriden in individual pages by styling the component |
 | `firstComponent` | `element` | `null` | Component that will be displayed under the first page |
 | `lastComponent` | `element` | `null` | Component that will be displayed under the last page |
+| `showHint` | `bool` | `false` | Indicates if the component must hint the user on how it works. Setting this to `true` will lift the bottom of the page 1s after the component is mounted, for 1s |
 | `style` | `object` | `{}` | Additional style for the flipboard |

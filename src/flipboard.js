@@ -28,6 +28,12 @@ class Flipboard extends Component {
     this.transition = `transform ${this.props.animationDuration / 1000}s ease-in-out`
   }
 
+  componentDidMount () {
+    if (this.props.showHint) {
+      setTimeout(() => this.showHint(), 1000)
+    }
+  }
+
   isLastPage () {
     return this.state.page + 1 === Children.count(this.props.children)
   }
@@ -46,6 +52,29 @@ class Flipboard extends Component {
 
   getWidth () {
     return `${this.props.width}px`
+  }
+
+  showHint () {
+    this.setState({
+      bottomStyle: {
+        transition: this.transition
+      }
+    }, () => {
+      this.setState({
+        bottomStyle: {
+          transition: this.transition,
+          transform: `perspective(${this.props.perspective}) rotateX(30deg)`
+        }
+      })
+
+      setTimeout(() => {
+        this.setState({
+          bottomStyle: {
+            transition: this.transition
+          }
+        })
+      }, 1000)
+    })
   }
 
   startMoving (e) {
@@ -363,7 +392,8 @@ Flipboard.defaultProps = {
   pageBackground: '#fff',
   firstComponent: null,
   lastComponent: null,
-  style: {}
+  showHint: false,
+  style: {},
 }
 
 Flipboard.propTypes = {
@@ -375,6 +405,7 @@ Flipboard.propTypes = {
   pageBackground: PropTypes.string,
   firstComponent: PropTypes.element,
   lastComponent: PropTypes.element,
+  showHint: PropTypes.bool,
   style: PropTypes.object
 }
 
