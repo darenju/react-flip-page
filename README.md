@@ -6,7 +6,7 @@ Well, I was a little bored and decided to craft it in React.js, and here is the 
 
 ![Demo GIF](https://raw.githubusercontent.com/darenju/react-flipboard/master/demo.gif)
 
-You can play with [this demo](https://darenju.me/react-flipboard/).
+You can play with [this demo](http://darenju.me/react-flipboard/).
 
 ## Install
 
