@@ -45,6 +45,7 @@ render((
   <Flipboard
     height={480}
     width={320}
+    showHint={true}
     style={style.flipboard}>
     <article>
       <img src="images/home.jpg" style={style.bigImage} />
