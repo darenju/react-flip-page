@@ -24,6 +24,8 @@ class Flipboard extends Component {
     this.moveGesture = this.moveGesture.bind(this)
     this.stopMoving = this.stopMoving.bind(this)
     this.reset = this.reset.bind(this)
+
+    this.transition = `transform ${this.props.animationDuration / 1000}s ease-in-out`
   }
 
   isLastPage () {
@@ -129,10 +131,12 @@ class Flipboard extends Component {
     this.reset()
     this.setState({
       bottomStyle: {
+        transition: this.transition,
         transform: goNext ? `perspective(${this.props.perspective}) rotateX(180deg)` : ''
       },
 
       topStyle: {
+        transition: this.transition,
         transform: goPrevious ? `perspective(${this.props.perspective}) rotateX(-180deg)` : '',
         zIndex: goPrevious ? 2 : 'auto'
       }
@@ -164,10 +168,10 @@ class Flipboard extends Component {
       direction: '',
       lastDirection: '',
       bottomStyle: {
-        transition: `transform ${this.props.animationDuration / 1000}s ease-in-out`
+        transition: this.transition
       },
       topStyle: {
-        transition: `transform ${this.props.animationDuration / 1000}s ease-in-out`
+        transition: this.transition
       }
     })
   }
