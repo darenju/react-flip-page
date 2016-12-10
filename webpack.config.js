@@ -3,13 +3,13 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  entry: path.resolve(__dirname, 'example/index.js'),
+  entry: path.resolve(__dirname, 'index.js'),
   output: {
-    path: path.resolve(__dirname, 'example/dist'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.min.js'
   },
   resolve: {
-    modulesDirectories: ['node_modules', path.resolve(__dirname, 'src')]
+    modulesDirectories: ['node_modules', __dirname]
   },
   externals: {
     'react': 'React',
