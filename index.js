@@ -1,5 +1,5 @@
 import {render} from 'react-dom'
-import Flipboard from 'src/flipboard.js'
+import Flipboard from 'lib/flipboard.js'
 
 render((
   <Flipboard
