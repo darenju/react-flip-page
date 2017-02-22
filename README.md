@@ -1,5 +1,7 @@
 # react-flipboard
 
+*DISCLAIMER: This package is in no way related to nor endorsed by the Flipboard team nor the Flipboard application. This is is just a showcase of HTML5 & CSS3 effect implemented with React.*
+
 *Note: this README is updated often. If you are reading it from the [NPM package page](https://www.npmjs.com/package/react-flipboard), please take a look at the same file of the [GitHub repository](https://github.com/darenju/react-flipboard/blob/master/README.md). The one there is the most up to date version.*
 
 Have you ever wished you could use the cool Flipboard page swipe effect in one of your React.js apps?
