@@ -1,23 +1,23 @@
-# react-flipboard
+# react-flip-page
 
-*DISCLAIMER: This package is in no way related to nor endorsed by the Flipboard team nor the Flipboard application. This is is just a showcase of HTML5 & CSS3 effect implemented with React.*
+*DISCLAIMER: This package is in no way related to nor endorsed by Flipboard, Inc. nor [flipboard.com](http://www.flipboard.com). This is just a showcase of HTML5 & CSS3 effect implemented with React.*
 
-*Note: this README is updated often. If you are reading it from the [NPM package page](https://www.npmjs.com/package/react-flipboard), please take a look at the same file of the [GitHub repository](https://github.com/darenju/react-flipboard/blob/master/README.md). The one there is the most up to date version.*
+*Note: this README is updated often. If you are reading it from the [NPM package page](https://www.npmjs.com/package/react-flip-page), please take a look at the same file of the [GitHub repository](https://github.com/darenju/react-flip-page/blob/master/README.md). The one there is the most up to date version.*
 
 Have you ever wished you could use the cool Flipboard page swipe effect in one of your React.js apps?
 
 Well, I was a little bored and decided to craft it in React.js, and here is the result!
 
-![Demo GIF](https://raw.githubusercontent.com/darenju/react-flipboard/master/demo.gif)
+![Demo GIF](https://raw.githubusercontent.com/darenju/react-flip-page/master/demo.gif)
 
-You can play with [this demo](http://darenju.me/react-flipboard/).
+You can play with [this demo](http://darenju.me/react-flip-page/).
 
 ## Install
 
 Installation is pretty straight-forward, as you just have to `npm install` this package:
 
 ```
-npm install --save react-flipboard
+npm install --save react-flip-page
 ```
 
 Then, you can require the module with any way you like, let it be webpack or something else.
@@ -64,7 +64,7 @@ There are a few properties that define the behaviour of the component, here they
 
 Since this is an open source project and it's far from perfect, contribution is welcome. Fork the repository and start working on your fix or new feature. Remember, it's good practice to work in your own branch, to avoid painful merge conflicts.
 
-Once you think your work is ready, fire a [pull request](https://github.com/darenju/react-flipboard/pulls) with an understandable description of what you're bringing to the project. If it's alright, chances are high your work will be merged!
+Once you think your work is ready, fire a [pull request](https://github.com/darenju/react-flip-page/pulls) with an understandable description of what you're bringing to the project. If it's alright, chances are high your work will be merged!
 
 ### Things I need help on
 
