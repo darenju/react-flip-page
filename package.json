@@ -4,7 +4,7 @@
   "description": "A React.js implementation of the Flipboard page swipe.",
   "main": "lib/flipboard.js",
   "scripts": {
-    "build": "babel src/flipboard.js -o lib/flipboard.js"
+    "build": "babel src/flippage.js -o lib/flippage.js"
   },
   "repository": {
     "type": "git",
@@ -22,14 +22,16 @@
   },
   "homepage": "https://github.com/darenju/react-flip-page#readme",
   "devDependencies": {
-    "babel": "^6.5.2",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.20.0",
     "babel-loader": "^6.2.9",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
-    "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "webpack": "^1.14.0"
+  },
+  "dependencies": {
+    "prop-types": "^15.5.8",
+    "react": "^15.4.1"
   }
 }

@@ -1,8 +1,9 @@
-import {Component, PropTypes, Children, cloneElement} from 'react'
+import {Component, Children, cloneElement} from 'react'
+import PropTypes from 'prop-types'
 
 const m = (...objs) => Object.assign({}, ...objs)
 
-class Flipboard extends Component {
+class FlipPage extends Component {
   constructor (props) {
     super(props)
 
@@ -409,4 +410,4 @@ Flipboard.propTypes = {
   style: PropTypes.object
 }
 
-export default Flipboard
+export default FlipPage
