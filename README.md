@@ -24,10 +24,10 @@ Then, you can require the module with any way you like, let it be webpack or som
 
 ## Usage
 
-This package consists of one single component that does all the work. Simply throw a `Flipboard` component with some children that will be the content.
+This package consists of one single component that does all the work. Simply throw a `FlipPage` component with some children that will be the content.
 
 ```html
-<Flipboard>
+<FlipPage>
   <article>
     <h1>My awesome first article</h1>
     <p>My awesome first content</p>
@@ -40,7 +40,7 @@ This package consists of one single component that does all the work. Simply thr
     <h1>My excellent third article</h1>
     <p>My excellent third content</p>
   </article>
-</Flipboard>
+</FlipPage>
 ```
 
 ### Props
@@ -49,6 +49,7 @@ There are a few properties that define the behaviour of the component, here they
 
 | Prop | Type | Default | Role |
 |------|------|---------|------|
+| `orientation` | `string` | `vertical` | Orientation of swipes. `vertical` or `horizontal` for respectively up/down swipes and left/right swipes |
 | `animationDuration` | `number` | `200` | Duration in ms of the fold/unfold animation |
 | `treshold` | `number` | `10` | Distance in px to swipe before the gesture is activated |
 | `maxAngle` | `number` | `45` | Angle of the page when there's nothing to display before/after |
