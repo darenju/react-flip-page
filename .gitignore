@@ -1,5 +1,8 @@
-node_modules
+*.swp
+*~
+*.iml
+.*.haste_cache.*
 .DS_Store
+.idea
 npm-debug.log
-
-*.tgz
+node_modules
