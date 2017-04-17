@@ -171,7 +171,7 @@ class FlipPage extends Component {
         }})
       } else if (diffX > 0 && this.state.direction === 'right') {
         this.setState({angle: angle, firstHalfStyle: {
-          transform: `perspective(${this.props.perspective}) rotateY(-${rotate}deg)`,
+          transform: `perspective(${this.props.perspective}) rotateY(${rotate}deg)`,
           zIndex: 2 // apply a z-index to pop over the back face
         }})
       }
@@ -195,17 +195,39 @@ class FlipPage extends Component {
     // reset everything
     this.reset()
 
-    const letter = this.props.orientation === 'vertical' ? 'X' : 'Y'
+    const {orientation} = this.props
+
+    let secondHalfTransform, firstHalfTransform;
+
+    if (goNext) {
+      secondHalfTransform = `perspective(${this.props.perspective}) `
+
+      if (orientation === 'vertical') {
+        secondHalfTransform += 'rotateX(180deg)'
+      } else {
+        secondHalfTransform += 'rotateY(-180deg)'
+      }
+    }
+
+    if (goPrevious) {
+      firstHalfTransform = `perspective(${this.props.perspective}) `
+
+      if (orientation === 'vertical') {
+        firstHalfTransform += 'rotateX(-180deg)'
+      } else {
+        firstHalfTransform += 'rotateY(180deg)'
+      }
+    }
 
     this.setState({
       secondHalfStyle: {
         transition: this.transition,
-        transform: goNext ? `perspective(${this.props.perspective}) rotate${letter}(180deg)` : ''
+        transform: secondHalfTransform
       },
 
       firstHalfStyle: {
         transition: this.transition,
-        transform: goPrevious ? `perspective(${this.props.perspective}) rotate${letter}(-180deg)` : '',
+        transform: firstHalfTransform,
         zIndex: goPrevious ? 2 : 'auto'
       }
     }, () => {
@@ -274,7 +296,7 @@ class FlipPage extends Component {
         height: orientation === 'vertical' ? halfHeight : height,
         left: 0,
         position: 'absolute',
-        width: orientation === 'vertical' ? width : halfWidth
+        width: orientation === 'vertical' ? width : halfWidth,
       },
       visiblePart: {
         transformStyle: 'preserve-3d'
@@ -297,6 +319,7 @@ class FlipPage extends Component {
         left: 0,
         position: 'absolute',
         top: 0,
+        overflow: 'hidden',
         transformStyle: 'preserve-3d',
         width: orientation === 'vertical' ? width : halfWidth
       },
@@ -304,18 +327,20 @@ class FlipPage extends Component {
         transform: orientation === 'vertical' ? 'rotateX(180deg)' : 'rotateY(180deg)'
       },
       before: {
-        top: orientation === 'vertical' ? 0 : 'auto',
-        left: orientation === 'vertical' ? 'auto' : 0
+        top: 0,
+        left: 0
       },
       after: {
-        bottom: orientation === 'vertical' ? 0 : 'auto',
-        right: orientation === 'vertical' ? 'auto' : 0
+        top: orientation === 'vertical' ? halfHeight : 0,
+        left: orientation === 'vertical' ? 0 : halfWidth
       },
       cut: {
         background: this.props.pageBackground,
         height: orientation === 'vertical' ? halfHeight : height,
         overflow: 'hidden',
-        position: 'relative',
+        position: 'absolute',
+        left: 0,
+        top: 0,
         width: width
       },
       pull: {
@@ -331,17 +356,41 @@ class FlipPage extends Component {
         top: 0,
         transition: `box-shadow ${this.props.animationDuration / 1000}s ease-in-out`
       },
-      gradientBottomFace: {
-        boxShadow: this.state.direction === 'up' ? gradientBottom : ''
+      gradientSecondHalf: {
+        boxShadow: (() => {
+          if (this.state.direction === 'up') {
+            return gradientBottom
+          } else if (this.state.direction === 'right') {
+            return gradientRight
+          }
+        })()
       },
-      gradientTopFace: {
-        boxShadow: this.state.direction === 'down' ? gradientTop : ''
+      gradientFirstHalf: {
+        boxShadow: (() => {
+          if (this.state.direction === 'down') {
+            return gradientTop
+          } else if (this.state.direction === 'left') {
+            return gradientLeft
+          }
+        })()
       },
-      gradientBottomBack: {
-        boxShadow: this.state.direction === 'up' ? gradientTop : ''
+      gradientSecondHalfBack: {
+        boxShadow: (() => {
+          if (this.state.direction === 'up') {
+            return gradientTop
+          } else if (this.state.direction === 'left') {
+            return gradientLeft
+          }
+        })()
       },
-      gradientTopBack: {
-        boxShadow: this.state.direction === 'down' ? gradientBottom : ''
+      gradientFirstHalfBack: {
+        boxShadow: (() => {
+          if (this.state.direction === 'down') {
+            return gradientBottom
+          } else if (this.state.direction === 'right') {
+            return gradientRight
+          }
+        })()
       },
       mask: {
         position: 'absolute',
@@ -364,7 +413,7 @@ class FlipPage extends Component {
 
 
     const {
-      container, part, visiblePart, firstHalf, secondHalf, face, back, before, after, cut, pull, gradient, gradientBottomBack, gradientTopBack, gradientBottomFace, gradientTopFace, mask
+      container, part, visiblePart, firstHalf, secondHalf, face, back, before, after, cut, pull, gradient, gradientSecondHalfBack, gradientFirstHalfBack, gradientSecondHalf, gradientFirstHalf, mask
     } = style
 
     return (
@@ -383,20 +432,20 @@ class FlipPage extends Component {
           {beforeItem}
           <div style={mask} />
         </div>
-        <div style={m(part, after, cut)}>
+        <div style={m(part, cut, after)}>
           <div style={pull}>{afterItem}</div>
           <div style={mask} />
         </div>
         <div style={m(part, visiblePart, firstHalf, this.state.firstHalfStyle)}>
           <div style={face}>
             <div style={cut}>{pageItem}</div>
-            <div style={m(gradient, gradientTopFace)} />
+            <div style={m(gradient, gradientFirstHalf)} />
           </div>
           <div style={m(face, back)}>
             <div style={cut}>
               <div style={pull}>{beforeItem}</div>
             </div>
-            <div style={m(gradient, gradientTopBack)} />
+            <div style={m(gradient, gradientFirstHalfBack)} />
           </div>
         </div>
         <div style={m(part, visiblePart, secondHalf, this.state.secondHalfStyle)}>
@@ -404,13 +453,13 @@ class FlipPage extends Component {
             <div style={cut}>
               <div style={pull}>{pageItem}</div>
             </div>
-            <div style={m(gradient, gradientBottomFace)} />
+            <div style={m(gradient, gradientSecondHalf)} />
           </div>
           <div style={m(face, back)}>
             <div style={m(part, after, cut)}>
               {afterItem}
             </div>
-            <div style={m(gradient, gradientBottomBack)} />
+            <div style={m(gradient, gradientSecondHalfBack)} />
           </div>
         </div>
       </div>

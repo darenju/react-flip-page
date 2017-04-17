@@ -274,7 +274,7 @@
               } });
           } else if (diffX > 0 && this.state.direction === 'right') {
             this.setState({ angle: angle, firstHalfStyle: {
-                transform: 'perspective(' + this.props.perspective + ') rotateY(-' + rotate + 'deg)',
+                transform: 'perspective(' + this.props.perspective + ') rotateY(' + rotate + 'deg)',
                 zIndex: 2 // apply a z-index to pop over the back face
               } });
           }
@@ -293,17 +293,41 @@
         // reset everything
         this.reset();
 
-        var letter = this.props.orientation === 'vertical' ? 'X' : 'Y';
+        var orientation = this.props.orientation;
+
+
+        var secondHalfTransform = void 0,
+            firstHalfTransform = void 0;
+
+        if (goNext) {
+          secondHalfTransform = 'perspective(' + this.props.perspective + ') ';
+
+          if (orientation === 'vertical') {
+            secondHalfTransform += 'rotateX(180deg)';
+          } else {
+            secondHalfTransform += 'rotateY(-180deg)';
+          }
+        }
+
+        if (goPrevious) {
+          firstHalfTransform = 'perspective(' + this.props.perspective + ') ';
+
+          if (orientation === 'vertical') {
+            firstHalfTransform += 'rotateX(-180deg)';
+          } else {
+            firstHalfTransform += 'rotateY(180deg)';
+          }
+        }
 
         this.setState({
           secondHalfStyle: {
             transition: this.transition,
-            transform: goNext ? 'perspective(' + this.props.perspective + ') rotate' + letter + '(180deg)' : ''
+            transform: secondHalfTransform
           },
 
           firstHalfStyle: {
             transition: this.transition,
-            transform: goPrevious ? 'perspective(' + this.props.perspective + ') rotate' + letter + '(-180deg)' : '',
+            transform: firstHalfTransform,
             zIndex: goPrevious ? 2 : 'auto'
           }
         }, function () {
@@ -347,6 +371,8 @@
     }, {
       key: 'renderPage',
       value: function renderPage(page, key) {
+        var _this5 = this;
+
         var height = this.getHeight();
         var halfHeight = this.getHalfHeight();
         var width = this.getWidth();
@@ -399,6 +425,7 @@
             left: 0,
             position: 'absolute',
             top: 0,
+            overflow: 'hidden',
             transformStyle: 'preserve-3d',
             width: orientation === 'vertical' ? width : halfWidth
           },
@@ -406,18 +433,20 @@
             transform: orientation === 'vertical' ? 'rotateX(180deg)' : 'rotateY(180deg)'
           },
           before: {
-            top: orientation === 'vertical' ? 0 : 'auto',
-            left: orientation === 'vertical' ? 'auto' : 0
+            top: 0,
+            left: 0
           },
           after: {
-            bottom: orientation === 'vertical' ? 0 : 'auto',
-            right: orientation === 'vertical' ? 'auto' : 0
+            top: orientation === 'vertical' ? halfHeight : 0,
+            left: orientation === 'vertical' ? 0 : halfWidth
           },
           cut: {
             background: this.props.pageBackground,
             height: orientation === 'vertical' ? halfHeight : height,
             overflow: 'hidden',
-            position: 'relative',
+            position: 'absolute',
+            left: 0,
+            top: 0,
             width: width
           },
           pull: {
@@ -433,17 +462,41 @@
             top: 0,
             transition: 'box-shadow ' + this.props.animationDuration / 1000 + 's ease-in-out'
           },
-          gradientBottomFace: {
-            boxShadow: this.state.direction === 'up' ? gradientBottom : ''
+          gradientSecondHalf: {
+            boxShadow: function () {
+              if (_this5.state.direction === 'up') {
+                return gradientBottom;
+              } else if (_this5.state.direction === 'right') {
+                return gradientRight;
+              }
+            }()
           },
-          gradientTopFace: {
-            boxShadow: this.state.direction === 'down' ? gradientTop : ''
+          gradientFirstHalf: {
+            boxShadow: function () {
+              if (_this5.state.direction === 'down') {
+                return gradientTop;
+              } else if (_this5.state.direction === 'left') {
+                return gradientLeft;
+              }
+            }()
           },
-          gradientBottomBack: {
-            boxShadow: this.state.direction === 'up' ? gradientTop : ''
+          gradientSecondHalfBack: {
+            boxShadow: function () {
+              if (_this5.state.direction === 'up') {
+                return gradientTop;
+              } else if (_this5.state.direction === 'left') {
+                return gradientLeft;
+              }
+            }()
           },
-          gradientTopBack: {
-            boxShadow: this.state.direction === 'down' ? gradientBottom : ''
+          gradientFirstHalfBack: {
+            boxShadow: function () {
+              if (_this5.state.direction === 'down') {
+                return gradientBottom;
+              } else if (_this5.state.direction === 'right') {
+                return gradientRight;
+              }
+            }()
           },
           mask: {
             position: 'absolute',
@@ -472,10 +525,10 @@
             cut = style.cut,
             pull = style.pull,
             gradient = style.gradient,
-            gradientBottomBack = style.gradientBottomBack,
-            gradientTopBack = style.gradientTopBack,
-            gradientBottomFace = style.gradientBottomFace,
-            gradientTopFace = style.gradientTopFace,
+            gradientSecondHalfBack = style.gradientSecondHalfBack,
+            gradientFirstHalfBack = style.gradientFirstHalfBack,
+            gradientSecondHalf = style.gradientSecondHalf,
+            gradientFirstHalf = style.gradientFirstHalf,
             mask = style.mask;
 
 
@@ -500,7 +553,7 @@
           ),
           _react2.default.createElement(
             'div',
-            { style: m(part, after, cut) },
+            { style: m(part, cut, after) },
             _react2.default.createElement(
               'div',
               { style: pull },
@@ -519,7 +572,7 @@
                 { style: cut },
                 pageItem
               ),
-              _react2.default.createElement('div', { style: m(gradient, gradientTopFace) })
+              _react2.default.createElement('div', { style: m(gradient, gradientFirstHalf) })
             ),
             _react2.default.createElement(
               'div',
@@ -533,7 +586,7 @@
                   beforeItem
                 )
               ),
-              _react2.default.createElement('div', { style: m(gradient, gradientTopBack) })
+              _react2.default.createElement('div', { style: m(gradient, gradientFirstHalfBack) })
             )
           ),
           _react2.default.createElement(
@@ -551,7 +604,7 @@
                   pageItem
                 )
               ),
-              _react2.default.createElement('div', { style: m(gradient, gradientBottomFace) })
+              _react2.default.createElement('div', { style: m(gradient, gradientSecondHalf) })
             ),
             _react2.default.createElement(
               'div',
@@ -561,7 +614,7 @@
                 { style: m(part, after, cut) },
                 afterItem
               ),
-              _react2.default.createElement('div', { style: m(gradient, gradientBottomBack) })
+              _react2.default.createElement('div', { style: m(gradient, gradientSecondHalfBack) })
             )
           )
         );
@@ -569,7 +622,7 @@
     }, {
       key: 'render',
       value: function render() {
-        var _this5 = this;
+        var _this6 = this;
 
         var style = m(this.props.style, {
           height: this.getHeight(),
@@ -583,7 +636,7 @@
           'div',
           { style: style },
           _react.Children.map(this.props.children, function (page, key) {
-            return _this5.renderPage(page, key);
+            return _this6.renderPage(page, key);
           })
         );
       }
