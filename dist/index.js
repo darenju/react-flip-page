@@ -660,7 +660,11 @@
   };
 
   FlipPage.propTypes = {
-    orientation: _propTypes2.default.string,
+    orientation: function orientation(props, propName, componentName) {
+      if (!/(vertical|horizontal)/.test(props[propName])) {
+        return new Error('Invalid prop `' + propName + '` supplied to ' + ' `' + componentName + '`. Expected `horizontal` or `vertical`. Validation failed.');
+      }
+    },
     animationDuration: _propTypes2.default.number,
     treshold: _propTypes2.default.number,
     maxAngle: _propTypes2.default.number,

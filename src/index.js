@@ -498,7 +498,14 @@ FlipPage.defaultProps = {
 }
 
 FlipPage.propTypes = {
-  orientation: PropTypes.string,
+  orientation: (props, propName, componentName) => {
+    if (!/(vertical|horizontal)/.test(props[propName])) {
+      return new Error(
+        'Invalid prop `' + propName + '` supplied to ' +
+        ' `' + componentName + '`. Expected `horizontal` or `vertical`. Validation failed.'
+      )
+    }
+  },
   animationDuration: PropTypes.number,
   treshold: PropTypes.number,
   maxAngle: PropTypes.number,
