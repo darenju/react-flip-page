@@ -1,71 +1,28 @@
-# react-flip-page
+# Boilerplate for creating React Npm packages with ES2015
 
-*DISCLAIMER: This package is in no way related to nor endorsed by Flipboard, Inc. nor [flipboard.com](http://www.flipboard.com). This is just a showcase of HTML5 & CSS3 effect implemented with React.*
+The package is based on [npm-base](https://github.com/kadirahq/npm-base) package by [Kadira](https://github.com/kadirahq) which is really great when you want to prepare Npm package. This one is prepared to be used as a starter point for React components which needs to be published on Npm.
 
-*Note: this README is updated often. If you are reading it from the [NPM package page](https://www.npmjs.com/package/react-flip-page), please take a look at the same file of the [GitHub repository](https://github.com/darenju/react-flip-page/blob/master/README.md). The one there is the most up to date version.*
+It includes linting with [ESLint](http://eslint.org/) and testing with [Mocha](https://mochajs.org/), [Enzyme](http://airbnb.io/enzyme/) and [JSDOM](https://github.com/tmpvar/jsdom).
 
-Have you ever wished you could use the cool Flipboard page swipe effect in one of your React.js apps?
-
-Well, I was a little bored and decided to craft it in React.js, and here is the result!
-
-![Demo GIF](https://raw.githubusercontent.com/darenju/react-flip-page/master/demo.gif)
-
-You can play with [this demo](http://darenju.me/react-flip-page/).
-
-## Install
-
-Installation is pretty straight-forward, as you just have to `npm install` this package:
-
-```
-npm install --save react-flip-page
-```
-
-Then, you can require the module with any way you like, let it be webpack or something else.
+Also there is of course ES6 transpilation.
 
 ## Usage
 
-This package consists of one single component that does all the work. Simply throw a `Flipboard` component with some children that will be the content.
+1. Clone this repo
+2. Inside cloned repo run `npm install && rm -rf .git && git init` and update `package.json` with your package name.
+3. If you want to run tests: `npm test` or `npm run testonly` or `npm run test-watch`. You need to write tests in `__tests__` folder. You need at least Node 4 on your machine to run tests.
+4. If you want to run linting: `npm test` or `npm run lint`. Fix bugs: `npm run lint-fix`. You can adjust your `.eslintrc` config file.
+5. If you want to run transpilation to ES5 in `dist` folder: `npm run prepublish` (standard npm hook).
 
-```html
-<Flipboard>
-  <article>
-    <h1>My awesome first article</h1>
-    <p>My awesome first content</p>
-  </article>
-  <article>
-    <h1>My wonderful second article</h1>
-    <p>My wonderful second content</p>
-  </article>
-  <article>
-    <h1>My excellent third article</h1>
-    <p>My excellent third content</p>
-  </article>
-</Flipboard>
-```
+## Blog post about it:
 
-### Props
+- [Creating React NPM packages with ES2015](http://julian.io/creating-react-npm-packages-with-es2015/)
 
-There are a few properties that define the behaviour of the component, here they are:
+## Also check out
 
-| Prop | Type | Default | Role |
-|------|------|---------|------|
-| `animationDuration` | `number` | `200` | Duration in ms of the fold/unfold animation |
-| `treshold` | `number` | `10` | Distance in px to swipe before the gesture is activated |
-| `maxAngle` | `number` | `45` | Angle of the page when there's nothing to display before/after |
-| `maskOpacity` | `number` | `0.4` | Opacity of the masks that covers the underneath content |
-| `perspective` | `string` | `130em` | Perspective value of the page fold effect. The bigger, the less noticeable |
-| `pageBackground` | `string` | `#fff` | Background of the pages. This can be overriden in individual pages by styling the component |
-| `firstComponent` | `element` | `null` | Component that will be displayed under the first page |
-| `lastComponent` | `element` | `null` | Component that will be displayed under the last page |
-| `showHint` | `bool` | `false` | Indicates if the component must hint the user on how it works. Setting this to `true` will lift the bottom of the page 1s after the component is mounted, for 1s |
-| `style` | `object` | `{}` | Additional style for the flipboard |
+- [React Alert UI component](https://github.com/juliancwirko/react-s-alert)
+- [React project boilerplate with Webpack, HMR, React Router](https://github.com/juliancwirko/react-boilerplate)
 
-## Contribute
+## License
 
-Since this is an open source project and it's far from perfect, contribution is welcome. Fork the repository and start working on your fix or new feature. Remember, it's good practice to work in your own branch, to avoid painful merge conflicts.
-
-Once you think your work is ready, fire a [pull request](https://github.com/darenju/react-flip-page/pulls) with an understandable description of what you're bringing to the project. If it's alright, chances are high your work will be merged!
-
-### Things I need help on
-
-- **Unit Testing** : I would like any recommendation or article to guide me on how to effectively test the React component, ideally from command line. Is [Jest](https://facebook.github.io/jest/) a good choice?
+MIT
