@@ -1,7 +1,8 @@
 {
-    "name": "react-flippage",
+    "name": "react-flip-page",
     "version": "0.3.0",
     "description": "A React.js implementation of the Flipboard page swipe.",
+    "main": "dist/index.js",
     "repository": {
         "type": "git",
         "url": "https://github.com/darenju/react-flippage.git"
