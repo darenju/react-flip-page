@@ -50,6 +50,7 @@ There are a few properties that define the behaviour of the component, here they
 | Prop | Type | Default | Role |
 |------|------|---------|------|
 | `orientation` | `string` | `vertical` | Orientation of swipes. `vertical` or `horizontal` for respectively up/down swipes and left/right swipes |
+| `uncutPages` | `boolean` | `false` | If `true`, the pages will be allowed to overflow through the container. The original effect is to keep everything inside the container, but you can set this to `true` to have a more "bookish" effect. |
 | `animationDuration` | `number` | `200` | Duration in ms of the fold/unfold animation |
 | `treshold` | `number` | `10` | Distance in px to swipe before the gesture is activated |
 | `maxAngle` | `number` | `45` | Angle of the page when there's nothing to display before/after |
