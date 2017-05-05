@@ -377,7 +377,9 @@
         var halfHeight = this.getHalfHeight();
         var width = this.getWidth();
         var halfWidth = this.getHalfWidth();
-        var orientation = this.props.orientation;
+        var _props = this.props,
+            orientation = _props.orientation,
+            uncutPages = _props.uncutPages;
 
         var gradientTop = '0 -100px 100px -100px rgba(0,0,0,0.25) inset';
         var gradientLeft = '-100px 0 100px -100px rgba(0,0,0,0.25) inset';
@@ -394,7 +396,7 @@
           container: {
             display: this.state.page === key ? 'block' : 'none',
             height: height,
-            overflow: 'hidden',
+            overflow: uncutPages === false ? 'hidden' : '',
             position: 'relative',
             width: width
           },
@@ -438,7 +440,8 @@
           },
           after: {
             top: orientation === 'vertical' ? halfHeight : 0,
-            left: orientation === 'vertical' ? 0 : halfWidth
+            left: orientation === 'vertical' ? 0 : halfWidth,
+            width: orientation === 'horizontal' ? halfWidth : width
           },
           cut: {
             background: this.props.pageBackground,
@@ -656,6 +659,7 @@
     firstComponent: null,
     lastComponent: null,
     showHint: false,
+    uncutPages: false,
     style: {}
   };
 
@@ -674,6 +678,7 @@
     firstComponent: _propTypes2.default.element,
     lastComponent: _propTypes2.default.element,
     showHint: _propTypes2.default.bool,
+    uncutPages: _propTypes2.default.bool,
     style: _propTypes2.default.object
   };
 

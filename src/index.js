@@ -272,7 +272,7 @@ class FlipPage extends Component {
     const halfHeight = this.getHalfHeight()
     const width = this.getWidth()
     const halfWidth = this.getHalfWidth()
-    const {orientation} = this.props
+    const {orientation, uncutPages} = this.props
     const gradientTop = '0 -100px 100px -100px rgba(0,0,0,0.25) inset'
     const gradientLeft = '-100px 0 100px -100px rgba(0,0,0,0.25) inset'
     const gradientBottom = '0 100px 100px -100px rgba(0,0,0,0.25) inset'
@@ -288,7 +288,7 @@ class FlipPage extends Component {
       container: {
         display: this.state.page === key ? 'block' : 'none',
         height: height,
-        overflow: 'hidden',
+        overflow: uncutPages === false ? 'hidden' : '',
         position: 'relative',
         width: width
       },
@@ -332,7 +332,8 @@ class FlipPage extends Component {
       },
       after: {
         top: orientation === 'vertical' ? halfHeight : 0,
-        left: orientation === 'vertical' ? 0 : halfWidth
+        left: orientation === 'vertical' ? 0 : halfWidth,
+        width: orientation === 'horizontal' ? halfWidth : width
       },
       cut: {
         background: this.props.pageBackground,
@@ -494,6 +495,7 @@ FlipPage.defaultProps = {
   firstComponent: null,
   lastComponent: null,
   showHint: false,
+  uncutPages: false,
   style: {},
 }
 
@@ -515,6 +517,7 @@ FlipPage.propTypes = {
   firstComponent: PropTypes.element,
   lastComponent: PropTypes.element,
   showHint: PropTypes.bool,
+  uncutPages: PropTypes.bool,
   style: PropTypes.object
 }
 
