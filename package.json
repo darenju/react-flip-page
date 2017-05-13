@@ -1,29 +1,10 @@
 {
-  "name": "react-flipboard",
-  "version": "0.0.1",
-  "description": "A React.js implementation of the Flipboard page swipe.",
-  "main": "src/flipboard.js",
   "scripts": {
     "build": "webpack",
     "build:watch": "webpack --watch"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/darenju/react-flipboard.git"
-  },
-  "keywords": [
-    "react",
-    "component",
-    "flipboard"
-  ],
-  "author": "Julien Fradin",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/darenju/react-flipboard/issues"
-  },
-  "homepage": "https://github.com/darenju/react-flipboard#readme",
   "devDependencies": {
-    "babel": "^6.5.2",
+    "babel-cli": "^6.5.2",
     "babel-core": "^6.20.0",
     "babel-loader": "^6.2.9",
     "babel-preset-es2015": "^6.18.0",
@@ -31,5 +12,8 @@
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "webpack": "^1.14.0"
+  },
+  "dependencies": {
+    "react-flip-page": "^0.4.0"
   }
 }

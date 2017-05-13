@@ -8,9 +8,9 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.min.js'
   },
-  resolve: {
-    modulesDirectories: ['node_modules', __dirname]
-  },
+  // resolve: {
+  //   modules: [__dirname, 'node_modules']
+  // },
   externals: {
     'react': 'React',
     'react-dom': 'ReactDOM'
