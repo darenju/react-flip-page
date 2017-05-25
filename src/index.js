@@ -497,6 +497,8 @@ FlipPage.defaultProps = {
   showHint: false,
   uncutPages: false,
   style: {},
+  height: 480,
+  width: 320
 }
 
 FlipPage.propTypes = {
@@ -518,7 +520,9 @@ FlipPage.propTypes = {
   lastComponent: PropTypes.element,
   showHint: PropTypes.bool,
   uncutPages: PropTypes.bool,
-  style: PropTypes.object
+  style: PropTypes.object,
+  height: PropTypes.number,
+  width: PropTypes.number
 }
 
 export default FlipPage

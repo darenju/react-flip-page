@@ -61,6 +61,8 @@ There are a few properties that define the behaviour of the component, here they
 | `lastComponent` | `element` | `null` | Component that will be displayed under the last page |
 | `showHint` | `bool` | `false` | Indicates if the component must hint the user on how it works. Setting this to `true` will lift the bottom of the page 1s after the component is mounted, for 1s |
 | `style` | `object` | `{}` | Additional style for the flipboard |
+| `height` | `number` | `480` | Height for the flipboard |
+| `width` | `number` | `320` | Width for the flipboard |
 
 ## Contribute
 
