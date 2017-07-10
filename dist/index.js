@@ -256,8 +256,6 @@
             lastDirection: lastDirection
           });
 
-          console.log(this.state.direction);
-
           // flip bottom
           if (diffY < 0 && this.state.direction === 'up') {
             this.setState({ angle: angle, secondHalfStyle: {
@@ -281,10 +279,78 @@
         }
       }
     }, {
-      key: 'stopMoving',
-      value: function stopMoving(e) {
+      key: 'gotoNextPage',
+      value: function gotoNextPage() {
         var _this4 = this;
 
+        if (this.isLastPage()) return;
+
+        var secondHalfTransform = 'perspective(' + this.props.perspective + ') ';
+
+        if (this.props.orientation === 'vertical') {
+          secondHalfTransform += 'rotateX(180deg)';
+        } else {
+          secondHalfTransform += 'rotateY(-180deg)';
+        }
+
+        this.setState({
+          firstHalfStyle: {
+            transition: this.transition,
+            transform: '',
+            zIndex: 'auto'
+          },
+
+          secondHalfStyle: {
+            transition: this.transition,
+            transform: secondHalfTransform
+          }
+        }, function () {
+          setTimeout(function () {
+            _this4.setState({
+              secondHalfStyle: {},
+              page: _this4.state.page + 1
+            });
+          }, _this4.props.animationDuration);
+        });
+      }
+    }, {
+      key: 'gotoPreviousPage',
+      value: function gotoPreviousPage() {
+        var _this5 = this;
+
+        if (this.isFirstPage()) return;
+
+        var firstHalfTransform = 'perspective(' + this.props.perspective + ') ';
+
+        if (this.props.orientation === 'vertical') {
+          firstHalfTransform += 'rotateX(-180deg)';
+        } else {
+          firstHalfTransform += 'rotateY(180deg)';
+        }
+
+        this.setState({
+          firstHalfStyle: {
+            transition: this.transition,
+            transform: firstHalfTransform,
+            zIndex: 2
+          },
+
+          secondHalfStyle: {
+            transition: this.transition,
+            transform: ''
+          }
+        }, function () {
+          setTimeout(function () {
+            _this5.setState({
+              firstHalfStyle: {},
+              page: _this5.state.page - 1
+            });
+          }, _this5.props.animationDuration);
+        });
+      }
+    }, {
+      key: 'stopMoving',
+      value: function stopMoving(e) {
         var delay = Date.now() - this.state.timestamp;
 
         var goNext = !this.isLastPage() && (this.state.angle <= -90 || delay <= 20 && this.state.direction === 'up' && this.state.lastDirection === 'up' || delay <= 20 && this.state.direction === 'right' && this.state.lastDirection === 'right');
@@ -293,62 +359,13 @@
         // reset everything
         this.reset();
 
-        var orientation = this.props.orientation;
-
-
-        var secondHalfTransform = void 0,
-            firstHalfTransform = void 0;
-
         if (goNext) {
-          secondHalfTransform = 'perspective(' + this.props.perspective + ') ';
-
-          if (orientation === 'vertical') {
-            secondHalfTransform += 'rotateX(180deg)';
-          } else {
-            secondHalfTransform += 'rotateY(-180deg)';
-          }
+          this.gotoNextPage();
         }
 
         if (goPrevious) {
-          firstHalfTransform = 'perspective(' + this.props.perspective + ') ';
-
-          if (orientation === 'vertical') {
-            firstHalfTransform += 'rotateX(-180deg)';
-          } else {
-            firstHalfTransform += 'rotateY(180deg)';
-          }
+          this.gotoPreviousPage();
         }
-
-        this.setState({
-          secondHalfStyle: {
-            transition: this.transition,
-            transform: secondHalfTransform
-          },
-
-          firstHalfStyle: {
-            transition: this.transition,
-            transform: firstHalfTransform,
-            zIndex: goPrevious ? 2 : 'auto'
-          }
-        }, function () {
-          // load the next item if it was requested
-          if (goNext) {
-            setTimeout(function () {
-              _this4.setState({
-                secondHalfStyle: {},
-                page: _this4.state.page + 1
-              });
-            }, _this4.props.animationDuration);
-          } else if (goPrevious) {
-            // or load the previous item
-            setTimeout(function () {
-              _this4.setState({
-                firstHalfStyle: {},
-                page: _this4.state.page - 1
-              });
-            }, _this4.props.animationDuration);
-          }
-        });
       }
     }, {
       key: 'reset',
@@ -371,7 +388,7 @@
     }, {
       key: 'renderPage',
       value: function renderPage(page, key) {
-        var _this5 = this;
+        var _this6 = this;
 
         var height = this.getHeight();
         var halfHeight = this.getHalfHeight();
@@ -467,36 +484,36 @@
           },
           gradientSecondHalf: {
             boxShadow: function () {
-              if (_this5.state.direction === 'up') {
+              if (_this6.state.direction === 'up') {
                 return gradientBottom;
-              } else if (_this5.state.direction === 'right') {
+              } else if (_this6.state.direction === 'right') {
                 return gradientRight;
               }
             }()
           },
           gradientFirstHalf: {
             boxShadow: function () {
-              if (_this5.state.direction === 'down') {
+              if (_this6.state.direction === 'down') {
                 return gradientTop;
-              } else if (_this5.state.direction === 'left') {
+              } else if (_this6.state.direction === 'left') {
                 return gradientLeft;
               }
             }()
           },
           gradientSecondHalfBack: {
             boxShadow: function () {
-              if (_this5.state.direction === 'up') {
+              if (_this6.state.direction === 'up') {
                 return gradientTop;
-              } else if (_this5.state.direction === 'left') {
+              } else if (_this6.state.direction === 'left') {
                 return gradientLeft;
               }
             }()
           },
           gradientFirstHalfBack: {
             boxShadow: function () {
-              if (_this5.state.direction === 'down') {
+              if (_this6.state.direction === 'down') {
                 return gradientBottom;
-              } else if (_this5.state.direction === 'right') {
+              } else if (_this6.state.direction === 'right') {
                 return gradientRight;
               }
             }()
@@ -625,7 +642,7 @@
     }, {
       key: 'render',
       value: function render() {
-        var _this6 = this;
+        var _this7 = this;
 
         var style = m(this.props.style, {
           height: this.getHeight(),
@@ -639,7 +656,7 @@
           'div',
           { style: style },
           _react.Children.map(this.props.children, function (page, key) {
-            return _this6.renderPage(page, key);
+            return _this7.renderPage(page, key);
           })
         );
       }
@@ -660,7 +677,9 @@
     lastComponent: null,
     showHint: false,
     uncutPages: false,
-    style: {}
+    style: {},
+    height: 480,
+    width: 320
   };
 
   FlipPage.propTypes = {
@@ -679,7 +698,9 @@
     lastComponent: _propTypes2.default.element,
     showHint: _propTypes2.default.bool,
     uncutPages: _propTypes2.default.bool,
-    style: _propTypes2.default.object
+    style: _propTypes2.default.object,
+    height: _propTypes2.default.number,
+    width: _propTypes2.default.number
   };
 
   exports.default = FlipPage;
