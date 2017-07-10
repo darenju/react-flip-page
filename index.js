@@ -60,10 +60,19 @@ class App extends Component {
     this.setState({uncutPages: !this.state.uncutPages})
   }
 
+  gotoPreviousPage () {
+    this.flipPage.gotoPreviousPage();
+  }
+
+  gotoNextPage () {
+    this.flipPage.gotoNextPage();
+  }
+
   render () {
     return (
       <div>
         <FlipPage
+          ref={(flipPage) => { this.flipPage = flipPage; }}
           height={480}
           width={320}
           showHint={true}
@@ -108,6 +117,14 @@ class App extends Component {
 
           <button onClick={() => this.toggleUncutPages()}>
             Toggle uncut pages (now is {this.state.uncutPages ? 'on' : 'off'})
+          </button>
+
+          <button onClick={() => this.gotoPreviousPage()}>
+            Go to previous page
+          </button>
+
+          <button onClick={() => this.gotoNextPage()}>
+            Go to next page
           </button>
         </div>
       </div>
