@@ -153,8 +153,6 @@ class FlipPage extends Component {
         lastDirection: lastDirection
       })
 
-      console.log(this.state.direction)
-
       // flip bottom
       if (diffY < 0 && this.state.direction === 'up') {
         this.setState({angle: angle, secondHalfStyle: {
@@ -178,6 +176,70 @@ class FlipPage extends Component {
     }
   }
 
+  gotoNextPage() {
+    if (this.isLastPage()) return
+
+    let secondHalfTransform = `perspective(${this.props.perspective}) `
+
+    if (this.props.orientation === 'vertical') {
+      secondHalfTransform += 'rotateX(180deg)'
+    } else {
+      secondHalfTransform += 'rotateY(-180deg)'
+    }
+
+    this.setState({
+      firstHalfStyle: {
+        transition: this.transition,
+        transform: '',
+        zIndex: 'auto'
+      },
+
+      secondHalfStyle: {
+        transition: this.transition,
+        transform: secondHalfTransform
+      }
+    }, () => {
+      setTimeout(() => {
+        this.setState({
+          secondHalfStyle: {},
+          page: this.state.page + 1
+        })
+      }, this.props.animationDuration)
+    })
+  }
+
+  gotoPreviousPage() {
+    if (this.isFirstPage()) return
+
+    let firstHalfTransform = `perspective(${this.props.perspective}) `
+
+    if (this.props.orientation === 'vertical') {
+      firstHalfTransform += 'rotateX(-180deg)'
+    } else {
+      firstHalfTransform += 'rotateY(180deg)'
+    }
+
+    this.setState({
+      firstHalfStyle: {
+        transition: this.transition,
+        transform: firstHalfTransform,
+        zIndex: 2
+      },
+
+      secondHalfStyle: {
+        transition: this.transition,
+        transform: ''
+      }
+    }, () => {
+      setTimeout(() => {
+        this.setState({
+          firstHalfStyle: {},
+          page: this.state.page - 1
+        })
+      }, this.props.animationDuration)
+    });
+  }
+
   stopMoving (e) {
     const delay = Date.now() - this.state.timestamp
 
@@ -195,59 +257,13 @@ class FlipPage extends Component {
     // reset everything
     this.reset()
 
-    const {orientation} = this.props
-
-    let secondHalfTransform, firstHalfTransform;
-
     if (goNext) {
-      secondHalfTransform = `perspective(${this.props.perspective}) `
-
-      if (orientation === 'vertical') {
-        secondHalfTransform += 'rotateX(180deg)'
-      } else {
-        secondHalfTransform += 'rotateY(-180deg)'
-      }
+      this.gotoNextPage()
     }
 
     if (goPrevious) {
-      firstHalfTransform = `perspective(${this.props.perspective}) `
-
-      if (orientation === 'vertical') {
-        firstHalfTransform += 'rotateX(-180deg)'
-      } else {
-        firstHalfTransform += 'rotateY(180deg)'
-      }
+      this.gotoPreviousPage()
     }
-
-    this.setState({
-      secondHalfStyle: {
-        transition: this.transition,
-        transform: secondHalfTransform
-      },
-
-      firstHalfStyle: {
-        transition: this.transition,
-        transform: firstHalfTransform,
-        zIndex: goPrevious ? 2 : 'auto'
-      }
-    }, () => {
-      // load the next item if it was requested
-      if (goNext) {
-        setTimeout(() => {
-          this.setState({
-            secondHalfStyle: {},
-            page: this.state.page + 1
-          })
-        }, this.props.animationDuration)
-      } else if (goPrevious) { // or load the previous item
-        setTimeout(() => {
-          this.setState({
-            firstHalfStyle: {},
-            page: this.state.page - 1
-          })
-        }, this.props.animationDuration)
-      }
-    })
   }
 
   reset () {
