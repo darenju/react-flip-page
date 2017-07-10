@@ -64,6 +64,27 @@ There are a few properties that define the behaviour of the component, here they
 | `height` | `number` | `480` | Height for the flipboard |
 | `width` | `number` | `320` | Width for the flipboard |
 
+## Methods
+
+There are currently two methods that can be called on the component. To call them, you can use the
+`ref` attribute in React:
+
+```javascript
+<FlipPage ref={(component) => { this.flipPage = component; }}>
+  ...
+</FlipPage>
+
+this.flipPage.gotoPreviousPage();
+```
+
+### `gotoPreviousPage()`
+
+This method triggers the effect and switches to the previous page, if possible.
+
+### `gotoNextPage()`
+
+This method triggers the effect and switches to the next page, if possible.
+
 ## Contribute
 
 Since this is an open source project and it's far from perfect, contribution is welcome. Fork the repository and start working on your fix or new feature. Remember, it's good practice to work in your own branch, to avoid painful merge conflicts.
