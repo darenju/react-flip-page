@@ -18,7 +18,8 @@
         "react"
     ],
     "scripts": {
-        "build": "babel --plugins transform-es2015-modules-umd src --out-dir ./dist"
+        "build": "babel --plugins transform-es2015-modules-umd src --out-dir ./dist",
+        "lint": "standard src/**/*.js"
     },
     "devDependencies": {
         "babel-cli": "^6.6.4",
@@ -36,5 +37,7 @@
         "react": "~0.14.8 || ^15.0.0",
         "react-dom": "~0.14.8 || ^15.0.0"
     },
-    "dependencies": {}
+    "dependencies": {
+        "standard": "^10.0.2"
+    }
 }
