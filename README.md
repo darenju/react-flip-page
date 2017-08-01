@@ -1,3 +1,5 @@
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
 # react-flip-page
 
 *DISCLAIMER: This package is in no way related to nor endorsed by Flipboard, Inc. nor [flipboard.com](http://www.flipboard.com). This is just a showcase of HTML5 & CSS3 effect implemented with React.*

@@ -105,18 +105,18 @@ class FlipPage extends Component {
     if (this.state.startY !== -1) {
       const diffY = posY - this.state.startY
       const diffX = posX - this.state.startX
-      const diffToUse = (this.state.direction === 'up' || this.state.direction === 'down') ? diffY : diffX
+      const diffToUse = (this.state.direction === 'up' || this.state.direction === 'down') ? diffY : diffX
       const angle = (diffToUse / 250) * 180
       let useMaxAngle = false
       if (this.state.direction === 'up' || this.state.direction === 'left') {
         useMaxAngle = this.isLastPage()
-      } else if (this.state.direction === 'down' || this.state.direction === 'right') {
+      } else if (this.state.direction === 'down' || this.state.direction === 'right') {
         useMaxAngle = this.isFirstPage()
       }
       const rotate = Math.min(Math.abs(angle), useMaxAngle ? this.props.maxAngle : 180)
 
       // determine direction to prevent two-directions swipe
-      if (this.state.direction === '' && (Math.abs(diffX) > this.props.treshold || Math.abs(diffY) > this.props.treshold)) {
+      if (this.state.direction === '' && (Math.abs(diffX) > this.props.treshold || Math.abs(diffY) > this.props.treshold)) {
         let direction = ''
 
         if (diffY < 0 && orientation === 'vertical') {
@@ -155,28 +155,36 @@ class FlipPage extends Component {
 
       // flip bottom
       if (diffY < 0 && this.state.direction === 'up') {
-        this.setState({angle: angle, secondHalfStyle: {
-          transform: `perspective(${this.props.perspective}) rotateX(${rotate}deg)`
-        }})
+        this.setState({
+          angle: angle,
+          secondHalfStyle: {
+            transform: `perspective(${this.props.perspective}) rotateX(${rotate}deg)`
+          }})
       } else if (diffY > 0 && this.state.direction === 'down') {
-        this.setState({angle: angle, firstHalfStyle: {
-          transform: `perspective(${this.props.perspective}) rotateX(-${rotate}deg)`,
-          zIndex: 2 // apply a z-index to pop over the back face
-        }})
+        this.setState({
+          angle: angle,
+          firstHalfStyle: {
+            transform: `perspective(${this.props.perspective}) rotateX(-${rotate}deg)`,
+            zIndex: 2 // apply a z-index to pop over the back face
+          }})
       } else if (diffX < 0 && this.state.direction === 'left') {
-        this.setState({angle: angle, secondHalfStyle: {
-          transform: `perspective(${this.props.perspective}) rotateY(-${rotate}deg)`
-        }})
+        this.setState({
+          angle: angle,
+          secondHalfStyle: {
+            transform: `perspective(${this.props.perspective}) rotateY(-${rotate}deg)`
+          }})
       } else if (diffX > 0 && this.state.direction === 'right') {
-        this.setState({angle: angle, firstHalfStyle: {
-          transform: `perspective(${this.props.perspective}) rotateY(${rotate}deg)`,
-          zIndex: 2 // apply a z-index to pop over the back face
-        }})
+        this.setState({
+          angle: angle,
+          firstHalfStyle: {
+            transform: `perspective(${this.props.perspective}) rotateY(${rotate}deg)`,
+            zIndex: 2 // apply a z-index to pop over the back face
+          }})
       }
     }
   }
 
-  gotoNextPage() {
+  gotoNextPage () {
     if (this.isLastPage()) return
 
     let secondHalfTransform = `perspective(${this.props.perspective}) `
@@ -208,7 +216,7 @@ class FlipPage extends Component {
     })
   }
 
-  gotoPreviousPage() {
+  gotoPreviousPage () {
     if (this.isFirstPage()) return
 
     let firstHalfTransform = `perspective(${this.props.perspective}) `
@@ -237,7 +245,7 @@ class FlipPage extends Component {
           page: this.state.page - 1
         })
       }, this.props.animationDuration)
-    });
+    })
   }
 
   stopMoving (e) {
@@ -312,7 +320,7 @@ class FlipPage extends Component {
         height: orientation === 'vertical' ? halfHeight : height,
         left: 0,
         position: 'absolute',
-        width: orientation === 'vertical' ? width : halfWidth,
+        width: orientation === 'vertical' ? width : halfWidth
       },
       visiblePart: {
         transformStyle: 'preserve-3d'
@@ -427,7 +435,6 @@ class FlipPage extends Component {
     const afterItem = !this.isLastPage() ? (
       this.props.children[this.state.page + 1]
     ) : this.props.lastComponent
-
 
     const {
       container, part, visiblePart, firstHalf, secondHalf, face, back, before, after, cut, pull, gradient, gradientSecondHalfBack, gradientFirstHalfBack, gradientSecondHalf, gradientFirstHalf, mask
