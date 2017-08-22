@@ -211,6 +211,8 @@ class FlipPage extends Component {
         this.setState({
           secondHalfStyle: {},
           page: this.state.page + 1
+        }, () => {
+          this.props.onPageChange(this.state.page)
         })
       }, this.props.animationDuration)
     })
@@ -243,6 +245,8 @@ class FlipPage extends Component {
         this.setState({
           firstHalfStyle: {},
           page: this.state.page - 1
+        }, () => {
+          this.props.onPageChange(this.state.page)
         })
       }, this.props.animationDuration)
     })
@@ -521,7 +525,8 @@ FlipPage.defaultProps = {
   uncutPages: false,
   style: {},
   height: 480,
-  width: 320
+  width: 320,
+  onPageChange: () => {}
 }
 
 FlipPage.propTypes = {
@@ -545,7 +550,8 @@ FlipPage.propTypes = {
   uncutPages: PropTypes.bool,
   style: PropTypes.object,
   height: PropTypes.number,
-  width: PropTypes.number
+  width: PropTypes.number,
+  onPageChange: PropTypes.func
 }
 
 export default FlipPage
