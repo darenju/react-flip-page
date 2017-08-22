@@ -258,20 +258,28 @@
 
           // flip bottom
           if (diffY < 0 && this.state.direction === 'up') {
-            this.setState({ angle: angle, secondHalfStyle: {
+            this.setState({
+              angle: angle,
+              secondHalfStyle: {
                 transform: 'perspective(' + this.props.perspective + ') rotateX(' + rotate + 'deg)'
               } });
           } else if (diffY > 0 && this.state.direction === 'down') {
-            this.setState({ angle: angle, firstHalfStyle: {
+            this.setState({
+              angle: angle,
+              firstHalfStyle: {
                 transform: 'perspective(' + this.props.perspective + ') rotateX(-' + rotate + 'deg)',
                 zIndex: 2 // apply a z-index to pop over the back face
               } });
           } else if (diffX < 0 && this.state.direction === 'left') {
-            this.setState({ angle: angle, secondHalfStyle: {
+            this.setState({
+              angle: angle,
+              secondHalfStyle: {
                 transform: 'perspective(' + this.props.perspective + ') rotateY(-' + rotate + 'deg)'
               } });
           } else if (diffX > 0 && this.state.direction === 'right') {
-            this.setState({ angle: angle, firstHalfStyle: {
+            this.setState({
+              angle: angle,
+              firstHalfStyle: {
                 transform: 'perspective(' + this.props.perspective + ') rotateY(' + rotate + 'deg)',
                 zIndex: 2 // apply a z-index to pop over the back face
               } });
@@ -309,6 +317,8 @@
             _this4.setState({
               secondHalfStyle: {},
               page: _this4.state.page + 1
+            }, function () {
+              _this4.props.onPageChange(_this4.state.page);
             });
           }, _this4.props.animationDuration);
         });
@@ -344,6 +354,8 @@
             _this5.setState({
               firstHalfStyle: {},
               page: _this5.state.page - 1
+            }, function () {
+              _this5.props.onPageChange(_this5.state.page);
             });
           }, _this5.props.animationDuration);
         });
@@ -679,7 +691,8 @@
     uncutPages: false,
     style: {},
     height: 480,
-    width: 320
+    width: 320,
+    onPageChange: function onPageChange() {}
   };
 
   FlipPage.propTypes = {
@@ -700,7 +713,8 @@
     uncutPages: _propTypes2.default.bool,
     style: _propTypes2.default.object,
     height: _propTypes2.default.number,
-    width: _propTypes2.default.number
+    width: _propTypes2.default.number,
+    onPageChange: _propTypes2.default.func
   };
 
   exports.default = FlipPage;

@@ -65,6 +65,7 @@ There are a few properties that define the behaviour of the component, here they
 | `style` | `object` | `{}` | Additional style for the flipboard |
 | `height` | `number` | `480` | Height for the flipboard |
 | `width` | `number` | `320` | Width for the flipboard |
+| `onPageChange` | `function` |   | Callback when the page has been changed. Parameter: `pageIndex` |
 
 ## Methods
 
