@@ -380,6 +380,16 @@
         }
       }
     }, {
+      key: '_beforeItem',
+      value: function _beforeItem() {
+        return !this.isFirstPage() ? this.props.children[this.state.page - 1] : this.props.firstComponent;
+      }
+    }, {
+      key: '_afterItem',
+      value: function _afterItem() {
+        return !this.isLastPage() ? this.props.children[this.state.page + 1] : this.props.lastComponent;
+      }
+    }, {
       key: 'reset',
       value: function reset() {
         this.setState({
@@ -415,10 +425,12 @@
         var gradientBottom = '0 100px 100px -100px rgba(0,0,0,0.25) inset';
         var gradientRight = '100px 0 100px -100px rgba(0,0,0,0.25) inset';
 
+        var complementaryStyle = {
+          height: height
+        };
+
         var pageItem = (0, _react.cloneElement)(page, {
-          style: Object.assign({}, page.props.style, {
-            height: height
-          })
+          style: Object.assign({}, page.props.style, complementaryStyle)
         });
 
         var style = {
@@ -544,9 +556,16 @@
           }
         };
 
-        var beforeItem = !this.isFirstPage() ? this.props.children[this.state.page - 1] : this.props.firstComponent;
+        var beforeItem = this._beforeItem();
+        var afterItem = this._afterItem();
 
-        var afterItem = !this.isLastPage() ? this.props.children[this.state.page + 1] : this.props.lastComponent;
+        var clonedBeforeItem = beforeItem && (0, _react.cloneElement)(beforeItem, {
+          style: Object.assign({}, beforeItem.props.style, complementaryStyle)
+        });
+
+        var clonedAfterItem = afterItem && (0, _react.cloneElement)(afterItem, {
+          style: Object.assign({}, afterItem.props.style, complementaryStyle)
+        });
 
         var container = style.container,
             part = style.part,
@@ -584,7 +603,7 @@
           _react2.default.createElement(
             'div',
             { style: m(part, before, cut) },
-            beforeItem,
+            clonedBeforeItem,
             _react2.default.createElement('div', { style: mask })
           ),
           _react2.default.createElement(
@@ -593,7 +612,7 @@
             _react2.default.createElement(
               'div',
               { style: pull },
-              afterItem
+              clonedAfterItem
             ),
             _react2.default.createElement('div', { style: mask })
           ),
@@ -619,7 +638,7 @@
                 _react2.default.createElement(
                   'div',
                   { style: pull },
-                  beforeItem
+                  clonedBeforeItem
                 )
               ),
               _react2.default.createElement('div', { style: m(gradient, gradientFirstHalfBack) })
@@ -648,7 +667,7 @@
               _react2.default.createElement(
                 'div',
                 { style: m(part, after, cut) },
-                afterItem
+                clonedAfterItem
               ),
               _react2.default.createElement('div', { style: m(gradient, gradientSecondHalfBack) })
             )
@@ -666,12 +685,17 @@
           width: this.getWidth()
         });
 
+        var _props2 = this.props,
+            children = _props2.children,
+            className = _props2.className;
+
+
         // all the pages are rendered once, to prevent glitching
         // (React would reload the child page and cause a image glitch)
         return _react2.default.createElement(
           'div',
-          { style: style },
-          _react.Children.map(this.props.children, function (page, key) {
+          { style: style, className: className },
+          _react.Children.map(children, function (page, key) {
             return _this7.renderPage(page, key);
           })
         );
@@ -696,7 +720,8 @@
     style: {},
     height: 480,
     width: 320,
-    onPageChange: function onPageChange() {}
+    onPageChange: function onPageChange() {},
+    className: ''
   };
 
   FlipPage.propTypes = {
@@ -718,7 +743,8 @@
     style: _propTypes2.default.object,
     height: _propTypes2.default.number,
     width: _propTypes2.default.number,
-    onPageChange: _propTypes2.default.func
+    onPageChange: _propTypes2.default.func,
+    className: _propTypes2.default.string
   };
 
   exports.default = FlipPage;
