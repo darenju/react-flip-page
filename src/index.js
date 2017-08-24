@@ -278,6 +278,18 @@ class FlipPage extends Component {
     }
   }
 
+  _beforeItem() {
+    return !this.isFirstPage()
+      ? this.props.children[this.state.page - 1]
+      : this.props.firstComponent
+  }
+
+  _afterItem() {
+    return !this.isLastPage()
+      ? this.props.children[this.state.page + 1]
+      : this.props.lastComponent
+  }
+
   reset () {
     this.setState({
       startY: -1,
@@ -306,10 +318,12 @@ class FlipPage extends Component {
     const gradientBottom = '0 100px 100px -100px rgba(0,0,0,0.25) inset'
     const gradientRight = '100px 0 100px -100px rgba(0,0,0,0.25) inset'
 
+    const complementaryStyle = {
+      height: height
+    };
+
     const pageItem = cloneElement(page, {
-      style: Object.assign({}, page.props.style, {
-        height: height
-      })
+      style: Object.assign({}, page.props.style, complementaryStyle)
     })
 
     const style = {
@@ -435,13 +449,16 @@ class FlipPage extends Component {
       }
     }
 
-    const beforeItem = !this.isFirstPage() ? (
-      this.props.children[this.state.page - 1]
-    ) : this.props.firstComponent
+    const beforeItem = this._beforeItem()
+    const afterItem = this._afterItem()
 
-    const afterItem = !this.isLastPage() ? (
-      this.props.children[this.state.page + 1]
-    ) : this.props.lastComponent
+    const clonedBeforeItem = beforeItem && cloneElement(beforeItem, {
+      style: Object.assign({}, beforeItem.props.style, complementaryStyle)
+    })
+
+    const clonedAfterItem = afterItem && cloneElement(afterItem, {
+      style: Object.assign({}, afterItem.props.style, complementaryStyle)
+    })
 
     const {
       container, part, visiblePart, firstHalf, secondHalf, face, back, before, after, cut, pull, gradient, gradientSecondHalfBack, gradientFirstHalfBack, gradientSecondHalf, gradientFirstHalf, mask, zIndex
@@ -458,13 +475,13 @@ class FlipPage extends Component {
         onTouchEnd={this.stopMoving}
         onMouseLeave={this.reset}
         style={container}
-        >
+      >
         <div style={m(part, before, cut)}>
-          {beforeItem}
+          {clonedBeforeItem}
           <div style={mask} />
         </div>
         <div style={m(part, cut, after)}>
-          <div style={pull}>{afterItem}</div>
+          <div style={pull}>{clonedAfterItem}</div>
           <div style={mask} />
         </div>
         <div style={m(part, visiblePart, firstHalf, this.state.firstHalfStyle)}>
@@ -474,7 +491,7 @@ class FlipPage extends Component {
           </div>
           <div style={m(face, back)}>
             <div style={cut}>
-              <div style={pull}>{beforeItem}</div>
+              <div style={pull}>{clonedBeforeItem}</div>
             </div>
             <div style={m(gradient, gradientFirstHalfBack)} />
           </div>
@@ -488,7 +505,7 @@ class FlipPage extends Component {
           </div>
           <div style={m(face, back)}>
             <div style={m(part, after, cut)}>
-              {afterItem}
+              {clonedAfterItem}
             </div>
             <div style={m(gradient, gradientSecondHalfBack)} />
           </div>
@@ -504,11 +521,13 @@ class FlipPage extends Component {
       width: this.getWidth()
     })
 
+    const { children, className } = this.props;
+
     // all the pages are rendered once, to prevent glitching
     // (React would reload the child page and cause a image glitch)
     return (
-      <div style={style}>
-        {Children.map(this.props.children, (page, key) => this.renderPage(page, key))}
+      <div style={style} className={className}>
+        {Children.map(children, (page, key) => this.renderPage(page, key))}
       </div>
     )
   }
@@ -529,7 +548,8 @@ FlipPage.defaultProps = {
   style: {},
   height: 480,
   width: 320,
-  onPageChange: () => {}
+  onPageChange: () => {},
+  className: ''
 }
 
 FlipPage.propTypes = {
@@ -554,7 +574,8 @@ FlipPage.propTypes = {
   style: PropTypes.object,
   height: PropTypes.number,
   width: PropTypes.number,
-  onPageChange: PropTypes.func
+  onPageChange: PropTypes.func,
+  className: PropTypes.string
 }
 
 export default FlipPage
