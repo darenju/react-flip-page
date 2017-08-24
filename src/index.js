@@ -429,6 +429,9 @@ class FlipPage extends Component {
         bottom: 0,
         backgroundColor: '#000',
         opacity: this.state.direction !== '' ? Math.max(this.props.maskOpacity - ((Math.abs(this.state.rotate) / 90) * this.props.maskOpacity), 0) : 0
+      },
+      zIndex: {
+        zIndex: 2
       }
     }
 
@@ -441,7 +444,7 @@ class FlipPage extends Component {
     ) : this.props.lastComponent
 
     const {
-      container, part, visiblePart, firstHalf, secondHalf, face, back, before, after, cut, pull, gradient, gradientSecondHalfBack, gradientFirstHalfBack, gradientSecondHalf, gradientFirstHalf, mask
+      container, part, visiblePart, firstHalf, secondHalf, face, back, before, after, cut, pull, gradient, gradientSecondHalfBack, gradientFirstHalfBack, gradientSecondHalf, gradientFirstHalf, mask, zIndex
     } = style
 
     return (
@@ -466,7 +469,7 @@ class FlipPage extends Component {
         </div>
         <div style={m(part, visiblePart, firstHalf, this.state.firstHalfStyle)}>
           <div style={face}>
-            <div style={cut}>{pageItem}</div>
+            <div style={m(cut, zIndex)}>{pageItem}</div>
             <div style={m(gradient, gradientFirstHalf)} />
           </div>
           <div style={m(face, back)}>
@@ -478,7 +481,7 @@ class FlipPage extends Component {
         </div>
         <div style={m(part, visiblePart, secondHalf, this.state.secondHalfStyle)}>
           <div style={face}>
-            <div style={cut}>
+            <div style={m(cut, zIndex)}>
               <div style={pull}>{pageItem}</div>
             </div>
             <div style={m(gradient, gradientSecondHalf)} />
