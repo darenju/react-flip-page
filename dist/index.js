@@ -538,6 +538,9 @@
             bottom: 0,
             backgroundColor: '#000',
             opacity: this.state.direction !== '' ? Math.max(this.props.maskOpacity - Math.abs(this.state.rotate) / 90 * this.props.maskOpacity, 0) : 0
+          },
+          zIndex: {
+            zIndex: 2
           }
         };
 
@@ -561,7 +564,8 @@
             gradientFirstHalfBack = style.gradientFirstHalfBack,
             gradientSecondHalf = style.gradientSecondHalf,
             gradientFirstHalf = style.gradientFirstHalf,
-            mask = style.mask;
+            mask = style.mask,
+            zIndex = style.zIndex;
 
 
         return _react2.default.createElement(
@@ -601,7 +605,7 @@
               { style: face },
               _react2.default.createElement(
                 'div',
-                { style: cut },
+                { style: m(cut, zIndex) },
                 pageItem
               ),
               _react2.default.createElement('div', { style: m(gradient, gradientFirstHalf) })
@@ -629,7 +633,7 @@
               { style: face },
               _react2.default.createElement(
                 'div',
-                { style: cut },
+                { style: m(cut, zIndex) },
                 _react2.default.createElement(
                   'div',
                   { style: pull },
