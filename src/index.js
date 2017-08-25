@@ -1,5 +1,7 @@
 import React, {Component, Children, cloneElement} from 'react'
 import PropTypes from 'prop-types'
+import HintStyles from './Hint.css';
+import generateStyles from './generateStyles';
 
 const m = (...objs) => Object.assign({}, ...objs)
 
@@ -8,16 +10,17 @@ class FlipPage extends Component {
     super(props)
 
     this.state = {
-      page: 0,            // current index of page
-      startY: -1,         // start position of swipe
+      page: 0,             // current index of page
+      startY: -1,          // start position of swipe
       diffY: 0,            // diffYerence between last swipe position and current position
-      timestamp: 0,       // time elapsed between two swipes
-      angle: 0,           // rotate angle of half page
-      rotate: 0,          // absolute value of above, limited to 45° if necessary
-      direction: '',      // original swipe direction
-      lastDirection: '',  // last registered swipe direction
-      secondHalfStyle: {},    // transform style of bottom half
-      firstHalfStyle: {}        // transform style of top half
+      timestamp: 0,        // time elapsed between two swipes
+      angle: 0,            // rotate angle of half page
+      rotate: 0,           // absolute value of above, limited to 45° if necessary
+      direction: '',       // original swipe direction
+      lastDirection: '',   // last registered swipe direction
+      secondHalfStyle: {}, // transform style of bottom half
+      firstHalfStyle: {},  // transform style of top half
+      hintVisible: false   // indicates if the hint is visible
     }
 
     // binding events
@@ -31,8 +34,18 @@ class FlipPage extends Component {
 
   componentDidMount () {
     if (this.props.showHint) {
-      setTimeout(() => this.showHint(), 1000)
+      this.hintTimeout = setTimeout(() => this.showHint(), 1000)
     }
+  }
+
+  componentWillUnmount () {
+    clearTimeout(this.hintTimout);
+  }
+
+  showHint () {
+    this.setState({ hintVisible: true }, () => {
+      this.hintHideTimeout = setTimeout(() => this.setState({ hintVisible: false }), 4000)
+    })
   }
 
   isLastPage () {
@@ -59,29 +72,6 @@ class FlipPage extends Component {
     return `${this.props.width / 2}px`
   }
 
-  showHint () {
-    this.setState({
-      secondHalfStyle: {
-        transition: this.transition
-      }
-    }, () => {
-      this.setState({
-        secondHalfStyle: {
-          transition: this.transition,
-          transform: this.props.orientation === 'vertical' ? `perspective(${this.props.perspective}) rotateX(30deg)` : `perspective(${this.props.perspective}) rotateY(-30deg)`
-        }
-      })
-
-      setTimeout(() => {
-        this.setState({
-          secondHalfStyle: {
-            transition: this.transition
-          }
-        })
-      }, 1000)
-    })
-  }
-
   startMoving (e) {
     e.preventDefault()
 
@@ -100,84 +90,87 @@ class FlipPage extends Component {
     const posX = e.pageX || e.touches[0].pageX
     const posY = e.pageY || e.touches[0].pageY
 
-    const {orientation} = this.props
+    const { orientation, treshold, maxAngle, perspective } = this.props
+    const { startX, startY, diffX, diffY, direction, lastDirection } = this.state
 
-    if (this.state.startY !== -1) {
-      const diffY = posY - this.state.startY
-      const diffX = posX - this.state.startX
-      const diffToUse = (this.state.direction === 'up' || this.state.direction === 'down') ? diffY : diffX
+    if (startY !== -1) {
+      const newDiffY = posY - startY
+      const newDiffX = posX - startX
+      const diffToUse = (direction === 'up' || direction === 'down') ? newDiffY : newDiffX
       const angle = (diffToUse / 250) * 180
       let useMaxAngle = false
-      if (this.state.direction === 'up' || this.state.direction === 'left') {
+      if (direction === 'up' || direction === 'left') {
         useMaxAngle = this.isLastPage()
-      } else if (this.state.direction === 'down' || this.state.direction === 'right') {
+      } else if (direction === 'down' || direction === 'right') {
         useMaxAngle = this.isFirstPage()
       }
-      const rotate = Math.min(Math.abs(angle), useMaxAngle ? this.props.maxAngle : 180)
+
+      const rotate = Math.min(Math.abs(angle), useMaxAngle ? maxAngle : 180)
+
+      let nextDirection = ''
 
       // determine direction to prevent two-directions swipe
-      if (this.state.direction === '' && (Math.abs(diffX) > this.props.treshold || Math.abs(diffY) > this.props.treshold)) {
-        let direction = ''
+      if (direction === '' && (Math.abs(newDiffX) > treshold || Math.abs(newDiffY) > treshold)) {
 
-        if (diffY < 0 && orientation === 'vertical') {
-          direction = 'up'
-        } else if (diffY > 0 && orientation === 'vertical') {
-          direction = 'down'
-        } else if (diffX < 0 && orientation === 'horizontal') {
-          direction = 'left'
-        } else if (diffX > 0 && orientation === 'horizontal') {
-          direction = 'right'
+        if (newDiffY < 0 && orientation === 'vertical') {
+          nextDirection = 'up'
+        } else if (newDiffY > 0 && orientation === 'vertical') {
+          nextDirection = 'down'
+        } else if (newDiffX < 0 && orientation === 'horizontal') {
+          nextDirection = 'left'
+        } else if (newDiffX > 0 && orientation === 'horizontal') {
+          nextDirection = 'right'
         }
 
-        this.setState({direction: direction})
+        this.setState({direction: nextDirection})
       }
 
       // set the last direction
-      let lastDirection = this.state.lastDirection
-      if (this.state.diffY > diffY) {
-        lastDirection = 'up'
-      } else if (this.state.diffY < diffY) {
-        lastDirection = 'down'
-      } else if (this.state.diffX > diffX) {
-        lastDirection = 'right'
-      } else if (this.state.diffX < diffX) {
-        lastDirection = 'left'
+      let nextLastDirection = lastDirection
+      if (this.state.diffY > newDiffY) {
+        nextLastDirection = 'up'
+      } else if (this.state.diffY < newDiffY) {
+        nextLastDirection = 'down'
+      } else if (this.state.diffX > newDiffX) {
+        nextLastDirection = 'right'
+      } else if (this.state.diffX < newDiffX) {
+        nextLastDirection = 'left'
       }
 
       this.setState({
         angle: angle,
         rotate: rotate,
         timestamp: Date.now(),
-        diffY: diffY,
-        diffX: diffX,
-        lastDirection: lastDirection
+        diffY: newDiffY,
+        diffX: newDiffX,
+        lastDirection: nextLastDirection
       })
 
       // flip bottom
-      if (diffY < 0 && this.state.direction === 'up') {
+      if (newDiffY < 0 && this.state.direction === 'up') {
         this.setState({
           angle: angle,
           secondHalfStyle: {
-            transform: `perspective(${this.props.perspective}) rotateX(${rotate}deg)`
+            transform: `perspective(${perspective}) rotateX(${rotate}deg)`
           }})
-      } else if (diffY > 0 && this.state.direction === 'down') {
+      } else if (newDiffY > 0 && this.state.direction === 'down') {
         this.setState({
           angle: angle,
           firstHalfStyle: {
-            transform: `perspective(${this.props.perspective}) rotateX(-${rotate}deg)`,
+            transform: `perspective(${perspective}) rotateX(-${rotate}deg)`,
             zIndex: 2 // apply a z-index to pop over the back face
           }})
-      } else if (diffX < 0 && this.state.direction === 'left') {
+      } else if (newDiffX < 0 && this.state.direction === 'left') {
         this.setState({
           angle: angle,
           secondHalfStyle: {
-            transform: `perspective(${this.props.perspective}) rotateY(-${rotate}deg)`
+            transform: `perspective(${perspective}) rotateY(-${rotate}deg)`
           }})
-      } else if (diffX > 0 && this.state.direction === 'right') {
+      } else if (newDiffX > 0 && this.state.direction === 'right') {
         this.setState({
           angle: angle,
           firstHalfStyle: {
-            transform: `perspective(${this.props.perspective}) rotateY(${rotate}deg)`,
+            transform: `perspective(${perspective}) rotateY(${rotate}deg)`,
             zIndex: 2 // apply a z-index to pop over the back face
           }})
       }
@@ -187,9 +180,12 @@ class FlipPage extends Component {
   gotoNextPage () {
     if (this.isLastPage()) return
 
-    let secondHalfTransform = `perspective(${this.props.perspective}) `
+    const { perspective, orientation, onPageChange, animationDuration } = this.props;
+    const { page } = this.state;
 
-    if (this.props.orientation === 'vertical') {
+    let secondHalfTransform = `perspective(${perspective}) `
+
+    if (orientation === 'vertical') {
       secondHalfTransform += 'rotateX(180deg)'
     } else {
       secondHalfTransform += 'rotateY(-180deg)'
@@ -210,20 +206,23 @@ class FlipPage extends Component {
       setTimeout(() => {
         this.setState({
           secondHalfStyle: {},
-          page: this.state.page + 1
+          page: page + 1
         }, () => {
-          this.props.onPageChange(this.state.page)
+          onPageChange(page)
         })
-      }, this.props.animationDuration)
+      }, animationDuration)
     })
   }
 
   gotoPreviousPage () {
     if (this.isFirstPage()) return
 
-    let firstHalfTransform = `perspective(${this.props.perspective}) `
+    const { perspective, orientation, onPageChange, animationDuration } = this.props;
+    const { page } = this.state;
 
-    if (this.props.orientation === 'vertical') {
+    let firstHalfTransform = `perspective(${perspective}) `
+
+    if (orientation === 'vertical') {
       firstHalfTransform += 'rotateX(-180deg)'
     } else {
       firstHalfTransform += 'rotateY(180deg)'
@@ -244,26 +243,27 @@ class FlipPage extends Component {
       setTimeout(() => {
         this.setState({
           firstHalfStyle: {},
-          page: this.state.page - 1
+          page: page - 1
         }, () => {
-          this.props.onPageChange(this.state.page)
+          onPageChange(page)
         })
-      }, this.props.animationDuration)
+      }, animationDuration)
     })
   }
 
   stopMoving (e) {
+    const { timestamp, angle, direction, lastDirection } = this.state;
     const delay = Date.now() - this.state.timestamp
 
     const goNext = !this.isLastPage() && (
-      this.state.angle <= -90 ||
-        (delay <= 20 && this.state.direction === 'up' && this.state.lastDirection === 'up') ||
-        (delay <= 20 && this.state.direction === 'right' && this.state.lastDirection === 'right')
+      angle <= -90 ||
+        (delay <= 20 && direction === 'up' && lastDirection === 'up') ||
+        (delay <= 20 && direction === 'right' && lastDirection === 'right')
       )
     const goPrevious = !this.isFirstPage() && (
-      this.state.angle >= 90 ||
-        (delay <= 20 && this.state.direction === 'down' && this.state.lastDirection === 'down') ||
-        (delay <= 20 && this.state.direction === 'left' && this.state.lastDirection === 'left')
+      angle >= 90 ||
+        (delay <= 20 && direction === 'down' && lastDirection === 'down') ||
+        (delay <= 20 && direction === 'left' && lastDirection === 'left')
       )
 
     // reset everything
@@ -279,15 +279,17 @@ class FlipPage extends Component {
   }
 
   _beforeItem() {
+    const { children, firstComponent } = this.props;
     return !this.isFirstPage()
-      ? this.props.children[this.state.page - 1]
-      : this.props.firstComponent
+      ? children[this.state.page - 1]
+      : firstComponent
   }
 
   _afterItem() {
+    const { children, lastComponent } = this.props;
     return !this.isLastPage()
-      ? this.props.children[this.state.page + 1]
-      : this.props.lastComponent
+      ? children[this.state.page + 1]
+      : lastComponent
   }
 
   reset () {
@@ -307,147 +309,58 @@ class FlipPage extends Component {
     })
   }
 
-  renderPage (page, key) {
+  renderPage (_page, key) {
     const height = this.getHeight()
     const halfHeight = this.getHalfHeight()
     const width = this.getWidth()
     const halfWidth = this.getHalfWidth()
-    const {orientation, uncutPages} = this.props
-    const gradientTop = '0 -100px 100px -100px rgba(0,0,0,0.25) inset'
-    const gradientLeft = '-100px 0 100px -100px rgba(0,0,0,0.25) inset'
-    const gradientBottom = '0 100px 100px -100px rgba(0,0,0,0.25) inset'
-    const gradientRight = '100px 0 100px -100px rgba(0,0,0,0.25) inset'
 
     const complementaryStyle = {
       height: height
-    };
+    }
 
-    const pageItem = cloneElement(page, {
-      style: Object.assign({}, page.props.style, complementaryStyle)
+    const pageItem = cloneElement(_page, {
+      style: Object.assign({}, _page.props.style, complementaryStyle)
     })
 
-    const style = {
-      container: {
-        display: this.state.page === key ? 'block' : 'none',
-        height: height,
-        overflow: uncutPages === false ? 'hidden' : '',
-        position: 'relative',
-        width: width
-      },
-      part: {
-        height: orientation === 'vertical' ? halfHeight : height,
-        left: 0,
-        position: 'absolute',
-        width: orientation === 'vertical' ? width : halfWidth
-      },
-      visiblePart: {
-        transformStyle: 'preserve-3d'
-      },
-      firstHalf: {
-        top: 0,
-        left: 0,
-        transformOrigin: orientation === 'vertical' ? 'bottom center' : 'right center'
-      },
-      secondHalf: {
-        left: orientation === 'vertical' ? 0 : halfWidth,
-        bottom: 0,
-        right: 0,
-        transformOrigin: orientation === 'vertical' ? 'top center' : 'left center'
-      },
-      face: {
-        backfaceVisibility: 'hidden',
-        WebkitBackfaceVisibility: 'hidden',
-        height: orientation === 'vertical' ? halfHeight : height,
-        left: 0,
-        position: 'absolute',
-        top: 0,
-        overflow: 'hidden',
-        transformStyle: 'preserve-3d',
-        width: orientation === 'vertical' ? width : halfWidth
-      },
-      back: {
-        transform: orientation === 'vertical' ? 'rotateX(180deg)' : 'rotateY(180deg)'
-      },
-      before: {
-        top: 0,
-        left: 0
-      },
-      after: {
-        top: orientation === 'vertical' ? halfHeight : 0,
-        left: orientation === 'vertical' ? 0 : halfWidth,
-        width: orientation === 'horizontal' ? halfWidth : width
-      },
-      cut: {
-        background: this.props.pageBackground,
-        height: orientation === 'vertical' ? halfHeight : height,
-        overflow: 'hidden',
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        width: width
-      },
-      pull: {
-        marginTop: orientation === 'vertical' ? `-${halfHeight}` : 0,
-        marginLeft: orientation === 'vertical' ? 0 : `-${halfWidth}`,
-        width: width
-      },
-      gradient: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        top: 0,
-        transition: `box-shadow ${this.props.animationDuration / 1000}s ease-in-out`
-      },
-      gradientSecondHalf: {
-        boxShadow: (() => {
-          if (this.state.direction === 'up') {
-            return gradientBottom
-          } else if (this.state.direction === 'right') {
-            return gradientRight
-          }
-        })()
-      },
-      gradientFirstHalf: {
-        boxShadow: (() => {
-          if (this.state.direction === 'down') {
-            return gradientTop
-          } else if (this.state.direction === 'left') {
-            return gradientLeft
-          }
-        })()
-      },
-      gradientSecondHalfBack: {
-        boxShadow: (() => {
-          if (this.state.direction === 'up') {
-            return gradientTop
-          } else if (this.state.direction === 'left') {
-            return gradientLeft
-          }
-        })()
-      },
-      gradientFirstHalfBack: {
-        boxShadow: (() => {
-          if (this.state.direction === 'down') {
-            return gradientBottom
-          } else if (this.state.direction === 'right') {
-            return gradientRight
-          }
-        })()
-      },
-      mask: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: '#000',
-        opacity: this.state.direction !== '' ? Math.max(this.props.maskOpacity - ((Math.abs(this.state.rotate) / 90) * this.props.maskOpacity), 0) : 0
-      },
-      zIndex: {
-        zIndex: 2
-      }
-    }
+    const { page, direction, rotate } = this.state;
+    const { orientation, uncutPages, maskOpacity, pageBackground, animationDuration } = this.props
+    const style = generateStyles(
+      page,
+      key,
+      direction,
+      rotate,
+      uncutPages,
+      width,
+      halfWidth,
+      height,
+      halfHeight,
+      orientation,
+      maskOpacity,
+      pageBackground,
+      animationDuration
+    )
+
+    const {
+      container,
+      part,
+      visiblePart,
+      firstHalf,
+      secondHalf,
+      face,
+      back,
+      before,
+      after,
+      cut,
+      pull,
+      gradient,
+      gradientSecondHalfBack,
+      gradientFirstHalfBack,
+      gradientSecondHalf,
+      gradientFirstHalf,
+      mask,
+      zIndex
+    } = style
 
     const beforeItem = this._beforeItem()
     const afterItem = this._afterItem()
@@ -459,10 +372,6 @@ class FlipPage extends Component {
     const clonedAfterItem = afterItem && cloneElement(afterItem, {
       style: Object.assign({}, afterItem.props.style, complementaryStyle)
     })
-
-    const {
-      container, part, visiblePart, firstHalf, secondHalf, face, back, before, after, cut, pull, gradient, gradientSecondHalfBack, gradientFirstHalfBack, gradientSecondHalf, gradientFirstHalf, mask, zIndex
-    } = style
 
     return (
       <div
@@ -515,19 +424,21 @@ class FlipPage extends Component {
   }
 
   render () {
-    const style = m(this.props.style, {
+    const { style, children, className, orientation } = this.props;
+    const { hintVisible } = this.state;
+
+    const containerStyle = m(style, {
       height: this.getHeight(),
       position: 'relative',
       width: this.getWidth()
     })
 
-    const { children, className } = this.props;
-
     // all the pages are rendered once, to prevent glitching
     // (React would reload the child page and cause a image glitch)
     return (
-      <div style={style} className={className}>
+      <div style={containerStyle} className={className}>
         {Children.map(children, (page, key) => this.renderPage(page, key))}
+        {hintVisible && <div className={`rfp-hint rfp-hint--${orientation}`}></div>}
       </div>
     )
   }
@@ -550,7 +461,7 @@ FlipPage.defaultProps = {
   width: 320,
   onPageChange: () => {},
   className: ''
-}
+};
 
 FlipPage.propTypes = {
   orientation: (props, propName, componentName) => {
