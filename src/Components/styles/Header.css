@@ -1,0 +1,33 @@
+.header {
+  background-color: #e2e54b;
+  display: flex;
+}
+.logo {
+  align-items: center;
+  color: #233d4d;
+  display: flex;
+  font-size: 30px;
+  padding: 10px;
+  text-decoration: none;
+}
+.logo:hover {
+  color: #000;
+}
+.logoImg {
+  height: 50px;
+  margin-right: 10px;
+}
+.nav {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+}
+.link {
+  border-bottom: 3px solid transparent;
+  color: #000;
+  padding: 10px;
+  text-decoration: none;
+}
+.linkActive {
+  border-bottom-color: #fff;
+}

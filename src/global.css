@@ -1,0 +1,23 @@
+@font-face {
+  font-family: Interface;
+  src: url('../fonts/Interface-Regular.woff2') format('woff2'),
+       url('../fonts/Interface-Regular.woff') format('woff'),
+       url('../fonts/Interface-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: Interface;
+  margin: 0;
+}
+
+a {
+  color: #28666e;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 20px;
+}

@@ -1,19 +1,33 @@
 {
-  "scripts": {
-    "build": "webpack",
-    "build:watch": "webpack --watch"
+  "name": "react-flip-page-docs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-flip-page": "^0.6.0",
+    "react-helmet": "^5.1.3",
+    "react-router-dom": "^4.1.2",
+    "react-syntax-highlighter": "^5.7.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.5.2",
-    "babel-core": "^6.20.0",
-    "babel-loader": "^6.2.9",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-react": "^6.16.0",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1",
-    "webpack": "^1.14.0"
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-react-hmre": "^1.1.1",
+    "compression-webpack-plugin": "^1.0.0",
+    "css-loader": "^0.28.5",
+    "file-loader": "^0.11.2",
+    "html-webpack-plugin": "^2.30.1",
+    "path": "^0.12.7",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
   },
-  "dependencies": {
-    "react-flip-page": "^0.5.1"
+  "scripts": {
+    "start": "webpack-dev-server --config webpack.dev.config.js --progress --inline --hot",
+    "build": "webpack --config webpack.prod.config.js --progress"
   }
 }

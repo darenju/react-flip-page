@@ -1,0 +1,16 @@
+.flipPage {
+  margin: 0 auto;
+}
+
+.marqueeContainer {
+  background-color: #fadf7f;
+}
+
+.marquee {
+  align-items: center;
+  background-color: #fadf7f;
+  display: flex;
+  justify-content: center;
+  user-select: none;
+  text-align: center;
+}
