@@ -33,18 +33,45 @@ class FlipPage extends Component {
   }
 
   componentDidMount () {
-    if (this.props.showHint) {
-      this.hintTimeout = setTimeout(() => this.showHint(), 1000)
+    const { showHint, showTouchHint } = this.props;
+
+    if (showHint) {
+      this.hintTimeout = setTimeout(() => this.showHint(), showTouchHint ? 1800 : 1000)
+    }
+
+    if (showTouchHint) {
+      this.touchHintTimeout = setTimeout(() => this.showTouchHint(), 1000)
     }
   }
 
   componentWillUnmount () {
-    clearTimeout(this.hintTimout);
+    clearTimeout(this.hintTimeout);
+    clearTimeout(this.hintHideTimeout);
+    clearTimeout(this.touchHintTimeout);
+    clearTimeout(this.touchHintHideTimeout);
   }
 
   showHint () {
+    const { orientation, perspective } = this.props;
+    const { transition } = this;
+
+    this.setState({ secondHalfStyle: { transition } }, () => {
+      this.setState({
+        secondHalfStyle: {
+          transition,
+          transform: orientation === 'vertical' ? `perspective(${perspective}) rotateX(30deg)` : `perspective(${perspective}) rotateY(-30deg)`
+        }
+      })
+
+      this.hintHideTimeout = setTimeout(() =>
+        this.setState({ secondHalfStyle: { transition } }), 1000)
+    })
+  }
+
+  showTouchHint () {
     this.setState({ hintVisible: true }, () => {
-      this.hintHideTimeout = setTimeout(() => this.setState({ hintVisible: false }), 4000)
+      this.touchHintHideTimeout = setTimeout(() =>
+        this.setState({ hintVisible: false }), 4000)
     })
   }
 
@@ -127,19 +154,19 @@ class FlipPage extends Component {
 
       // set the last direction
       let nextLastDirection = lastDirection
-      if (this.state.diffY > newDiffY) {
+      if (diffY > newDiffY) {
         nextLastDirection = 'up'
-      } else if (this.state.diffY < newDiffY) {
+      } else if (diffY < newDiffY) {
         nextLastDirection = 'down'
-      } else if (this.state.diffX > newDiffX) {
+      } else if (diffX > newDiffX) {
         nextLastDirection = 'right'
-      } else if (this.state.diffX < newDiffX) {
+      } else if (diffX < newDiffX) {
         nextLastDirection = 'left'
       }
 
       this.setState({
-        angle: angle,
-        rotate: rotate,
+        angle,
+        rotate,
         timestamp: Date.now(),
         diffY: newDiffY,
         diffX: newDiffX,
@@ -149,30 +176,31 @@ class FlipPage extends Component {
       // flip bottom
       if (newDiffY < 0 && this.state.direction === 'up') {
         this.setState({
-          angle: angle,
+          angle,
           secondHalfStyle: {
             transform: `perspective(${perspective}) rotateX(${rotate}deg)`
           }})
       } else if (newDiffY > 0 && this.state.direction === 'down') {
         this.setState({
-          angle: angle,
+          angle,
           firstHalfStyle: {
             transform: `perspective(${perspective}) rotateX(-${rotate}deg)`,
             zIndex: 2 // apply a z-index to pop over the back face
           }})
       } else if (newDiffX < 0 && this.state.direction === 'left') {
         this.setState({
-          angle: angle,
+          angle,
           secondHalfStyle: {
             transform: `perspective(${perspective}) rotateY(-${rotate}deg)`
           }})
       } else if (newDiffX > 0 && this.state.direction === 'right') {
         this.setState({
-          angle: angle,
+          angle,
           firstHalfStyle: {
             transform: `perspective(${perspective}) rotateY(${rotate}deg)`,
             zIndex: 2 // apply a z-index to pop over the back face
-          }})
+          }
+        })
       }
     }
   }
@@ -182,6 +210,7 @@ class FlipPage extends Component {
 
     const { perspective, orientation, onPageChange, animationDuration } = this.props;
     const { page } = this.state;
+    const { transition } = this;
 
     let secondHalfTransform = `perspective(${perspective}) `
 
@@ -193,13 +222,13 @@ class FlipPage extends Component {
 
     this.setState({
       firstHalfStyle: {
-        transition: this.transition,
+        transition,
         transform: '',
         zIndex: 'auto'
       },
 
       secondHalfStyle: {
-        transition: this.transition,
+        transition,
         transform: secondHalfTransform
       }
     }, () => {
@@ -219,6 +248,7 @@ class FlipPage extends Component {
 
     const { perspective, orientation, onPageChange, animationDuration } = this.props;
     const { page } = this.state;
+    const { transition } = this;
 
     let firstHalfTransform = `perspective(${perspective}) `
 
@@ -230,13 +260,13 @@ class FlipPage extends Component {
 
     this.setState({
       firstHalfStyle: {
-        transition: this.transition,
+        transition,
         transform: firstHalfTransform,
         zIndex: 2
       },
 
       secondHalfStyle: {
-        transition: this.transition,
+        transition,
         transform: ''
       }
     }, () => {
@@ -253,7 +283,7 @@ class FlipPage extends Component {
 
   stopMoving (e) {
     const { timestamp, angle, direction, lastDirection } = this.state;
-    const delay = Date.now() - this.state.timestamp
+    const delay = Date.now() - timestamp
 
     const goNext = !this.isLastPage() && (
       angle <= -90 ||
@@ -293,6 +323,8 @@ class FlipPage extends Component {
   }
 
   reset () {
+    const { transition } = this;
+
     this.setState({
       startY: -1,
       startX: -1,
@@ -300,12 +332,8 @@ class FlipPage extends Component {
       rotate: 0,
       direction: '',
       lastDirection: '',
-      secondHalfStyle: {
-        transition: this.transition
-      },
-      firstHalfStyle: {
-        transition: this.transition
-      }
+      secondHalfStyle: { transition },
+      firstHalfStyle: { transition }
     })
   }
 
@@ -455,6 +483,7 @@ FlipPage.defaultProps = {
   firstComponent: null,
   lastComponent: null,
   showHint: false,
+  showTouchHint: false,
   uncutPages: false,
   style: {},
   height: 480,
