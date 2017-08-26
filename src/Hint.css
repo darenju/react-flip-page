@@ -42,8 +42,8 @@
 .rfp-hint:after {
   content: url(./touch.svg);
   position: absolute;
-  top: 8px;
-  left: 1px;
+  top: 11px;
+  left: 6px;
 }
 @keyframes rfp-hint-vertical {
   0% {

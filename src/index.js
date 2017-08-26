@@ -475,7 +475,7 @@ class FlipPage extends Component {
     return (
       <div style={containerStyle} className={className}>
         {Children.map(children, (page, key) => this.renderPage(page, key))}
-        {hintVisible && <div className={`rfp-hint rfp-hint--${orientation}`}></div>}
+        {<div className={`rfp-hint rfp-hint--${orientation}`}></div>}
       </div>
     )
   }
