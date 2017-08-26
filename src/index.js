@@ -28,6 +28,7 @@ class FlipPage extends Component {
     this.moveGesture = this.moveGesture.bind(this)
     this.stopMoving = this.stopMoving.bind(this)
     this.reset = this.reset.bind(this)
+    this.mouseLeave = this.mouseLeave.bind(this)
 
     this.transition = `transform ${this.props.animationDuration / 1000}s ease-in-out`
   }
@@ -322,6 +323,14 @@ class FlipPage extends Component {
       : lastComponent
   }
 
+  mouseLeave () {
+    if (this.props.flipOnLeave) {
+      this.stopMoving();
+    } else {
+      this.reset();
+    }
+  }
+
   reset () {
     const { transition } = this;
 
@@ -410,7 +419,7 @@ class FlipPage extends Component {
         onTouchMove={this.moveGesture}
         onMouseUp={this.stopMoving}
         onTouchEnd={this.stopMoving}
-        onMouseLeave={this.reset}
+        onMouseLeave={this.mouseLeave}
         style={container}
       >
         <div style={m(part, before, cut)}>
@@ -489,7 +498,8 @@ FlipPage.defaultProps = {
   height: 480,
   width: 320,
   onPageChange: () => {},
-  className: ''
+  className: '',
+  flipOnLeave: false
 };
 
 FlipPage.propTypes = {
