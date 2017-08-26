@@ -5,17 +5,21 @@
     "main": "dist/index.js",
     "repository": {
         "type": "git",
-        "url": "https://github.com/darenju/react-flippage.git"
+        "url": "https://github.com/darenju/react-flip-page.git"
     },
     "author": "Julien Fradin",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/darenju/react-flippage/issues"
+        "url": "https://github.com/darenju/react-flip-page/issues"
     },
-    "homepage": "https://github.com/darenju/react-flippage",
+    "homepage": "https://github.com/darenju/react-flip-page",
     "keywords": [
         "react-component",
-        "react"
+        "react",
+        "flip",
+        "flip-page",
+        "page",
+        "flipboard"
     ],
     "scripts": {
         "build": "webpack"
