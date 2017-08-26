@@ -1,14 +1,15 @@
 .header {
-  background-color: #e2e54b;
+  background-color: #f0f465;
   display: flex;
 }
 .logo {
   align-items: center;
-  color: #233d4d;
+  color: #6184D8;
   display: flex;
   font-size: 30px;
   padding: 10px;
   text-decoration: none;
+  text-shadow: 0 1px 0 #fff;
 }
 .logo:hover {
   color: #000;
@@ -21,6 +22,7 @@
   align-items: center;
   display: flex;
   margin-left: auto;
+  padding: 0 20px;
 }
 .link {
   border-bottom: 3px solid transparent;
@@ -29,5 +31,5 @@
   text-decoration: none;
 }
 .linkActive {
-  border-bottom-color: #fff;
+  border-bottom-color: #9cec5b;
 }

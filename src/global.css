@@ -7,17 +7,33 @@
   font-style: normal;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Interface;
   margin: 0;
 }
 
 a {
-  color: #28666e;
+  color: #6184d8;
 }
 
 .container {
   margin: 0 auto;
   max-width: 1180px;
   padding: 20px;
+}
+
+.alert {
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: #fff;
+  padding: 15px;
+}
+
+.alert-info {
+  background-color: #3498db;
+  border-color: #2980b9;
 }

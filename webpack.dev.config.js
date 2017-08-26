@@ -1,3 +1,18 @@
 const base = require('./webpack.base.config');
 
-module.exports = base;
+const config = Object.assign({}, base, {
+  devServer: {
+    overlay: true,
+    proxy: {
+      '/**': {
+        target: '/index.html',
+        secure: false,
+        bypass: function (req, res, opt) {
+          return '/index.html';
+        }
+      }
+    }
+  }
+});
+
+module.exports = config;

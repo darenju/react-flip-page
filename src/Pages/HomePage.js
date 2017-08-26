@@ -1,27 +1,55 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router-dom';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import s from './styles/HomePage.css';
 
-const HomePage = () => (
-  <div>
-    <Helmet title="Home" />
+const disclaimer = `
+DISCLAIMER: This package is in no way related to nor endorsed by Flipboard, Inc. nor flipboard.com.
+This is just a showcase of HTML5 & CSS3 effect implemented with React.
+`;
 
-    <section className="container">
-      <h2>What is this?</h2>
+const home = [
+  `React Flip Page aims at producing a Flipboard® -like effect with page flips.`,
+  `Over the time it has acquired more features that you will discover in the docs or examples.`,
+];
 
-      <p>React Flip Page is a component that allows you to mimic the Flipboard® page flip effect.</p>
-      <p>It was made open source by <a href="https://www.github.com/darenju" target="_blank">@darenju</a> and with help of contributors.</p>
+const gettingStarted = [
+  `First of all, you must install the React Flip Page package. It is available on
+  <a href="https://www.npmjs.com/package/react-flip-page">NPM</a>,
+  but you can also use Yarn to install it.`,
+  `Then you should use a bundler of your choice (webpack, rollup&hellip;) to add
+  React Flip Page to your project.`,
+];
 
-      <h2>How do I use it?</h2>
-
-      <p>It is very simple to use React Flip Page. You can checkout the <Link to="/examples">examples</Link> page to see a few use cases.</p>
-      <p>React Flip Page is available on <a href="https://www.npmjs.com/package/react-flip-page" target="_blank">NPM</a>, but you can use yarn to install it too.</p>
-
-      <SyntaxHighlighter language='shell'>{`yarn add react-flip-page`}</SyntaxHighlighter>
-    </section>
-  </div>
+const renderPs = ps => (
+  ps.map((p, key) =>
+    <p
+      key={key}
+      dangerouslySetInnerHTML={{__html: p}}
+    />
+  )
 );
+
+const HomePage = ({ renderer }) => {
+  return (
+    <div>
+      <Helmet title="Home" />
+
+      <section className="container">
+        <h1>React Flip Page homepage</h1>
+
+        <div className="alert alert-info">
+          <em>
+            {disclaimer}
+          </em>
+        </div>
+
+        {renderPs(home)}
+
+        <h2>Getting started</h2>
+
+        {renderPs(gettingStarted)}
+      </section>
+    </div>
+  );
+};
 
 export default HomePage;

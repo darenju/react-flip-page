@@ -6,7 +6,7 @@ const DocsPage = () => (
     <Helmet title="Docs" />
 
     <section className="container">
-      Bonjour monde
+      <h1>Docs</h1>
     </section>
   </div>
 );

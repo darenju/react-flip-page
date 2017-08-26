@@ -1,0 +1,8 @@
+.theEnd {
+  align-items: flex-end;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
