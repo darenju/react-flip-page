@@ -5,11 +5,11 @@ import {
   Route
 } from 'react-router-dom';
 import Helmet from 'react-helmet';
-import Header from './Components/Header';
-import HomePage from './Pages/HomePage';
-import DocsPage from './Pages/DocsPage';
-import ExamplesPage from './Pages/ExamplesPage';
+import Header from './components/Header';
+import Page from './components/Page';
+import Examples from './examples';
 import '!style-loader!css-loader!./global.css';
+import toc from './toc';
 
 const basename = process.env.NODE_ENV === 'production' ? '/react-flip-page' : '/';
 
@@ -19,9 +19,23 @@ const App = () => (
       <Helmet titleTemplate="%s — React Flip Page" />
       <Header />
 
-      <Route exact path="/" component={HomePage} />
-      <Route path="/docs" component={DocsPage} />
-      <Route path="/examples" component={ExamplesPage} />
+      {
+        toc.map(({ url, title, file, exact = false }) =>
+          <Route
+            exact={exact}
+            key={title.toLowerCase()}
+            path={url}
+            render={(props) => (
+              <Page
+                {...props}
+                title={title}
+                file={file}
+              />
+            )}
+          />
+        )
+      }
+      <Route path="/examples" component={Examples} />
     </div>
   </Router>
 );

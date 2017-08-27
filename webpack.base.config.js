@@ -59,6 +59,9 @@ module.exports = {
         use: [
           {
             loader: 'html-loader'
+          },
+          {
+            loader: 'markdown-loader'
           }
         ]
       }
@@ -70,5 +73,9 @@ module.exports = {
       filename: 'index.html',
       inject: 'body'
     }),
-  ]
+  ],
+  node: {
+    dns: 'mock',
+    net: 'mock'
+  }
 };

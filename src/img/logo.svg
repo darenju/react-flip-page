@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>Artboard</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="64" y="64" width="202" height="384"></rect>
+        <rect id="path-2" x="379" y="64" width="69" height="384"></rect>
+        <polygon id="path-3" points="256 64 389.032324 0 389.032324 512 256 448"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard">
+            <g id="Rectangle">
+                <use fill="#8ECDF6" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <rect stroke="#2980B9" stroke-width="10" x="69" y="69" width="192" height="374"></rect>
+            </g>
+            <g id="Rectangle-3">
+                <use fill="#5DA9DB" fill-rule="evenodd" xlink:href="#path-2"></use>
+                <rect stroke="#2980B9" stroke-width="10" x="384" y="69" width="59" height="374"></rect>
+            </g>
+            <g id="Rectangle-2">
+                <use fill="#7AB5DC" fill-rule="evenodd" xlink:href="#path-3"></use>
+                <path stroke="#2980B9" stroke-width="10" d="M261,67.1430915 L384.032324,7.95395235 L384.032324,504.046048 L261,444.856909 L261,67.1430915 Z"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,12 +1,13 @@
 .header {
-  background-color: #f0f465;
+  background-color: #ecf0f1;
+  border-bottom: 1px solid #bdc3c7;
   display: flex;
 }
 .logo {
   align-items: center;
   color: #6184D8;
   display: flex;
-  font-size: 30px;
+  font-size: 20px;
   padding: 10px;
   text-decoration: none;
   text-shadow: 0 1px 0 #fff;
@@ -15,21 +16,23 @@
   color: #000;
 }
 .logoImg {
-  height: 50px;
+  height: 32px;
   margin-right: 10px;
 }
 .nav {
-  align-items: center;
   display: flex;
   margin-left: auto;
   padding: 0 20px;
 }
 .link {
+  align-items: center;
   border-bottom: 3px solid transparent;
   color: #000;
+  display: flex;
   padding: 10px;
   text-decoration: none;
 }
+
 .linkActive {
-  border-bottom-color: #9cec5b;
+  border-bottom-color: #6184D8;
 }
