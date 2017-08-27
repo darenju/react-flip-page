@@ -6,6 +6,18 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: Hasklig;
+  src: url('../fonts/Hasklig-Regular.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: Hasklig;
+  src: url('../fonts/Hasklig-Semibold.otf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
 
 * {
   box-sizing: border-box;
@@ -16,24 +28,27 @@ body {
   margin: 0;
 }
 
+code {
+  background-color: rgba(27, 31, 35, 0.05);
+  border-radius: 3px;
+  font-family: Hasklig, monospace;
+  padding: 0.2em 0.4em;
+}
+
+pre code {
+  background: #474949;
+  color: #d1d9e1;
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+}
+
 a {
   color: #6184d8;
 }
 
 .container {
-  margin: 0 auto;
+  margin: 50px auto 0;
   max-width: 1180px;
   padding: 20px;
-}
-
-.alert {
-  border: 1px solid transparent;
-  border-radius: 3px;
-  color: #fff;
-  padding: 15px;
-}
-
-.alert-info {
-  background-color: #3498db;
-  border-color: #2980b9;
 }

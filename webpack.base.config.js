@@ -33,7 +33,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(eot|ttf|woff|woff2)$/,
+        test: /\.(eot|ttf|woff|woff2|otf)$/,
         use: [
           {
             loader: 'file-loader',
@@ -61,7 +61,12 @@ module.exports = {
             loader: 'html-loader'
           },
           {
-            loader: 'markdown-loader'
+            loader: 'markdown-loader',
+            options: {
+              highlight: function (code) {
+                return require('highlight.js').highlightAuto(code).value;
+              }
+            }
           }
         ]
       }
