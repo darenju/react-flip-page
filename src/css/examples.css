@@ -1,0 +1,8 @@
+.example {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+.code {
+  max-width: 500px;
+}

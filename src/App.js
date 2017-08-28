@@ -8,7 +8,7 @@ import Helmet from 'react-helmet';
 import Header from './components/Header';
 import Page from './components/Page';
 import Examples from './examples';
-import '!style-loader!css-loader!./global.css';
+import '!style-loader!css-loader!./css/global.css';
 import toc from './toc';
 
 const basename = process.env.NODE_ENV === 'production' ? '/react-flip-page' : '/';

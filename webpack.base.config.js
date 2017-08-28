@@ -3,6 +3,23 @@ const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const Prism = require('node-prismjs');
+
+function escape(html, encode) {
+  return html
+    .replace(!encode ? /&(?!#?\w+;)/g : /&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+const renderer = new (require('marked').Renderer)();
+renderer.code = function (code, lang) {
+  code = this.options.highlight(code, lang);
+  return '<pre class="language-' + lang + '"><code class="language-' + lang + '">' + code + '</code></pre>';
+};
+
 module.exports = {
   entry: './src/index.js',
   output: {
@@ -63,10 +80,19 @@ module.exports = {
           {
             loader: 'markdown-loader',
             options: {
-              highlight: function (code) {
-                return require('highlight.js').highlightAuto(code).value;
+              renderer: renderer,
+              highlight: function (code, lang) {
+                return Prism.highlight(code, Prism.languages[lang]);
               }
             }
+          }
+        ]
+      },
+      {
+        test: /\.txt$/,
+        use: [
+          {
+            loader: 'raw-loader'
           }
         ]
       }

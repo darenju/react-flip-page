@@ -24,7 +24,7 @@ to add React Flip Page to your project.
 
 You're now good to go! Here is a basic sample code to get you started:
 
-```xml
+```jsx
 <FlipPage>
   <img src="http://unsplash.it/320/480" />
   <img src="http://unsplash.it/320/480" />

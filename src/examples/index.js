@@ -1,6 +1,30 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import ShowTouchHint from './showTouchHint';
+import s from '../css/examples.css';
+
+const Prism = require('prismjs');
+require('prismjs/components/prism-bash');
+require('prismjs/components/prism-jsx');
+
+const examples = ['showTouchHint'];
+
+const renderExample = example => {
+  const code = Prism.highlight(require(`./codes/${example}.txt`), Prism.languages.jsx);
+  const component = (require(`./${example}`).default)();
+
+  return (
+    <div className={s.example} key={`example-${example}`}>
+      <div className={s.code}>
+          <pre className="language-jsx">
+            <code className="language-jsx" dangerouslySetInnerHTML={{__html: code}} />
+          </pre>
+      </div>
+      <div className={s.result}>
+        {component}
+      </div>
+    </div>
+  );
+};
 
 const ExamplesPage = () => (
   <div>
@@ -9,7 +33,7 @@ const ExamplesPage = () => (
     <section className="container">
       <h1>Examples</h1>
 
-      <ShowTouchHint />
+      {examples.map(renderExample)}
     </section>
   </div>
 );
