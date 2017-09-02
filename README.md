@@ -67,6 +67,7 @@ There are a few properties that define the behaviour of the component, here they
 | `width` | `number` | `320` | Width for the flipboard |
 | `onPageChange` | `function` |   | Callback when the page has been changed. Parameter: `pageIndex` |
 | `className` | `string` | `''` | Optional CSS class to be applied on the container |
+| `loopForever` | `boolean` | `false` | If `true` flipping after the last page will return to the first (and visa-versa)
 
 ## Methods
 

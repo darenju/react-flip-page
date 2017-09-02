@@ -29,6 +29,10 @@ class FlipPage extends Component {
     this.stopMoving = this.stopMoving.bind(this)
     this.reset = this.reset.bind(this)
     this.mouseLeave = this.mouseLeave.bind(this)
+    this.incrementPage = this.incrementPage.bind(this)
+    this.decrementPage = this.decrementPage.bind(this)
+    this.hasNextPage = this.hasNextPage.bind(this)
+    this.hasPreviousPage = this.hasPreviousPage.bind(this)
 
     this.transition = `transform ${this.props.animationDuration / 1000}s ease-in-out`
   }
@@ -100,6 +104,39 @@ class FlipPage extends Component {
     return `${this.props.width / 2}px`
   }
 
+  incrementPage() {
+    const lastPage = Children.count(this.props.children)
+    const {page} = this.state
+    this.setState({
+      page: (page + 1) % lastPage
+    })
+  }
+
+  decrementPage() {
+    const lastPage = Children.count(this.props.children)
+    const {page} = this.state
+    let nextPage
+
+    if (this.isFirstPage()) {
+      nextPage = lastPage - 1
+    } else {
+      nextPage = page - 1
+    }
+    this.setState({
+      page: nextPage
+    })
+  }
+
+  hasNextPage() {
+    const {loopForever} = this.props
+    return !this.isLastPage() || loopForever
+  }
+
+  hasPreviousPage() {
+    const {loopForever} = this.props
+    return !this.isFirstPage() || loopForever
+  }
+
   startMoving (e) {
     e.preventDefault()
 
@@ -128,9 +165,9 @@ class FlipPage extends Component {
       const angle = (diffToUse / 250) * 180
       let useMaxAngle = false
       if (direction === 'up' || direction === 'left') {
-        useMaxAngle = this.isLastPage()
+        useMaxAngle = !this.hasNextPage()
       } else if (direction === 'down' || direction === 'right') {
-        useMaxAngle = this.isFirstPage()
+        useMaxAngle = !this.hasPreviousPage()
       }
 
       const rotate = Math.min(Math.abs(angle), useMaxAngle ? maxAngle : 180)
@@ -207,7 +244,7 @@ class FlipPage extends Component {
   }
 
   gotoNextPage () {
-    if (this.isLastPage()) return
+    if (!this.hasNextPage()) return
 
     const { perspective, orientation, onPageChange, animationDuration } = this.props;
     const { page } = this.state;
@@ -234,9 +271,9 @@ class FlipPage extends Component {
       }
     }, () => {
       setTimeout(() => {
+        this.incrementPage()
         this.setState({
           secondHalfStyle: {},
-          page: page + 1
         }, () => {
           onPageChange(page)
         })
@@ -245,7 +282,7 @@ class FlipPage extends Component {
   }
 
   gotoPreviousPage () {
-    if (this.isFirstPage()) return
+    if (!this.hasPreviousPage()) return
 
     const { perspective, orientation, onPageChange, animationDuration } = this.props;
     const { page } = this.state;
@@ -272,9 +309,9 @@ class FlipPage extends Component {
       }
     }, () => {
       setTimeout(() => {
+        this.decrementPage()
         this.setState({
           firstHalfStyle: {},
-          page: page - 1
         }, () => {
           onPageChange(page)
         })
@@ -286,12 +323,12 @@ class FlipPage extends Component {
     const { timestamp, angle, direction, lastDirection } = this.state;
     const delay = Date.now() - timestamp
 
-    const goNext = !this.isLastPage() && (
+    const goNext = this.hasNextPage() && (
       angle <= -90 ||
         (delay <= 20 && direction === 'up' && lastDirection === 'up') ||
         (delay <= 20 && direction === 'right' && lastDirection === 'right')
       )
-    const goPrevious = !this.isFirstPage() && (
+    const goPrevious = this.hasPreviousPage() && (
       angle >= 90 ||
         (delay <= 20 && direction === 'down' && lastDirection === 'down') ||
         (delay <= 20 && direction === 'left' && lastDirection === 'left')
@@ -310,17 +347,18 @@ class FlipPage extends Component {
   }
 
   _beforeItem() {
+    const lastPage = Children.count(this.props.children)
     const { children, firstComponent } = this.props;
     return !this.isFirstPage()
       ? children[this.state.page - 1]
-      : firstComponent
+      : children[lastPage - 1]
   }
 
   _afterItem() {
     const { children, lastComponent } = this.props;
     return !this.isLastPage()
       ? children[this.state.page + 1]
-      : lastComponent
+      : children[0]
   }
 
   mouseLeave () {
@@ -499,7 +537,8 @@ FlipPage.defaultProps = {
   width: 320,
   onPageChange: () => {},
   className: '',
-  flipOnLeave: false
+  flipOnLeave: false,
+  loopForever: false   // loop back to first page after last one
 };
 
 FlipPage.propTypes = {
@@ -525,7 +564,8 @@ FlipPage.propTypes = {
   height: PropTypes.number,
   width: PropTypes.number,
   onPageChange: PropTypes.func,
-  className: PropTypes.string
+  className: PropTypes.string,
+  loopForever: PropTypes.bool,
 }
 
 export default FlipPage
