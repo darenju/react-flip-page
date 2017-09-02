@@ -348,17 +348,17 @@ class FlipPage extends Component {
 
   _beforeItem() {
     const lastPage = Children.count(this.props.children)
-    const { children, firstComponent } = this.props;
+    const { children, firstComponent, loopForever } = this.props;
     return !this.isFirstPage()
       ? children[this.state.page - 1]
-      : children[lastPage - 1]
+      : (loopForever ? children[lastPage - 1] : firstComponent)
   }
 
   _afterItem() {
-    const { children, lastComponent } = this.props;
+    const { children, lastComponent, loopForever } = this.props;
     return !this.isLastPage()
       ? children[this.state.page + 1]
-      : children[0]
+      : (loopForever ? children[0] : lastComponent)
   }
 
   mouseLeave () {
