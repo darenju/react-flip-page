@@ -499,7 +499,7 @@ class FlipPage extends Component {
   }
 
   render () {
-    const { style, children, className, orientation } = this.props;
+    const { style, children, className, orientation, showTouchHint } = this.props;
     const { hintVisible } = this.state;
 
     const containerStyle = m(style, {
@@ -513,7 +513,7 @@ class FlipPage extends Component {
     return (
       <div style={containerStyle} className={className}>
         {Children.map(children, (page, key) => this.renderPage(page, key))}
-        {<div className={`rfp-hint rfp-hint--${orientation}`}></div>}
+        {showTouchHint && <div className={`rfp-hint rfp-hint--${orientation}`}></div>}
       </div>
     )
   }
