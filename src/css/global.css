@@ -71,5 +71,7 @@ code {
 
 code, code[class*="language-"] {
   font-family: Hasklig, monospace;
+}
+code[class*="language-"] {
   padding: 0;
 }

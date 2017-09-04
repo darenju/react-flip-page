@@ -6,21 +6,24 @@ const Prism = require('prismjs');
 require('prismjs/components/prism-bash');
 require('prismjs/components/prism-jsx');
 
-const examples = ['showTouchHint'];
+const examples = ['showTouchHint', 'loopForever', 'uncutPages'];
 
 const renderExample = example => {
   const code = Prism.highlight(require(`./codes/${example}.txt`), Prism.languages.jsx);
   const component = (require(`./${example}`).default)();
 
   return (
-    <div className={s.example} key={`example-${example}`}>
-      <div className={s.code}>
-          <pre className="language-jsx">
-            <code className="language-jsx" dangerouslySetInnerHTML={{__html: code}} />
-          </pre>
-      </div>
-      <div className={s.result}>
-        {component}
+    <div>
+      <h2>{example}</h2>
+      <div className={s.example} key={`example-${example}`}>
+        <div className={s.code}>
+            <pre className="language-jsx">
+              <code className="language-jsx" dangerouslySetInnerHTML={{__html: code}} />
+            </pre>
+        </div>
+        <div className={s.result}>
+          {component}
+        </div>
       </div>
     </div>
   );
