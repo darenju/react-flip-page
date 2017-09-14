@@ -1,7 +1,7 @@
-const gradientTop = '0 -100px 100px -100px rgba(0,0,0,0.25) inset'
-const gradientLeft = '-100px 0 100px -100px rgba(0,0,0,0.25) inset'
-const gradientBottom = '0 100px 100px -100px rgba(0,0,0,0.25) inset'
-const gradientRight = '100px 0 100px -100px rgba(0,0,0,0.25) inset'
+const gradientTop = '0 -100px 100px -100px rgba(0,0,0,0.25) inset';
+const gradientLeft = '-100px 0 100px -100px rgba(0,0,0,0.25) inset';
+const gradientBottom = '0 100px 100px -100px rgba(0,0,0,0.25) inset';
+const gradientRight = '100px 0 100px -100px rgba(0,0,0,0.25) inset';
 
 export default (
   currentPage,
@@ -16,34 +16,34 @@ export default (
   orientation,
   maskOpacity,
   pageBackground,
-  animationDuration
+  animationDuration,
 ) => ({
   container: {
     display: currentPage === key ? 'block' : 'none',
-    height: height,
+    height,
     overflow: uncutPages === false ? 'hidden' : '',
     position: 'relative',
-    width: width
+    width,
   },
   part: {
     height: orientation === 'vertical' ? halfHeight : height,
     left: 0,
     position: 'absolute',
-    width: orientation === 'vertical' ? width : halfWidth
+    width: orientation === 'vertical' ? width : halfWidth,
   },
   visiblePart: {
-    transformStyle: 'preserve-3d'
+    transformStyle: 'preserve-3d',
   },
   firstHalf: {
     top: 0,
     left: 0,
-    transformOrigin: orientation === 'vertical' ? 'bottom center' : 'right center'
+    transformOrigin: orientation === 'vertical' ? 'bottom center' : 'right center',
   },
   secondHalf: {
     left: orientation === 'vertical' ? 0 : halfWidth,
     bottom: 0,
     right: 0,
-    transformOrigin: orientation === 'vertical' ? 'top center' : 'left center'
+    transformOrigin: orientation === 'vertical' ? 'top center' : 'left center',
   },
   face: {
     backfaceVisibility: 'hidden',
@@ -54,19 +54,19 @@ export default (
     top: 0,
     overflow: 'hidden',
     transformStyle: 'preserve-3d',
-    width: orientation === 'vertical' ? width : halfWidth
+    width: orientation === 'vertical' ? width : halfWidth,
   },
   back: {
-    transform: orientation === 'vertical' ? 'rotateX(180deg)' : 'rotateY(180deg)'
+    transform: orientation === 'vertical' ? 'rotateX(180deg)' : 'rotateY(180deg)',
   },
   before: {
     top: 0,
-    left: 0
+    left: 0,
   },
   after: {
     top: orientation === 'vertical' ? halfHeight : 0,
     left: orientation === 'vertical' ? 0 : halfWidth,
-    width: orientation === 'horizontal' ? halfWidth : width
+    width: orientation === 'horizontal' ? halfWidth : width,
   },
   cut: {
     background: pageBackground,
@@ -75,12 +75,12 @@ export default (
     position: 'absolute',
     left: 0,
     top: 0,
-    width: width
+    width,
   },
   pull: {
     marginTop: orientation === 'vertical' ? `-${halfHeight}` : 0,
     marginLeft: orientation === 'vertical' ? 0 : `-${halfWidth}`,
-    width: width
+    width,
   },
   gradient: {
     position: 'absolute',
@@ -88,43 +88,51 @@ export default (
     right: 0,
     bottom: 0,
     top: 0,
-    transition: `box-shadow ${animationDuration / 1000}s ease-in-out`
+    transition: `box-shadow ${animationDuration / 1000}s ease-in-out`,
   },
   gradientSecondHalf: {
     boxShadow: (() => {
       if (direction === 'up') {
-        return gradientBottom
+        return gradientBottom;
       } else if (direction === 'right') {
-        return gradientRight
+        return gradientRight;
       }
-    })()
+
+      return '';
+    })(),
   },
   gradientFirstHalf: {
     boxShadow: (() => {
       if (direction === 'down') {
-        return gradientTop
+        return gradientTop;
       } else if (direction === 'left') {
-        return gradientLeft
+        return gradientLeft;
       }
-    })()
+
+      return '';
+    })(),
   },
   gradientSecondHalfBack: {
     boxShadow: (() => {
       if (direction === 'up') {
-        return gradientTop
+        return gradientTop;
       } else if (direction === 'left') {
-        return gradientLeft
+        return gradientLeft;
       }
-    })()
+
+      return '';
+    })(),
   },
   gradientFirstHalfBack: {
     boxShadow: (() => {
       if (direction === 'down') {
-        return gradientBottom
+        return gradientBottom;
       } else if (direction === 'right') {
-        return gradientRight
+        return gradientRight;
       }
-    })()
+
+      return '';
+    })(),
   },
   mask: {
     position: 'absolute',
@@ -133,9 +141,9 @@ export default (
     right: 0,
     bottom: 0,
     backgroundColor: '#000',
-    opacity: direction !== '' ? Math.max(maskOpacity - ((Math.abs(rotate) / 90) * maskOpacity), 0) : 0
+    opacity: direction !== '' ? Math.max(maskOpacity - ((Math.abs(rotate) / 90) * maskOpacity), 0) : 0,
   },
   zIndex: {
-    zIndex: 2
-  }
+    zIndex: 2,
+  },
 });

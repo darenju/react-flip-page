@@ -1,4 +1,5 @@
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-airbnb-brightgreen.svg)](https://standardjs.com)
+[![npm version](https://badge.fury.io/js/react-flip-page.svg)](https://badge.fury.io/js/react-flip-page)
 
 # react-flip-page
 
