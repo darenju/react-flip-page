@@ -1,62 +1,86 @@
-import React, {Component, Children, cloneElement} from 'react'
-import PropTypes from 'prop-types'
-import HintStyles from './Hint.css';
+import React, { Component, Children, cloneElement } from 'react';
+import PropTypes from 'prop-types';
+import './Hint.css';
 import generateStyles from './generateStyles';
 
-const m = (...objs) => Object.assign({}, ...objs)
+const m = (...objs) => Object.assign({}, ...objs);
 
 class FlipPage extends Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
 
     this.state = {
-      page: 0,             // current index of page
-      startY: -1,          // start position of swipe
-      diffY: 0,            // diffYerence between last swipe position and current position
-      timestamp: 0,        // time elapsed between two swipes
-      angle: 0,            // rotate angle of half page
-      rotate: 0,           // absolute value of above, limited to 45° if necessary
-      direction: '',       // original swipe direction
-      lastDirection: '',   // last registered swipe direction
+      page: 0, // current index of page
+      startY: -1, // start position of swipe
+      diffY: 0, // diffYerence between last swipe position and current position
+      timestamp: 0, // time elapsed between two swipes
+      angle: 0, // rotate angle of half page
+      rotate: 0, // absolute value of above, limited to 45° if necessary
+      direction: '', // original swipe direction
+      lastDirection: '', // last registered swipe direction
       secondHalfStyle: {}, // transform style of bottom half
-      firstHalfStyle: {},  // transform style of top half
-      hintVisible: false   // indicates if the hint is visible
-    }
+      firstHalfStyle: {}, // transform style of top half
+      hintVisible: false, // indicates if the hint is visible
+    };
 
     // binding events
-    this.startMoving = this.startMoving.bind(this)
-    this.moveGesture = this.moveGesture.bind(this)
-    this.stopMoving = this.stopMoving.bind(this)
-    this.reset = this.reset.bind(this)
-    this.mouseLeave = this.mouseLeave.bind(this)
-    this.incrementPage = this.incrementPage.bind(this)
-    this.decrementPage = this.decrementPage.bind(this)
-    this.hasNextPage = this.hasNextPage.bind(this)
-    this.hasPreviousPage = this.hasPreviousPage.bind(this)
+    this.startMoving = this.startMoving.bind(this);
+    this.moveGesture = this.moveGesture.bind(this);
+    this.stopMoving = this.stopMoving.bind(this);
+    this.reset = this.reset.bind(this);
+    this.mouseLeave = this.mouseLeave.bind(this);
+    this.incrementPage = this.incrementPage.bind(this);
+    this.decrementPage = this.decrementPage.bind(this);
+    this.hasNextPage = this.hasNextPage.bind(this);
+    this.hasPreviousPage = this.hasPreviousPage.bind(this);
 
-    this.transition = `transform ${this.props.animationDuration / 1000}s ease-in-out`
+    this.transition = `transform ${this.props.animationDuration / 1000}s ease-in-out`;
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { showHint, showTouchHint } = this.props;
 
     if (showHint) {
-      this.hintTimeout = setTimeout(() => this.showHint(), showTouchHint ? 1800 : 1000)
+      this.hintTimeout = setTimeout(() => this.showHint(), showTouchHint ? 1800 : 1000);
     }
 
     if (showTouchHint) {
-      this.touchHintTimeout = setTimeout(() => this.showTouchHint(), 1000)
+      this.touchHintTimeout = setTimeout(() => this.showTouchHint(), 1000);
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     clearTimeout(this.hintTimeout);
     clearTimeout(this.hintHideTimeout);
     clearTimeout(this.touchHintTimeout);
     clearTimeout(this.touchHintHideTimeout);
   }
 
-  showHint () {
+  getHeight() {
+    return `${this.props.height}px`;
+  }
+
+  getHalfHeight() {
+    return `${this.props.height / 2}px`;
+  }
+
+  getWidth() {
+    return `${this.props.width}px`;
+  }
+
+  getHalfWidth() {
+    return `${this.props.width / 2}px`;
+  }
+
+  isLastPage() {
+    return this.state.page + 1 === Children.count(this.props.children);
+  }
+
+  isFirstPage() {
+    return this.state.page === 0;
+  }
+
+  showHint() {
     const { orientation, perspective } = this.props;
     const { transition } = this;
 
@@ -64,142 +88,117 @@ class FlipPage extends Component {
       this.setState({
         secondHalfStyle: {
           transition,
-          transform: orientation === 'vertical' ? `perspective(${perspective}) rotateX(30deg)` : `perspective(${perspective}) rotateY(-30deg)`
-        }
-      })
+          transform: orientation === 'vertical' ? `perspective(${perspective}) rotateX(30deg)` : `perspective(${perspective}) rotateY(-30deg)`,
+        },
+      });
 
       this.hintHideTimeout = setTimeout(() =>
-        this.setState({ secondHalfStyle: { transition } }), 1000)
-    })
+        this.setState({ secondHalfStyle: { transition } }), 1000);
+    });
   }
 
-  showTouchHint () {
+  showTouchHint() {
     this.setState({ hintVisible: true }, () => {
       this.touchHintHideTimeout = setTimeout(() =>
-        this.setState({ hintVisible: false }), 4000)
-    })
-  }
-
-  isLastPage () {
-    return this.state.page + 1 === Children.count(this.props.children)
-  }
-
-  isFirstPage () {
-    return this.state.page === 0
-  }
-
-  getHeight () {
-    return `${this.props.height}px`
-  }
-
-  getHalfHeight () {
-    return `${this.props.height / 2}px`
-  }
-
-  getWidth () {
-    return `${this.props.width}px`
-  }
-
-  getHalfWidth () {
-    return `${this.props.width / 2}px`
+        this.setState({ hintVisible: false }), 4000);
+    });
   }
 
   incrementPage() {
-    const lastPage = Children.count(this.props.children)
-    const {page} = this.state
+    const lastPage = Children.count(this.props.children);
+    const { page } = this.state;
     this.setState({
-      page: (page + 1) % lastPage
-    })
+      page: (page + 1) % lastPage,
+    });
   }
 
   decrementPage() {
-    const lastPage = Children.count(this.props.children)
-    const {page} = this.state
-    let nextPage
+    const lastPage = Children.count(this.props.children);
+    const { page } = this.state;
+    let nextPage;
 
     if (this.isFirstPage()) {
-      nextPage = lastPage - 1
+      nextPage = lastPage - 1;
     } else {
-      nextPage = page - 1
+      nextPage = page - 1;
     }
     this.setState({
-      page: nextPage
-    })
+      page: nextPage,
+    });
   }
 
   hasNextPage() {
-    const {loopForever} = this.props
-    return !this.isLastPage() || loopForever
+    const { loopForever } = this.props;
+    return !this.isLastPage() || loopForever;
   }
 
   hasPreviousPage() {
-    const {loopForever} = this.props
-    return !this.isFirstPage() || loopForever
+    const { loopForever } = this.props;
+    return !this.isFirstPage() || loopForever;
   }
 
-  startMoving (e) {
-    e.preventDefault()
+  startMoving(e) {
+    e.preventDefault();
 
-    const posX = e.pageX || e.touches[0].pageX
-    const posY = e.pageY || e.touches[0].pageY
+    const posX = e.pageX || e.touches[0].pageX;
+    const posY = e.pageY || e.touches[0].pageY;
 
     this.setState({
       startX: posX,
-      startY: posY
-    })
+      startY: posY,
+    });
   }
 
-  moveGesture (e) {
-    e.preventDefault()
+  moveGesture(e) {
+    e.preventDefault();
 
-    const posX = e.pageX || e.touches[0].pageX
-    const posY = e.pageY || e.touches[0].pageY
+    const posX = e.pageX || e.touches[0].pageX;
+    const posY = e.pageY || e.touches[0].pageY;
 
-    const { orientation, treshold, maxAngle, perspective } = this.props
-    const { startX, startY, diffX, diffY, direction, lastDirection } = this.state
+    const { orientation, treshold, maxAngle, perspective } = this.props;
+    const { startX, startY, diffX, diffY, direction, lastDirection } = this.state;
 
     if (startY !== -1) {
-      const newDiffY = posY - startY
-      const newDiffX = posX - startX
-      const diffToUse = (direction === 'up' || direction === 'down') ? newDiffY : newDiffX
-      const angle = (diffToUse / 250) * 180
-      let useMaxAngle = false
+      const newDiffY = posY - startY;
+      const newDiffX = posX - startX;
+      const diffToUse = (direction === 'up' || direction === 'down') ? newDiffY : newDiffX;
+      const angle = (diffToUse / 250) * 180;
+      let useMaxAngle = false;
       if (direction === 'up' || direction === 'left') {
-        useMaxAngle = !this.hasNextPage()
+        useMaxAngle = !this.hasNextPage();
       } else if (direction === 'down' || direction === 'right') {
-        useMaxAngle = !this.hasPreviousPage()
+        useMaxAngle = !this.hasPreviousPage();
       }
 
-      const rotate = Math.min(Math.abs(angle), useMaxAngle ? maxAngle : 180)
+      const rotate = Math.min(Math.abs(angle), useMaxAngle ? maxAngle : 180);
 
-      let nextDirection = ''
+      let nextDirection = '';
 
       // determine direction to prevent two-directions swipe
       if (direction === '' && (Math.abs(newDiffX) > treshold || Math.abs(newDiffY) > treshold)) {
-
         if (newDiffY < 0 && orientation === 'vertical') {
-          nextDirection = 'up'
+          nextDirection = 'up';
         } else if (newDiffY > 0 && orientation === 'vertical') {
-          nextDirection = 'down'
+          nextDirection = 'down';
         } else if (newDiffX < 0 && orientation === 'horizontal') {
-          nextDirection = 'left'
+          nextDirection = 'left';
         } else if (newDiffX > 0 && orientation === 'horizontal') {
-          nextDirection = 'right'
+          nextDirection = 'right';
         }
 
-        this.setState({direction: nextDirection})
+        this.setState({ direction: nextDirection });
       }
 
       // set the last direction
-      let nextLastDirection = lastDirection
+      let nextLastDirection = lastDirection;
       if (diffY > newDiffY) {
-        nextLastDirection = 'up'
+        nextLastDirection = 'up';
       } else if (diffY < newDiffY) {
-        nextLastDirection = 'down'
+        nextLastDirection = 'down';
       } else if (diffX > newDiffX) {
-        nextLastDirection = 'right'
+        nextLastDirection = 'right';
       } else if (diffX < newDiffX) {
-        nextLastDirection = 'left'
+        nextLastDirection = 'left';
       }
 
       this.setState({
@@ -208,160 +207,166 @@ class FlipPage extends Component {
         timestamp: Date.now(),
         diffY: newDiffY,
         diffX: newDiffX,
-        lastDirection: nextLastDirection
-      })
+        lastDirection: nextLastDirection,
+      });
 
       // flip bottom
       if (newDiffY < 0 && this.state.direction === 'up') {
         this.setState({
           angle,
           secondHalfStyle: {
-            transform: `perspective(${perspective}) rotateX(${rotate}deg)`
-          }})
+            transform: `perspective(${perspective}) rotateX(${rotate}deg)`,
+          } });
       } else if (newDiffY > 0 && this.state.direction === 'down') {
         this.setState({
           angle,
           firstHalfStyle: {
             transform: `perspective(${perspective}) rotateX(-${rotate}deg)`,
-            zIndex: 2 // apply a z-index to pop over the back face
-          }})
+            zIndex: 2, // apply a z-index to pop over the back face
+          } });
       } else if (newDiffX < 0 && this.state.direction === 'left') {
         this.setState({
           angle,
           secondHalfStyle: {
-            transform: `perspective(${perspective}) rotateY(-${rotate}deg)`
-          }})
+            transform: `perspective(${perspective}) rotateY(-${rotate}deg)`,
+          } });
       } else if (newDiffX > 0 && this.state.direction === 'right') {
         this.setState({
           angle,
           firstHalfStyle: {
             transform: `perspective(${perspective}) rotateY(${rotate}deg)`,
-            zIndex: 2 // apply a z-index to pop over the back face
-          }
-        })
+            zIndex: 2, // apply a z-index to pop over the back face
+          },
+        });
       }
     }
   }
 
-  gotoNextPage () {
-    if (!this.hasNextPage()) return
+  gotoNextPage() {
+    if (!this.hasNextPage()) return;
 
     const { perspective, orientation, onPageChange, animationDuration } = this.props;
     const { page } = this.state;
     const { transition } = this;
 
-    let secondHalfTransform = `perspective(${perspective}) `
+    let secondHalfTransform = `perspective(${perspective}) `;
 
     if (orientation === 'vertical') {
-      secondHalfTransform += 'rotateX(180deg)'
+      secondHalfTransform += 'rotateX(180deg)';
     } else {
-      secondHalfTransform += 'rotateY(-180deg)'
+      secondHalfTransform += 'rotateY(-180deg)';
     }
 
     this.setState({
       firstHalfStyle: {
         transition,
         transform: '',
-        zIndex: 'auto'
+        zIndex: 'auto',
       },
 
       secondHalfStyle: {
         transition,
-        transform: secondHalfTransform
-      }
+        transform: secondHalfTransform,
+      },
     }, () => {
       setTimeout(() => {
-        this.incrementPage()
+        this.incrementPage();
         this.setState({
           secondHalfStyle: {},
         }, () => {
-          onPageChange(page)
-        })
-      }, animationDuration)
-    })
+          onPageChange(page);
+        });
+      }, animationDuration);
+    });
   }
 
-  gotoPreviousPage () {
-    if (!this.hasPreviousPage()) return
+  gotoPreviousPage() {
+    if (!this.hasPreviousPage()) return;
 
     const { perspective, orientation, onPageChange, animationDuration } = this.props;
     const { page } = this.state;
     const { transition } = this;
 
-    let firstHalfTransform = `perspective(${perspective}) `
+    let firstHalfTransform = `perspective(${perspective}) `;
 
     if (orientation === 'vertical') {
-      firstHalfTransform += 'rotateX(-180deg)'
+      firstHalfTransform += 'rotateX(-180deg)';
     } else {
-      firstHalfTransform += 'rotateY(180deg)'
+      firstHalfTransform += 'rotateY(180deg)';
     }
 
     this.setState({
       firstHalfStyle: {
         transition,
         transform: firstHalfTransform,
-        zIndex: 2
+        zIndex: 2,
       },
 
       secondHalfStyle: {
         transition,
-        transform: ''
-      }
+        transform: '',
+      },
     }, () => {
       setTimeout(() => {
-        this.decrementPage()
+        this.decrementPage();
         this.setState({
           firstHalfStyle: {},
         }, () => {
-          onPageChange(page)
-        })
-      }, animationDuration)
-    })
+          onPageChange(page);
+        });
+      }, animationDuration);
+    });
   }
 
-  stopMoving (e) {
+  stopMoving() {
     const { timestamp, angle, direction, lastDirection } = this.state;
-    const delay = Date.now() - timestamp
+    const delay = Date.now() - timestamp;
 
     const goNext = this.hasNextPage() && (
       angle <= -90 ||
         (delay <= 20 && direction === 'up' && lastDirection === 'up') ||
         (delay <= 20 && direction === 'right' && lastDirection === 'right')
-      )
+    );
     const goPrevious = this.hasPreviousPage() && (
       angle >= 90 ||
         (delay <= 20 && direction === 'down' && lastDirection === 'down') ||
         (delay <= 20 && direction === 'left' && lastDirection === 'left')
-      )
+    );
 
     // reset everything
-    this.reset()
+    this.reset();
 
     if (goNext) {
-      this.gotoNextPage()
+      this.gotoNextPage();
     }
 
     if (goPrevious) {
-      this.gotoPreviousPage()
+      this.gotoPreviousPage();
     }
   }
 
-  _beforeItem() {
-    const lastPage = Children.count(this.props.children)
+  beforeItem() {
+    const lastPage = Children.count(this.props.children);
     const { children, firstComponent, loopForever } = this.props;
-    return !this.isFirstPage()
-      ? children[this.state.page - 1]
-      : (loopForever ? children[lastPage - 1] : firstComponent)
+
+    if (!this.isFirstPage()) {
+      return children[this.state.page - 1];
+    }
+
+    return loopForever ? children[lastPage - 1] : firstComponent;
   }
 
-  _afterItem() {
+  afterItem() {
     const { children, lastComponent, loopForever } = this.props;
-    return !this.isLastPage()
-      ? children[this.state.page + 1]
-      : (loopForever ? children[0] : lastComponent)
+
+    if (!this.isLastPage()) {
+      return children[this.state.page + 1];
+    }
+
+    return loopForever ? children[0] : lastComponent;
   }
 
-  mouseLeave () {
+  mouseLeave() {
     if (this.props.flipOnLeave) {
       this.stopMoving();
     } else {
@@ -369,7 +374,7 @@ class FlipPage extends Component {
     }
   }
 
-  reset () {
+  reset() {
     const { transition } = this;
 
     this.setState({
@@ -380,26 +385,26 @@ class FlipPage extends Component {
       direction: '',
       lastDirection: '',
       secondHalfStyle: { transition },
-      firstHalfStyle: { transition }
-    })
+      firstHalfStyle: { transition },
+    });
   }
 
-  renderPage (_page, key) {
-    const height = this.getHeight()
-    const halfHeight = this.getHalfHeight()
-    const width = this.getWidth()
-    const halfWidth = this.getHalfWidth()
+  renderPage(_page, key) {
+    const height = this.getHeight();
+    const halfHeight = this.getHalfHeight();
+    const width = this.getWidth();
+    const halfWidth = this.getHalfWidth();
 
     const complementaryStyle = {
-      height: height
-    }
+      height,
+    };
 
     const pageItem = cloneElement(_page, {
-      style: Object.assign({}, _page.props.style, complementaryStyle)
-    })
+      style: Object.assign({}, _page.props.style, complementaryStyle),
+    });
 
     const { page, direction, rotate } = this.state;
-    const { orientation, uncutPages, maskOpacity, pageBackground, animationDuration } = this.props
+    const { orientation, uncutPages, maskOpacity, pageBackground, animationDuration } = this.props;
     const style = generateStyles(
       page,
       key,
@@ -413,8 +418,8 @@ class FlipPage extends Component {
       orientation,
       maskOpacity,
       pageBackground,
-      animationDuration
-    )
+      animationDuration,
+    );
 
     const {
       container,
@@ -434,22 +439,23 @@ class FlipPage extends Component {
       gradientSecondHalf,
       gradientFirstHalf,
       mask,
-      zIndex
-    } = style
+      zIndex,
+    } = style;
 
-    const beforeItem = this._beforeItem()
-    const afterItem = this._afterItem()
+    const beforeItem = this.beforeItem();
+    const afterItem = this.afterItem();
 
     const clonedBeforeItem = beforeItem && cloneElement(beforeItem, {
-      style: Object.assign({}, beforeItem.props.style, complementaryStyle)
-    })
+      style: Object.assign({}, beforeItem.props.style, complementaryStyle),
+    });
 
     const clonedAfterItem = afterItem && cloneElement(afterItem, {
-      style: Object.assign({}, afterItem.props.style, complementaryStyle)
-    })
+      style: Object.assign({}, afterItem.props.style, complementaryStyle),
+    });
 
     return (
       <div
+        role="presentation"
         key={key}
         onMouseDown={this.startMoving}
         onTouchStart={this.startMoving}
@@ -495,31 +501,31 @@ class FlipPage extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
-  render () {
+  render() {
     const { style, children, className, orientation, showTouchHint } = this.props;
-    const { hintVisible } = this.state;
 
     const containerStyle = m(style, {
       height: this.getHeight(),
       position: 'relative',
-      width: this.getWidth()
-    })
+      width: this.getWidth(),
+    });
 
     // all the pages are rendered once, to prevent glitching
     // (React would reload the child page and cause a image glitch)
     return (
       <div style={containerStyle} className={className}>
         {Children.map(children, (page, key) => this.renderPage(page, key))}
-        {showTouchHint && <div className={`rfp-hint rfp-hint--${orientation}`}></div>}
+        {showTouchHint && <div className={`rfp-hint rfp-hint--${orientation}`} />}
       </div>
-    )
+    );
   }
 }
 
 FlipPage.defaultProps = {
+  children: [],
   orientation: 'vertical',
   animationDuration: 200,
   treshold: 10,
@@ -538,17 +544,20 @@ FlipPage.defaultProps = {
   onPageChange: () => {},
   className: '',
   flipOnLeave: false,
-  loopForever: false   // loop back to first page after last one
+  loopForever: false, // loop back to first page after last one
 };
 
 FlipPage.propTypes = {
+  children: PropTypes.Children,
   orientation: (props, propName, componentName) => {
     if (!/(vertical|horizontal)/.test(props[propName])) {
       return new Error(
-        'Invalid prop `' + propName + '` supplied to ' +
-        ' `' + componentName + '`. Expected `horizontal` or `vertical`. Validation failed.'
-      )
+        `Invalid prop \`${propName}\` supplied to ` +
+        ` \`${componentName}\`. Expected \`horizontal\` or \`vertical\`. Validation failed.`,
+      );
     }
+
+    return '';
   },
   animationDuration: PropTypes.number,
   treshold: PropTypes.number,
@@ -557,15 +566,17 @@ FlipPage.propTypes = {
   perspective: PropTypes.string,
   pageBackground: PropTypes.string,
   firstComponent: PropTypes.element,
+  flipOnLeave: PropTypes.bool,
   lastComponent: PropTypes.element,
   showHint: PropTypes.bool,
+  showTouchHint: PropTypes.bool,
   uncutPages: PropTypes.bool,
-  style: PropTypes.object,
+  style: PropTypes.shape,
   height: PropTypes.number,
   width: PropTypes.number,
   onPageChange: PropTypes.func,
   className: PropTypes.string,
   loopForever: PropTypes.bool,
-}
+};
 
-export default FlipPage
+export default FlipPage;

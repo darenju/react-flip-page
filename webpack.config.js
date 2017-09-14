@@ -4,7 +4,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 module.exports = {
   context: path.resolve('src'),
   entry: {
-    app: './index.js'
+    app: './index.jsx'
   },
   output: {
     path: path.resolve('dist'),
@@ -15,7 +15,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         include: [/src/],
         exclude: /node_modules/,
         loader: 'babel-loader'
