@@ -548,7 +548,10 @@ FlipPage.defaultProps = {
 };
 
 FlipPage.propTypes = {
-  children: PropTypes.Children,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
   orientation: (props, propName, componentName) => {
     if (!/(vertical|horizontal)/.test(props[propName])) {
       return new Error(
@@ -571,7 +574,7 @@ FlipPage.propTypes = {
   showHint: PropTypes.bool,
   showTouchHint: PropTypes.bool,
   uncutPages: PropTypes.bool,
-  style: PropTypes.shape,
+  style: PropTypes.any,
   height: PropTypes.number,
   width: PropTypes.number,
   onPageChange: PropTypes.func,
