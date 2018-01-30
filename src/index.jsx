@@ -551,11 +551,13 @@ class FlipPage extends Component {
                 onClick={() => this.gotoPreviousPage()}
                 onTouchEnd={() => this.gotoPreviousPage()}
                 style={previousPageTouchZoneStyle}
+                className="rfp-touchZone rfp-touchZone-previous"
               />
               <div
                 onClick={() => this.gotoNextPage()}
                 onTouchEnd={() => this.gotoNextPage()}
                 style={nextPageTouchZoneStyle}
+                className="rfp-touchZone rfp-touchZone-next"
               />
             </div>
           )
