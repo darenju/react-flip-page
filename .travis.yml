@@ -5,11 +5,14 @@ cache:
   directories:
   - node_modules
 before_install:
-- "[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest"
+  - "[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest"
+  - npm install -g greenkeeper-lockfile-update
+before_script: greenkeeper-lockfile-update
+after_script: greenkeeper-lockfile-upload
 script:
-- npm run lint
-- npm test -- --coverage
-- npm run build
+  - npm run lint
+  - npm test -- --coverage
+  - npm run build
 deploy:
   provider: npm
   skip_cleanup: false
