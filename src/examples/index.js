@@ -6,7 +6,7 @@ const Prism = require('prismjs');
 require('prismjs/components/prism-bash');
 require('prismjs/components/prism-jsx');
 
-const examples = ['showTouchHint', 'loopForever', 'uncutPages'];
+const examples = ['showTouchHint', 'loopForever', 'uncutPages', 'flipOnTouch'];
 
 const renderExample = example => {
   const code = Prism.highlight(require(`./codes/${example}.txt`), Prism.languages.jsx);
@@ -32,6 +32,18 @@ const renderExample = example => {
 const ExamplesPage = () => (
   <div>
     <Helmet title="Examples" />
+
+    <style dangerouslySetInnerHTML={{__html: `
+      .rfp-touchZone {
+        background-color: rgba(255,255,255,0.25);
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+      }
+      .rfp-touchZone:hover {
+        opacity: 1;
+      }
+    `}}
+    />
 
     <section className="container">
       <h1>Examples</h1>

@@ -8,9 +8,9 @@
     "node-prismjs": "^0.1.0",
     "prismjs": "^1.6.0",
     "prismjs-loader": "^0.0.4",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-flip-page": "^0.9.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-flip-page": "^0.12.2",
     "react-helmet": "^5.1.3",
     "react-router-dom": "^4.1.2"
   },
