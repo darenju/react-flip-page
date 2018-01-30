@@ -528,12 +528,12 @@ class FlipPage extends Component {
       zIndex: 3,
     };
 
-    const previousPageTouchZoneStyle = Object.assign({}, touchZoneStyle, {
+    const previousPageTouchZoneStyle = m(touchZoneStyle, {
       left: 0,
       top: 0,
     });
 
-    const nextPageTouchZoneStyle = Object.assign({}, touchZoneStyle, {
+    const nextPageTouchZoneStyle = m(touchZoneStyle, {
       bottom: 0,
       right: 0,
     });

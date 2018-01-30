@@ -10,6 +10,13 @@ describe('<FlipPage />', () => {
   });
 });
 
+describe('<FlipPage showTouchHint />', () => {
+  it('should include a touch hint element', () => {
+    const wrapper = shallow(<FlipPage showTouchHint />);
+    expect(wrapper.html()).toMatchSnapshot();
+  });
+});
+
 describe('<FlipPage flipOnTouch />', () => {
   it('should include two touch zones', () => {
     const wrapper = shallow(<FlipPage flipOnTouch />);
