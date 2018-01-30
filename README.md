@@ -5,13 +5,9 @@
 
 # react-flip-page
 
-*DISCLAIMER: This package is in no way related to nor endorsed by Flipboard, Inc. nor [flipboard.com](http://www.flipboard.com). This is just a showcase of HTML5 & CSS3 effect implemented with React.*
+> **DISCLAIMER**: This package is in no way related to nor endorsed by Flipboard, Inc. nor [flipboard.com](http://www.flipboard.com). This is just a showcase of HTML5 & CSS3 effect implemented with React.
 
-*Note: this README is updated often. If you are reading it from the [NPM package page](https://www.npmjs.com/package/react-flip-page), please take a look at the same file of the [GitHub repository](https://github.com/darenju/react-flip-page/blob/master/README.md). The one there is the most up to date version.*
-
-Have you ever wished you could use the cool Flipboard page swipe effect in one of your React.js apps?
-
-Well, I was a little bored and decided to craft it in React.js, and here is the result!
+This package allows you to use the cool Flipboard page swipe effect in your React.js apps.
 
 ![Demo GIF](https://raw.githubusercontent.com/darenju/react-flip-page/master/demo.gif)
 
@@ -71,7 +67,7 @@ There are a few properties that define the behaviour of the component, here they
 | `onPageChange` | `function` |   | Callback when the page has been changed. Parameter: `pageIndex` |
 | `className` | `string` | `''` | Optional CSS class to be applied on the container |
 | `loopForever` | `boolean` | `false` | If `true` flipping after the last page will return to the first (and visa-versa) |
-| `flipOnTouch` | `boolean` | `false` | If `true`, the user can flip pages by touching/clicking a top/bottom or left/right zone |
+| `flipOnTouch` | `boolean` | `false` | If `true`, the user can flip pages by touching/clicking a top/bottom or left/right zone. These zones have CSS classes: `rfp-touchZone`, `rfp-touchZone-previous` and `rfp-touchZone-next` so that you can style them |
 | `flipOnTouchZone` | `number` | `20` | Percentage of dimensions of the zone to touch/click to flip pages |
 
 ## Methods
