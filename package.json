@@ -28,6 +28,9 @@
         "lint": "eslint --format=node_modules/eslint-formatter-pretty src/**/*.js*",
         "test": "jest"
     },
+    "precommit": [
+        "lint"
+    ],
     "jest": {
         "setupTestFrameworkScriptFile": "<rootDir>/src/enzymeSetup.js",
         "moduleNameMapper": {
@@ -62,6 +65,7 @@
         "identity-obj-proxy": "^3.0.0",
         "jest": "^22.1.4",
         "path": "^0.12.7",
+        "pre-commit": "^1.2.2",
         "style-loader": "^0.18.2",
         "svg-url-loader": "^2.1.1",
         "webpack": "^3.5.5"
