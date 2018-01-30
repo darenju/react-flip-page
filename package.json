@@ -1,10 +1,10 @@
 {
     "name": "react-flip-page",
-    "version": "0.11.5",
+    "version": "0.11.6",
     "description": "A React.js implementation of the Flipboard page swipe.",
     "main": "dist/index.js",
     "files": [
-        "dist/index.js"
+        "dist/"
     ],
     "repository": {
         "type": "git",
@@ -45,9 +45,6 @@
             "<rootDir>/src/enzymeSetup.js"
         ]
     },
-    "files": [
-        "dist/"
-    ],
     "dependencies": {
         "prop-types": "^15.5.10",
         "react": "^16.2.0",
