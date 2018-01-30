@@ -1,1 +1,3 @@
 dist/index.js
+src/enzymeSetup.js
+__snapshots__/

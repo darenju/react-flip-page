@@ -574,7 +574,7 @@ FlipPage.propTypes = {
   showHint: PropTypes.bool,
   showTouchHint: PropTypes.bool,
   uncutPages: PropTypes.bool,
-  style: PropTypes.any,
+  style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   height: PropTypes.number,
   width: PropTypes.number,
   onPageChange: PropTypes.func,
