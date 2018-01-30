@@ -1,5 +1,7 @@
-[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-airbnb-brightgreen.svg)](https://standardjs.com)
 [![npm version](https://badge.fury.io/js/react-flip-page.svg)](https://badge.fury.io/js/react-flip-page)
+[![Build Status](https://travis-ci.org/darenju/react-flip-page.svg?branch=master)](https://travis-ci.org/darenju/react-flip-page)
+[![Greenkeeper badge](https://badges.greenkeeper.io/darenju/react-flip-page.svg)](https://greenkeeper.io/)
+[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-airbnb-brightgreen.svg)](https://standardjs.com)
 
 # react-flip-page
 

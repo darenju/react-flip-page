@@ -1,0 +1,36 @@
+sudo: false
+language: node_js
+os: linux
+
+cache:
+  directories:
+    - "node_modules"
+
+before_install:
+  - '[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest' # skipped when using node 9
+
+# Greenkeeper-lockfile
+# When greenkeeper is enabled, it will sends you PR with updates for the libraries
+# and it can update the package-lock.json as well as the yarn.lock file
+# More instructions on:
+# https://www.npmjs.com/package/greenkeeper-lockfile#setup
+
+#   - npm install -g greenkeeper-lockfile@1
+# before_script: greenkeeper-lockfile-update
+# after_script: greenkeeper-lockfile-upload
+
+script:
+  - npm run lint
+  - npm test -- --coverage
+  - npm run build
+
+# Instructions on how to set it:
+# https://docs.travis-ci.com/user/deployment/npm/
+
+# deploy:
+#   provider: npm
+#   skip_cleanup: true
+#   email: "julien@frad.in"
+#   api_key: "<replace this with an encrypt auth token>"
+#   on:
+#     tags: true
