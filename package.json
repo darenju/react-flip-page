@@ -22,6 +22,8 @@
         "flipboard"
     ],
     "scripts": {
+        "prebuild": "check-dependencies",
+        "pretest": "check-dependencies",
         "build": "webpack",
         "lint": "eslint --format=node_modules/eslint-formatter-pretty src/**/*.js*",
         "test": "jest"
@@ -47,6 +49,7 @@
         "babel-loader": "^7.1.2",
         "babel-preset-env": "^1.6.1",
         "babel-preset-react": "^6.24.1",
+        "check-dependencies": "^1.1.0",
         "css-loader": "^0.28.5",
         "enzyme": "^3.3.0",
         "enzyme-adapter-react-16": "^1.1.1",
