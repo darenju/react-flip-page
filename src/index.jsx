@@ -25,6 +25,7 @@ class FlipPage extends Component {
 
     // binding events
     this.startMoving = this.startMoving.bind(this);
+    this.doNotMove = this.doNotMove.bind(this);
     this.moveGesture = this.moveGesture.bind(this);
     this.stopMoving = this.stopMoving.bind(this);
     this.reset = this.reset.bind(this);
@@ -137,8 +138,12 @@ class FlipPage extends Component {
     return !this.isFirstPage() || loopForever;
   }
 
-  startMoving(e) {
+  doNotMove(e) {
     e.preventDefault();
+  }
+
+  startMoving(e) {
+    this.doNotMove(e);
 
     const posX = e.pageX || e.touches[0].pageX;
     const posY = e.pageY || e.touches[0].pageY;
@@ -404,7 +409,16 @@ class FlipPage extends Component {
     });
 
     const { page, direction, rotate } = this.state;
-    const { orientation, uncutPages, maskOpacity, pageBackground, animationDuration } = this.props;
+    const {
+      orientation,
+      uncutPages,
+      maskOpacity,
+      pageBackground,
+      animationDuration,
+      flipOnTouch,
+      flipOnTouchAllowDrag,
+    } = this.props;
+
     const style = generateStyles(
       page,
       key,
@@ -453,12 +467,15 @@ class FlipPage extends Component {
       style: Object.assign({}, afterItem.props.style, complementaryStyle),
     });
 
+    const allowDrag = (flipOnTouch && flipOnTouchAllowDrag) || !flipOnTouch;
+    const onStartTouching = allowDrag ? this.startMoving : this.doNotMove;
+
     return (
       <div
         role="presentation"
         key={key}
-        onMouseDown={this.startMoving}
-        onTouchStart={this.startMoving}
+        onMouseDown={onStartTouching}
+        onTouchStart={onStartTouching}
         onMouseMove={this.moveGesture}
         onTouchMove={this.moveGesture}
         onMouseUp={this.stopMoving}
@@ -513,6 +530,7 @@ class FlipPage extends Component {
       showTouchHint,
       flipOnTouch,
       flipOnTouchZone,
+      flipOnTouchAllowDrag,
     } = this.props;
 
     const containerStyle = m(style, {
@@ -538,6 +556,16 @@ class FlipPage extends Component {
       right: 0,
     });
 
+    const onStartTouching = flipOnTouchAllowDrag ? this.startMoving : () => {};
+    const gotoPreviousPage = (e) => {
+      this.stopMoving(e);
+      this.gotoPreviousPage();
+    };
+    const gotoNextPage = (e) => {
+      this.stopMoving(e);
+      this.gotoNextPage();
+    };
+
     // all the pages are rendered once, to prevent glitching
     // (React would reload the child page and cause a image glitch)
     return (
@@ -548,14 +576,18 @@ class FlipPage extends Component {
           flipOnTouch && (
             <div>
               <div
-                onClick={() => this.gotoPreviousPage()}
-                onTouchEnd={() => this.gotoPreviousPage()}
+                onMouseDown={onStartTouching}
+                onTouchStart={onStartTouching}
+                onMouseUp={gotoPreviousPage}
+                onTouchEnd={gotoPreviousPage}
                 style={previousPageTouchZoneStyle}
                 className="rfp-touchZone rfp-touchZone-previous"
               />
               <div
-                onClick={() => this.gotoNextPage()}
-                onTouchEnd={() => this.gotoNextPage()}
+                onMouseDown={onStartTouching}
+                onTouchStart={onStartTouching}
+                onMouseUp={gotoNextPage}
+                onTouchEnd={gotoNextPage}
                 style={nextPageTouchZoneStyle}
                 className="rfp-touchZone rfp-touchZone-next"
               />
@@ -590,6 +622,7 @@ FlipPage.defaultProps = {
   loopForever: false, // loop back to first page after last one
   flipOnTouch: false,
   flipOnTouchZone: 20,
+  flipOnTouchAllowDrag: false,
 };
 
 FlipPage.propTypes = {
@@ -627,6 +660,7 @@ FlipPage.propTypes = {
   loopForever: PropTypes.bool,
   flipOnTouch: PropTypes.bool,
   flipOnTouchZone: PropTypes.number,
+  flipOnTouchAllowDrag: PropTypes.bool,
 };
 
 export default FlipPage;

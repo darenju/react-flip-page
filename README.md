@@ -69,6 +69,7 @@ There are a few properties that define the behaviour of the component, here they
 | `loopForever` | `boolean` | `false` | If `true` flipping after the last page will return to the first (and visa-versa) |
 | `flipOnTouch` | `boolean` | `false` | If `true`, the user can flip pages by touching/clicking a top/bottom or left/right zone. These zones have CSS classes: `rfp-touchZone`, `rfp-touchZone-previous` and `rfp-touchZone-next` so that you can style them |
 | `flipOnTouchZone` | `number` | `20` | Percentage of dimensions of the zone to touch/click to flip pages |
+| `flipOnTouchAllowDrag` | `boolean` | `false` | If `true`, user can still use the drag feature to switch pages while `flipOnTouch` is enabled |
 
 ## Methods
 
