@@ -5,3 +5,4 @@ lib
 **/*.spec.*
 __snapshots__
 src/enzymeSetup.js
+!dist/
