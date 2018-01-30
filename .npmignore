@@ -4,5 +4,9 @@ npm-debug.log
 lib
 **/*.spec.*
 __snapshots__
-src/enzymeSetup.js
-!dist/
+src
+dist/*
+!dist/index.js
+demo.gif
+webpack.config.js
+yarn.lock
