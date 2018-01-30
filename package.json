@@ -42,6 +42,9 @@
             "<rootDir>/src/enzymeSetup.js"
         ]
     },
+    "files": [
+        "dist/"
+    ],
     "dependencies": {
         "prop-types": "^15.5.10",
         "react": "^16.2.0",
