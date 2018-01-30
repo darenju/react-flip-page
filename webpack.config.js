@@ -51,7 +51,7 @@ module.exports = {
       uglifyOptions: {
         ecma: 6
       },
-      extractComments: true
+      extractComments: false
     })
   ]
 };
