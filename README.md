@@ -70,7 +70,9 @@ There are a few properties that define the behaviour of the component, here they
 | `width` | `number` | `320` | Width for the flipboard |
 | `onPageChange` | `function` |   | Callback when the page has been changed. Parameter: `pageIndex` |
 | `className` | `string` | `''` | Optional CSS class to be applied on the container |
-| `loopForever` | `boolean` | `false` | If `true` flipping after the last page will return to the first (and visa-versa)
+| `loopForever` | `boolean` | `false` | If `true` flipping after the last page will return to the first (and visa-versa) |
+| `flipOnTouch` | `boolean` | `false` | If `true`, the user can flip pages by touching/clicking a top/bottom or left/right zone |
+| `flipOnTouchZone` | `number` | `20` | Percentage of dimensions of the zone to touch/click to flip pages |
 
 ## Methods
 
@@ -98,7 +100,3 @@ This method triggers the effect and switches to the next page, if possible.
 Since this is an open source project and it's far from perfect, contribution is welcome. Fork the repository and start working on your fix or new feature. Remember, it's good practice to work in your own branch, to avoid painful merge conflicts.
 
 Once you think your work is ready, fire a [pull request](https://github.com/darenju/react-flip-page/pulls) with an understandable description of what you're bringing to the project. If it's alright, chances are high your work will be merged!
-
-### Things I need help on
-
-- **Unit Testing** : I would like any recommendation or article to guide me on how to effectively test the React component, ideally from command line. Is [Jest](https://facebook.github.io/jest/) a good choice?

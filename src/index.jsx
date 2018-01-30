@@ -318,17 +318,17 @@ class FlipPage extends Component {
     });
   }
 
-  stopMoving() {
+  stopMoving(e) {
     const { timestamp, angle, direction, lastDirection } = this.state;
     const delay = Date.now() - timestamp;
 
-    const goNext = this.hasNextPage() && (
-      angle <= -90 ||
+    const goNext = this.hasNextPage() &&
+      (angle <= -90 ||
         (delay <= 20 && direction === 'up' && lastDirection === 'up') ||
         (delay <= 20 && direction === 'right' && lastDirection === 'right')
     );
-    const goPrevious = this.hasPreviousPage() && (
-      angle >= 90 ||
+    const goPrevious = this.hasPreviousPage() &&
+      (angle >= 90 ||
         (delay <= 20 && direction === 'down' && lastDirection === 'down') ||
         (delay <= 20 && direction === 'left' && lastDirection === 'left')
     );
@@ -505,12 +505,37 @@ class FlipPage extends Component {
   }
 
   render() {
-    const { style, children, className, orientation, showTouchHint } = this.props;
+    const {
+      style,
+      children,
+      className,
+      orientation,
+      showTouchHint,
+      flipOnTouch,
+      flipOnTouchZone,
+    } = this.props;
 
     const containerStyle = m(style, {
       height: this.getHeight(),
       position: 'relative',
       width: this.getWidth(),
+    });
+
+    const touchZoneStyle = {
+      height: orientation === 'vertical' ? `${flipOnTouchZone}%` : '100%',
+      position: 'absolute',
+      width: orientation === 'vertical' ? '100%' : `${flipOnTouchZone}%`,
+      zIndex: 3,
+    };
+
+    const previousPageTouchZoneStyle = Object.assign({}, touchZoneStyle, {
+      left: 0,
+      top: 0,
+    });
+
+    const nextPageTouchZoneStyle = Object.assign({}, touchZoneStyle, {
+      bottom: 0,
+      right: 0,
     });
 
     // all the pages are rendered once, to prevent glitching
@@ -519,6 +544,22 @@ class FlipPage extends Component {
       <div style={containerStyle} className={className}>
         {Children.map(children, (page, key) => this.renderPage(page, key))}
         {showTouchHint && <div className={`rfp-hint rfp-hint--${orientation}`} />}
+        {
+          flipOnTouch && (
+            <div>
+              <div
+                onClick={() => this.gotoPreviousPage()}
+                onTouchEnd={() => this.gotoPreviousPage()}
+                style={previousPageTouchZoneStyle}
+              />
+              <div
+                onClick={() => this.gotoNextPage()}
+                onTouchEnd={() => this.gotoNextPage()}
+                style={nextPageTouchZoneStyle}
+              />
+            </div>
+          )
+        }
       </div>
     );
   }
@@ -545,6 +586,8 @@ FlipPage.defaultProps = {
   className: '',
   flipOnLeave: false,
   loopForever: false, // loop back to first page after last one
+  flipOnTouch: false,
+  flipOnTouchZone: 20,
 };
 
 FlipPage.propTypes = {
@@ -580,6 +623,8 @@ FlipPage.propTypes = {
   onPageChange: PropTypes.func,
   className: PropTypes.string,
   loopForever: PropTypes.bool,
+  flipOnTouch: PropTypes.bool,
+  flipOnTouchZone: PropTypes.number,
 };
 
 export default FlipPage;
