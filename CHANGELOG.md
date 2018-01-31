@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.13.0
+### Added
+
+- `showTouchHint` property that shows a pointer indicating where to click or touch to switch pages.
+
+### Changed
+
+- `flipOnTouchAllowDrag` has been renamed to `disableSwipe`. By default, the swipe is always allowed with `flipOnTouch`, unless `disableSwipe` is specified.
+- `showTouchHint` has been renamed to `showSwipeHint` to avoid confusion.
+- Changed default `flipOnTouchZone` from `20` to `10`.
+
+### Removed
+
+- Removed `touchHintTimeout`, `touchHintTimeoutTimer`, `showTouchHint`, `hintVisible` as they were useless.
+
 ## 0.12.2
 ### Added
 

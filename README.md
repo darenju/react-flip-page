@@ -61,6 +61,9 @@ There are a few properties that define the behaviour of the component, here they
 | `firstComponent` | `element` | `null` | Component that will be displayed under the first page |
 | `lastComponent` | `element` | `null` | Component that will be displayed under the last page |
 | `showHint` | `bool` | `false` | Indicates if the component must hint the user on how it works. Setting this to `true` will lift the bottom of the page 1s after the component is mounted, for 1s |
+| `showSwipeHint` | `bool` | `false` | Indicates if the component must hint the user on how it works. Setting this to `true` will show an example of gesture to switch pages |
+| `showTouchHint` | `bool` | `false` | Indicates if the component must hint the user on how it works. Setting this to `true` will show a pointer indicating where to click to switch pages. Works with
+`flipOnTouch` |
 | `style` | `object` | `{}` | Additional style for the flipboard |
 | `height` | `number` | `480` | Height for the flipboard |
 | `width` | `number` | `320` | Width for the flipboard |
@@ -68,8 +71,9 @@ There are a few properties that define the behaviour of the component, here they
 | `className` | `string` | `''` | Optional CSS class to be applied on the container |
 | `loopForever` | `boolean` | `false` | If `true` flipping after the last page will return to the first (and visa-versa) |
 | `flipOnTouch` | `boolean` | `false` | If `true`, the user can flip pages by touching/clicking a top/bottom or left/right zone. These zones have CSS classes: `rfp-touchZone`, `rfp-touchZone-previous` and `rfp-touchZone-next` so that you can style them |
-| `flipOnTouchZone` | `number` | `20` | Percentage of dimensions of the zone to touch/click to flip pages |
-| `flipOnTouchAllowDrag` | `boolean` | `false` | If `true`, user can still use the drag feature to switch pages while `flipOnTouch` is enabled |
+| `flipOnTouchZone` | `number` | `210` | Percentage of dimensions of the zone to touch/click to flip pages |
+| `disableSwipe` | `boolean` | `false` | If `true`, users can't use the swipe feature to switch pages while `flipOnTouch` is enabled. Make sure you enable `flipOnTouch` so they can switch pages, or provide
+buttons binded to Methods |
 
 ## Methods
 

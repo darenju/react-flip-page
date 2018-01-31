@@ -1,5 +1,5 @@
-.rfp-hint {
-  animation: 2s ease-in-out rfp-hint-vertical 2;
+.rfp-swipeHint {
+  animation: 2s ease-in-out rfp-swipeHint-vertical 2;
   background-color: rgba(255,255,255,0.5);
   border-radius: 15px;
   box-sizing: border-box;
@@ -9,19 +9,19 @@
   position: absolute;
   width: 30px;
 }
-.rfp-hint--vertical {
-  animation-name: rfp-hint-vertical;
+.rfp-swipeHint--vertical {
+  animation-name: rfp-swipeHint-vertical;
   bottom: 20%;
   left: 50%;
   margin-left: -15px;
 }
-.rfp-hint--horizontal {
-  animation-name: rfp-hint-horizontal;
+.rfp-swipeHint--horizontal {
+  animation-name: rfp-swipeHint-horizontal;
   margin-top: -15px;
   right: 20%;
   top: 50%;
 }
-.rfp-hint:before {
+.rfp-swipeHint:before {
   border-radius: 15px;
   border: 3px double rgba(255,255,255,0.5);
   box-sizing: border-box;
@@ -30,22 +30,41 @@
   position: absolute;
   width: 28px;
 }
-.rfp-hint--vertical:before {
+.rfp-swipeHint--vertical:before {
   left: 50%;
   margin-left: -14px;
   top: 1px;
 }
-.rfp-hint--horizontal:before {
+.rfp-swipeHint--horizontal:before {
   left: 1px;
   top: 1px;
 }
-.rfp-hint:after {
+.rfp-touchHint {
+  animation: 2s ease-in-out rfp-touchHint 2;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 5;
+}
+.rfp-touchHint--vertical {
+  bottom: 5px;
+  left: 50%;
+  margin-left: -12px;
+}
+.rfp-touchHint--horizontal {
+  margin-top: -14px;
+  right: 5px;
+  top: 50%;
+}
+.rfp-touchHint:after, .rfp-swipeHint:after {
   content: url(./touch.svg);
+}
+.rfp-swipeHint:after {
   position: absolute;
   top: 11px;
   left: 6px;
 }
-@keyframes rfp-hint-vertical {
+@keyframes rfp-swipeHint-vertical {
   0% {
     opacity: 0;
     height: 30px;
@@ -63,7 +82,7 @@
     height: 60%;
   }
 }
-@keyframes rfp-hint-horizontal {
+@keyframes rfp-swipeHint-horizontal {
   0% {
     opacity: 0;
     width: 30px;
@@ -79,5 +98,22 @@
   100% {
     opacity: 0;
     width: 60%;
+  }
+}
+@keyframes rfp-touchHint {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  40%,60% {
+    transform: scale(0.75);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }

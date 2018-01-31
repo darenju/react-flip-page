@@ -39,22 +39,16 @@ class FlipPage extends Component {
   }
 
   componentDidMount() {
-    const { showHint, showTouchHint } = this.props;
+    const { showHint, showSwipeHint } = this.props;
 
     if (showHint) {
-      this.hintTimeout = setTimeout(() => this.showHint(), showTouchHint ? 1800 : 1000);
-    }
-
-    if (showTouchHint) {
-      this.touchHintTimeout = setTimeout(() => this.showTouchHint(), 1000);
+      this.hintTimeout = setTimeout(() => this.showHint(), showSwipeHint ? 1800 : 1000);
     }
   }
 
   componentWillUnmount() {
     clearTimeout(this.hintTimeout);
     clearTimeout(this.hintHideTimeout);
-    clearTimeout(this.touchHintTimeout);
-    clearTimeout(this.touchHintHideTimeout);
   }
 
   getHeight() {
@@ -95,13 +89,6 @@ class FlipPage extends Component {
 
       this.hintHideTimeout = setTimeout(() =>
         this.setState({ secondHalfStyle: { transition } }), 1000);
-    });
-  }
-
-  showTouchHint() {
-    this.setState({ hintVisible: true }, () => {
-      this.touchHintHideTimeout = setTimeout(() =>
-        this.setState({ hintVisible: false }), 4000);
     });
   }
 
@@ -416,7 +403,7 @@ class FlipPage extends Component {
       pageBackground,
       animationDuration,
       flipOnTouch,
-      flipOnTouchAllowDrag,
+      disableSwipe,
     } = this.props;
 
     const style = generateStyles(
@@ -467,8 +454,8 @@ class FlipPage extends Component {
       style: Object.assign({}, afterItem.props.style, complementaryStyle),
     });
 
-    const allowDrag = (flipOnTouch && flipOnTouchAllowDrag) || !flipOnTouch;
-    const onStartTouching = allowDrag ? this.startMoving : this.doNotMove;
+    const allowSwipe = (flipOnTouch && !disableSwipe) || !flipOnTouch;
+    const onStartTouching = allowSwipe ? this.startMoving : this.doNotMove;
 
     return (
       <div
@@ -527,10 +514,11 @@ class FlipPage extends Component {
       children,
       className,
       orientation,
+      showSwipeHint,
       showTouchHint,
       flipOnTouch,
       flipOnTouchZone,
-      flipOnTouchAllowDrag,
+      disableSwipe,
     } = this.props;
 
     const containerStyle = m(style, {
@@ -556,7 +544,7 @@ class FlipPage extends Component {
       right: 0,
     });
 
-    const onStartTouching = flipOnTouchAllowDrag ? this.startMoving : () => {};
+    const onStartTouching = !disableSwipe ? this.startMoving : this.doNotMove;
     const gotoPreviousPage = (e) => {
       this.stopMoving(e);
       this.gotoPreviousPage();
@@ -571,7 +559,7 @@ class FlipPage extends Component {
     return (
       <div style={containerStyle} className={className}>
         {Children.map(children, (page, key) => this.renderPage(page, key))}
-        {showTouchHint && <div className={`rfp-hint rfp-hint--${orientation}`} />}
+        {showSwipeHint && <div className={`rfp-swipeHint rfp-swipeHint--${orientation}`} />}
         {
           flipOnTouch && (
             <div>
@@ -591,6 +579,7 @@ class FlipPage extends Component {
                 style={nextPageTouchZoneStyle}
                 className="rfp-touchZone rfp-touchZone-next"
               />
+              {showTouchHint && <div className={`rfp-touchHint rfp-touchHint--${orientation}`} />}
             </div>
           )
         }
@@ -611,6 +600,7 @@ FlipPage.defaultProps = {
   firstComponent: null,
   lastComponent: null,
   showHint: false,
+  showSwipeHint: false,
   showTouchHint: false,
   uncutPages: false,
   style: {},
@@ -621,8 +611,8 @@ FlipPage.defaultProps = {
   flipOnLeave: false,
   loopForever: false, // loop back to first page after last one
   flipOnTouch: false,
-  flipOnTouchZone: 20,
-  flipOnTouchAllowDrag: false,
+  flipOnTouchZone: 10,
+  disableSwipe: false,
 };
 
 FlipPage.propTypes = {
@@ -650,6 +640,7 @@ FlipPage.propTypes = {
   flipOnLeave: PropTypes.bool,
   lastComponent: PropTypes.element,
   showHint: PropTypes.bool,
+  showSwipeHint: PropTypes.bool,
   showTouchHint: PropTypes.bool,
   uncutPages: PropTypes.bool,
   style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -660,7 +651,7 @@ FlipPage.propTypes = {
   loopForever: PropTypes.bool,
   flipOnTouch: PropTypes.bool,
   flipOnTouchZone: PropTypes.number,
-  flipOnTouchAllowDrag: PropTypes.bool,
+  disableSwipe: PropTypes.bool,
 };
 
 export default FlipPage;
