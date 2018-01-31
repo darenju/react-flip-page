@@ -13,7 +13,7 @@ const theEndStyle = {
 const theEnd = <div style={theEndStyle}>The End!</div>;
 
 export default () => (
-  <FlipPage showTouchHint lastComponent={theEnd}>
+  <FlipPage showSwipeHint lastComponent={theEnd}>
     {images.map((n, i) => <img key={i} src={`${baseUrl}${n}`} />)}
   </FlipPage>
 );

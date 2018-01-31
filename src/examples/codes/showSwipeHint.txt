@@ -11,7 +11,7 @@ const theEndStyle = {
 const theEnd = <div style={theEndStyle}>The End!</div>;
 
 <FlipPage
-  showTouchHint
+  showSwipeHint
   lastComponent={theEnd}
 >
   {images.map((n, i) =>

@@ -6,7 +6,7 @@ const Prism = require('prismjs');
 require('prismjs/components/prism-bash');
 require('prismjs/components/prism-jsx');
 
-const examples = ['showTouchHint', 'loopForever', 'uncutPages', 'flipOnTouch'];
+const examples = ['showSwipeHint', 'loopForever', 'uncutPages', 'flipOnTouch'];
 
 const renderExample = example => {
   const code = Prism.highlight(require(`./codes/${example}.txt`), Prism.languages.jsx);
