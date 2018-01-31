@@ -32,7 +32,8 @@
         "test": "jest"
     },
     "precommit": [
-        "lint"
+        "lint",
+        "test"
     ],
     "jest": {
         "setupTestFrameworkScriptFile": "<rootDir>/src/enzymeSetup.js",
