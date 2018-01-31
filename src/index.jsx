@@ -440,7 +440,7 @@ class FlipPage extends Component {
       gradientSecondHalf,
       gradientFirstHalf,
       mask,
-      zIndex,
+      maskReverse,
     } = style;
 
     const beforeItem = this.beforeItem();
@@ -480,7 +480,8 @@ class FlipPage extends Component {
         </div>
         <div style={m(part, visiblePart, firstHalf, this.state.firstHalfStyle)}>
           <div style={face}>
-            <div style={m(cut, zIndex)}>{pageItem}</div>
+            <div style={cut}>{pageItem}</div>
+            <div style={m(mask, maskReverse)} />
             <div style={m(gradient, gradientFirstHalf)} />
           </div>
           <div style={m(face, back)}>
@@ -492,9 +493,10 @@ class FlipPage extends Component {
         </div>
         <div style={m(part, visiblePart, secondHalf, this.state.secondHalfStyle)}>
           <div style={face}>
-            <div style={m(cut, zIndex)}>
+            <div style={cut}>
               <div style={pull}>{pageItem}</div>
             </div>
+            <div style={m(mask, maskReverse)} />
             <div style={m(gradient, gradientSecondHalf)} />
           </div>
           <div style={m(face, back)}>

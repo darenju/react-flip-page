@@ -89,6 +89,7 @@ export default (
     bottom: 0,
     top: 0,
     transition: `box-shadow ${animationDuration / 1000}s ease-in-out`,
+    pointerEvents: 'none',
   },
   gradientSecondHalf: {
     boxShadow: (() => {
@@ -142,8 +143,9 @@ export default (
     bottom: 0,
     backgroundColor: '#000',
     opacity: direction !== '' ? Math.max(maskOpacity - ((Math.abs(rotate) / 90) * maskOpacity), 0) : 0,
+    pointerEvents: 'none',
   },
-  zIndex: {
-    zIndex: 2,
+  maskReverse: {
+    opacity: direction !== '' ? Math.max(((Math.abs(rotate) / 90) * maskOpacity) - maskOpacity, 0) : 0,
   },
 });
