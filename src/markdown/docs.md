@@ -18,6 +18,15 @@ Default value: `''`
 
 CSS class name to add on the component.
 
+### disableSwipe
+
+Type: `boolean`
+
+Default value: `false`
+
+Use this property to disable the page swipe gesture. Please note that you should provide the user with
+a way to switch pages: buttons binded to `gotoNextPage()` or using the `flipOnTouch` property.
+
 ### firstComponent
 
 Type: `object`
@@ -124,7 +133,7 @@ Default: `false`
 If set true, the component will wait for `1s` before lifting the bottom/right part of the page to
 indicate the possible page switch to the user.
 
-### showTouchHint
+### showSwipeHint
 
 Type: `boolean`
 
@@ -133,7 +142,18 @@ Default: `false`
 Similar to `showHint`, this option will show a finger swipe gesture on the component to help the
 user understand they can move the pages.
 
-You may style this with the `.rfp-hint` CSS class. See examples for more details.
+You may style this with the `.rfp-swipeHint` CSS class. See examples for more details.
+
+### showTouchHint
+
+Type: `boolean`
+
+Default: `false`
+
+Similar to `showHint`, this option will show a finger touch gesture on the component to help the
+user understand they can move the pages.
+
+You may style this with the `.rfp-touchHint` CSS class. See examples for more details.
 
 ### style
 
