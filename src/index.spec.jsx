@@ -3,10 +3,75 @@ import { shallow } from 'enzyme';
 
 import FlipPage from './index';
 
+jest.useFakeTimers();
+
+const getState = (wrapper) => wrapper.instance().state;
+
 describe('<FlipPage />', () => {
   it('renders without crashing', () => {
     const wrapper = shallow(<FlipPage />);
     expect(wrapper.html()).toMatchSnapshot();
+  });
+
+  describe('componentDidMount()', () => {
+    it('should start a timer', () => {
+      const wrapper = shallow(<FlipPage showHint />);
+      const result = wrapper.instance().hintTimeout;
+      expect(result).not.toBeNull();
+    });
+  });
+
+  describe('componentWillUnmount()', () => {
+    it('should end two timers', () => {
+      const wrapper = shallow(<FlipPage showHint />);
+      wrapper.unmount();
+      expect(clearTimeout).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe('showHint()', () => {
+    it('should update state', () => {
+      const wrapper = shallow(<FlipPage showHint />);
+      const transition = wrapper.instance().transition;
+      wrapper.instance().showHint();
+
+      expect(Object.keys(getState(wrapper).secondHalfStyle)).toEqual(['transition', 'transform']);
+      expect(setTimeout).toHaveBeenCalled();
+
+      jest.runOnlyPendingTimers();
+
+      expect(Object.keys(getState(wrapper).secondHalfStyle)).toEqual(['transition']);
+    });
+  });
+
+  describe('hasNextPage()', () => {
+    it('should return FALSE if already on last page and `loopForever` is FALSE', () => {
+      const wrapper = shallow(<FlipPage><div /><div /></FlipPage>);
+      wrapper.setState({ page: 1 });
+      const result = wrapper.instance().hasNextPage();
+      expect(result).toEqual(false);
+    });
+
+    it('should return TRUE if already on last page and `loopForever` is TRUE', () => {
+      const wrapper = shallow(<FlipPage loopForever><div /><div /></FlipPage>);
+      wrapper.setState({ page: 1 });
+      const result = wrapper.instance().hasNextPage();
+      expect(result).toEqual(true);
+    });
+  });
+
+  describe('hasPreviousPage()', () => {
+    it('should return FALSE if already on first page and `loopForever` is FALSE', () => {
+      const wrapper = shallow(<FlipPage><div /><div /></FlipPage>);
+      const result = wrapper.instance().hasPreviousPage();
+      expect(result).toEqual(false);
+    });
+
+    it('should return TRUE if already on first page and `loopForever` is TRUE', () => {
+      const wrapper = shallow(<FlipPage loopForever><div /><div /></FlipPage>);
+      const result = wrapper.instance().hasPreviousPage();
+      expect(result).toEqual(true);
+    });
   });
 
   describe('getHeight()', () => {
