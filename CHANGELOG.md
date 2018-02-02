@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fix some lint issues on `index.jsx`
 - Add codecov to the project (@darenju still needs setup it to his github repository)
 
+### Fixed
+
+- Replace the code style badge url fron `standardjs` to `airbnb`.
+
 ## 0.13.1
 ### Added
 
