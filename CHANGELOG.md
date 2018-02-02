@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 	- `decrementPage()`: 100% covered
 	- `doNotMove()`: 100% covered
 	- `startMoving()`: 100% covered
+- Fix some lint issues on `index.jsx`
+- Add codecov to the project (@darenju still needs setup it to his github repository)
 
 ## 0.13.1
 ### Added
