@@ -5,6 +5,10 @@ import generateStyles from './generateStyles';
 
 const m = (...objs) => Object.assign({}, ...objs);
 
+const doNotMove = (e) => {
+  e.preventDefault();
+};
+
 class FlipPage extends Component {
   constructor(props) {
     super(props);
@@ -20,12 +24,10 @@ class FlipPage extends Component {
       lastDirection: '', // last registered swipe direction
       secondHalfStyle: {}, // transform style of bottom half
       firstHalfStyle: {}, // transform style of top half
-      hintVisible: false, // indicates if the hint is visible
     };
 
     // binding events
     this.startMoving = this.startMoving.bind(this);
-    this.doNotMove = this.doNotMove.bind(this);
     this.moveGesture = this.moveGesture.bind(this);
     this.stopMoving = this.stopMoving.bind(this);
     this.reset = this.reset.bind(this);
@@ -125,12 +127,8 @@ class FlipPage extends Component {
     return !this.isFirstPage() || loopForever;
   }
 
-  doNotMove(e) {
-    e.preventDefault();
-  }
-
   startMoving(e) {
-    this.doNotMove(e);
+    doNotMove(e);
 
     const posX = e.pageX || e.touches[0].pageX;
     const posY = e.pageY || e.touches[0].pageY;
@@ -147,8 +145,12 @@ class FlipPage extends Component {
     const posX = e.pageX || e.touches[0].pageX;
     const posY = e.pageY || e.touches[0].pageY;
 
-    const { orientation, treshold, maxAngle, perspective } = this.props;
-    const { startX, startY, diffX, diffY, direction, lastDirection } = this.state;
+    const {
+      orientation, treshold, maxAngle, perspective,
+    } = this.props;
+    const {
+      startX, startY, diffX, diffY, direction, lastDirection,
+    } = this.state;
 
     if (startY !== -1) {
       const newDiffY = posY - startY;
@@ -208,20 +210,23 @@ class FlipPage extends Component {
           angle,
           secondHalfStyle: {
             transform: `perspective(${perspective}) rotateX(${rotate}deg)`,
-          } });
+          },
+        });
       } else if (newDiffY > 0 && this.state.direction === 'down') {
         this.setState({
           angle,
           firstHalfStyle: {
             transform: `perspective(${perspective}) rotateX(-${rotate}deg)`,
             zIndex: 2, // apply a z-index to pop over the back face
-          } });
+          },
+        });
       } else if (newDiffX < 0 && this.state.direction === 'left') {
         this.setState({
           angle,
           secondHalfStyle: {
             transform: `perspective(${perspective}) rotateY(-${rotate}deg)`,
-          } });
+          },
+        });
       } else if (newDiffX > 0 && this.state.direction === 'right') {
         this.setState({
           angle,
@@ -237,7 +242,9 @@ class FlipPage extends Component {
   gotoNextPage() {
     if (!this.hasNextPage()) return;
 
-    const { perspective, orientation, onPageChange, animationDuration } = this.props;
+    const {
+      perspective, orientation, onPageChange, animationDuration,
+    } = this.props;
     const { page } = this.state;
     const { transition } = this;
 
@@ -275,7 +282,9 @@ class FlipPage extends Component {
   gotoPreviousPage() {
     if (!this.hasPreviousPage()) return;
 
-    const { perspective, orientation, onPageChange, animationDuration } = this.props;
+    const {
+      perspective, orientation, onPageChange, animationDuration,
+    } = this.props;
     const { page } = this.state;
     const { transition } = this;
 
@@ -310,20 +319,22 @@ class FlipPage extends Component {
     });
   }
 
-  stopMoving(e) {
-    const { timestamp, angle, direction, lastDirection } = this.state;
+  stopMoving() {
+    const {
+      timestamp, angle, direction, lastDirection,
+    } = this.state;
     const delay = Date.now() - timestamp;
 
     const goNext = this.hasNextPage() &&
       (angle <= -90 ||
         (delay <= 20 && direction === 'up' && lastDirection === 'up') ||
         (delay <= 20 && direction === 'right' && lastDirection === 'right')
-    );
+      );
     const goPrevious = this.hasPreviousPage() &&
       (angle >= 90 ||
         (delay <= 20 && direction === 'down' && lastDirection === 'down') ||
         (delay <= 20 && direction === 'left' && lastDirection === 'left')
-    );
+      );
 
     // reset everything
     this.reset();
@@ -455,7 +466,7 @@ class FlipPage extends Component {
     });
 
     const allowSwipe = (flipOnTouch && !disableSwipe) || !flipOnTouch;
-    const onStartTouching = allowSwipe ? this.startMoving : this.doNotMove;
+    const onStartTouching = allowSwipe ? this.startMoving : doNotMove;
 
     return (
       <div
@@ -546,7 +557,7 @@ class FlipPage extends Component {
       right: 0,
     });
 
-    const onStartTouching = !disableSwipe ? this.startMoving : this.doNotMove;
+    const onStartTouching = !disableSwipe ? this.startMoving : doNotMove;
     const gotoPreviousPage = (e) => {
       this.stopMoving(e);
       this.gotoPreviousPage();
@@ -566,6 +577,7 @@ class FlipPage extends Component {
           flipOnTouch && (
             <div>
               <div
+                role="presentation"
                 onMouseDown={onStartTouching}
                 onTouchStart={onStartTouching}
                 onMouseUp={gotoPreviousPage}
@@ -574,6 +586,7 @@ class FlipPage extends Component {
                 className="rfp-touchZone rfp-touchZone-previous"
               />
               <div
+                role="presentation"
                 onMouseDown={onStartTouching}
                 onTouchStart={onStartTouching}
                 onMouseUp={gotoNextPage}
@@ -624,10 +637,8 @@ FlipPage.propTypes = {
   ]),
   orientation: (props, propName, componentName) => {
     if (!/(vertical|horizontal)/.test(props[propName])) {
-      return new Error(
-        `Invalid prop \`${propName}\` supplied to ` +
-        ` \`${componentName}\`. Expected \`horizontal\` or \`vertical\`. Validation failed.`,
-      );
+      return new Error(`Invalid prop \`${propName}\` supplied to ` +
+        ` \`${componentName}\`. Expected \`horizontal\` or \`vertical\`. Validation failed.`);
     }
 
     return '';
