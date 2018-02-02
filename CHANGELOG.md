@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Improve code coverage for `<FlipPage />`:
+	- `getHeight()`: 100% covered
+	- `getHalfHeight()`: 100% covered
+	- `getWidth()`: 100% covered
+	- `getHalfWidth()`: 100% covered
+	- `isLastPage()`: 100% covered
+	- `isFirstPage()`: 100% covered
+	- `incrementPage()`: 100% covered
+	- `decrementPage()`: 100% covered
+	- `doNotMove()`: 100% covered
+	- `startMoving()`: 100% covered
+
 ## 0.13.1
 ### Added
 

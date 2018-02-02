@@ -29,7 +29,8 @@
         "pretest": "check-dependencies",
         "build": "webpack",
         "lint": "eslint --format=node_modules/eslint-formatter-pretty src/**/*.js* --quiet",
-        "test": "jest"
+        "test": "jest",
+        "test:coverage": "jest --coverage"
     },
     "precommit": [
         "lint",
