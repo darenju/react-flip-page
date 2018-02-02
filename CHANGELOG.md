@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- `responsive` property (default to `false`) to enable responsive mode.
 - Improve code coverage for `<FlipPage />`:
 	- `getHeight()`: 100% covered
 	- `getHalfHeight()`: 100% covered
