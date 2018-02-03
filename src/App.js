@@ -8,6 +8,7 @@ import Helmet from 'react-helmet';
 import Header from './components/Header';
 import Page from './components/Page';
 import Examples from './examples';
+import Responsive from './components/Responsive';
 import '!style-loader!css-loader!./css/global.css';
 import toc from './toc';
 
@@ -36,6 +37,7 @@ const App = () => (
         )
       }
       <Route path="/examples" component={Examples} />
+      <Route path="/responsive" component={Responsive} />
     </div>
   </Router>
 );

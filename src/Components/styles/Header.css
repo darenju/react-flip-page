@@ -41,3 +41,14 @@
 .linkActive {
   border-bottom-color: #6184D8;
 }
+@media (max-width: 500px) {
+  .logo {
+    font-size: 0;
+  }
+  .nav {
+    padding: 0 5px;
+  }
+  .link {
+    font-size: 12px;
+  }
+}
