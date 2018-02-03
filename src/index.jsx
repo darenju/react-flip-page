@@ -122,6 +122,12 @@ class FlipPage extends Component {
   }
 
   startMoving(e) {
+    // prevent the button's and a's to not be clickable.
+    const { tagName } = e.target;
+    if (tagName === 'BUTTON' || tagName === 'A') {
+      return;
+    }
+
     doNotMove(e);
 
     const posX = e.pageX || e.touches[0].pageX;
