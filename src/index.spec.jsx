@@ -184,6 +184,9 @@ describe('<FlipPage />', () => {
         preventDefault: jest.fn(),
         pageX: 1,
         pageY: 2,
+        target: {
+          tagName: 'div',
+        },
         touches: [{
           pageX: 3,
           pageY: 4,
