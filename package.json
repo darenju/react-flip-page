@@ -1,6 +1,6 @@
 {
     "name": "react-flip-page",
-    "version": "0.13.1",
+    "version": "0.14.0",
     "description": "A React.js implementation of the Flipboard page swipe.",
     "main": "dist/index.js",
     "files": [
