@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import FlipPage from 'react-flip-page';
+import FlipPage from '../../../react-flip-page/dist/index';
 
 const pageStyle = {
   padding: 10,
@@ -56,7 +56,7 @@ export default class Responsive extends Component {
     const { orientation } = this.state;
 
     return (
-      <div style={{backgroundColor: '#000', height: '100vh', paddingTop: 50, paddingBottom: 1, width: '100%'}}>
+      <div style={{height: '100vh', padding: '50px 0.5px 0', width: '100%'}}>
         <Helmet title="Responsive Demo" />
         <FlipPage responsive orientation={orientation}>
           {page1(() => this.switchOrientation(), orientation)}
