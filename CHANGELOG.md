@@ -7,8 +7,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## Added
+
+- Improve code coverage for `<FlipPage />` from `59%` to `74%`:
+ 	- `mouseLeave()`: 100% covered
+	- `reset()`: 100% covered
+	- `props.orientation`: 100% covered
+	- `moveGesture()`: 90% covered (WIP)
+
+## 0.14.1
+
+## Fixed
+
+- `button`s and `a` were not clickable.
+
+## 0.14.0
+
 ### Added
 
+- `responsive` property (default to `false`) to enable responsive mode.
 - Improve code coverage for `<FlipPage />`:
 	- `getHeight()`: 100% covered
 	- `getHalfHeight()`: 100% covered
@@ -20,14 +37,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 	- `decrementPage()`: 100% covered
 	- `doNotMove()`: 100% covered
 	- `startMoving()`: 100% covered
-	- `mouseLeave()`: 100% covered
-	- `reset()`: 100% covered
-	- `props.orientation`: 100% covered
-	- `moveGesture()`: 90% covered (WIP)
 - Add codecov to the project (@darenju still needs setup it to his github repository)
 
 ### Fixed
-- Fix some lint issues on `index.jsx`
+
+- Replace the code style badge url fron `standardjs` to `airbnb`.
 
 ## 0.13.1
 ### Added

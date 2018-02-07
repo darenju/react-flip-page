@@ -2,13 +2,15 @@
 [![Build Status](https://travis-ci.org/darenju/react-flip-page.svg?branch=master)](https://travis-ci.org/darenju/react-flip-page)
 [![codecov](https://codecov.io/gh/darenju/react-flip-page/branch/master/graph/badge.svg)](https://codecov.io/gh/darenju/react-flip-page)
 [![Greenkeeper badge](https://badges.greenkeeper.io/darenju/react-flip-page.svg)](https://greenkeeper.io/)
-[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-airbnb-brightgreen.svg)](https://standardjs.com)
+[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-airbnb-brightgreen.svg)](https://github.com/airbnb/javascript)
 
 # react-flip-page
 
 > **DISCLAIMER**: This package is in no way related to nor endorsed by Flipboard, Inc. nor [flipboard.com](http://www.flipboard.com). This is just a showcase of HTML5 & CSS3 effect implemented with React.
 
 This package allows you to use the cool Flipboard page swipe effect in your React.js apps.
+
+It has a `responsive` option, so you can possibly cover your entire page with it!
 
 ![Demo GIF](https://raw.githubusercontent.com/darenju/react-flip-page/master/demo.gif)
 
@@ -75,6 +77,7 @@ There are a few properties that define the behaviour of the component, here they
 | `flipOnTouchZone` | `number` | `210` | Percentage of dimensions of the zone to touch/click to flip pages |
 | `disableSwipe` | `boolean` | `false` | If `true`, users can't use the swipe feature to switch pages while `flipOnTouch` is enabled. Make sure you enable `flipOnTouch` so they can switch pages, or provide
 buttons binded to Methods |
+| `responsive` | `boolean` | `false` | If `true`, the component will be responsive, meaning it will take all the available space. Place the component in a container before to make sure it is visible |
 
 ## Methods
 

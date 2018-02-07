@@ -54,19 +54,13 @@ class FlipPage extends Component {
   }
 
   getHeight() {
-    return `${this.props.height}px`;
-  }
-
-  getHalfHeight() {
-    return `${this.props.height / 2}px`;
+    const { responsive } = this.props;
+    return !responsive ? `${this.props.height}px` : '100%';
   }
 
   getWidth() {
-    return `${this.props.width}px`;
-  }
-
-  getHalfWidth() {
-    return `${this.props.width / 2}px`;
+    const { responsive } = this.props;
+    return !responsive ? `${this.props.width}px` : '100%';
   }
 
   isLastPage() {
@@ -128,6 +122,12 @@ class FlipPage extends Component {
   }
 
   startMoving(e) {
+    // prevent the button's and a's to not be clickable.
+    const { tagName } = e.target;
+    if (tagName === 'BUTTON' || tagName === 'A') {
+      return;
+    }
+
     doNotMove(e);
 
     const posX = e.pageX || e.touches[0].pageX;
@@ -393,13 +393,11 @@ class FlipPage extends Component {
   }
 
   renderPage(_page, key) {
-    const height = this.getHeight();
-    const halfHeight = this.getHalfHeight();
-    const width = this.getWidth();
-    const halfWidth = this.getHalfWidth();
-
     const complementaryStyle = {
-      height,
+      left: 0,
+      position: 'absolute',
+      top: 0,
+      width: '100%',
     };
 
     const pageItem = cloneElement(_page, {
@@ -423,10 +421,6 @@ class FlipPage extends Component {
       direction,
       rotate,
       uncutPages,
-      width,
-      halfWidth,
-      height,
-      halfHeight,
       orientation,
       maskOpacity,
       pageBackground,
@@ -444,6 +438,7 @@ class FlipPage extends Component {
       before,
       after,
       cut,
+      firstCut,
       pull,
       gradient,
       gradientSecondHalfBack,
@@ -491,7 +486,7 @@ class FlipPage extends Component {
         </div>
         <div style={m(part, visiblePart, firstHalf, this.state.firstHalfStyle)}>
           <div style={face}>
-            <div style={cut}>{pageItem}</div>
+            <div style={m(cut, firstCut)}>{pageItem}</div>
             <div style={m(mask, maskReverse)} />
             <div style={m(gradient, gradientFirstHalf)} />
           </div>
@@ -511,7 +506,7 @@ class FlipPage extends Component {
             <div style={m(gradient, gradientSecondHalf)} />
           </div>
           <div style={m(face, back)}>
-            <div style={m(part, after, cut)}>
+            <div style={m(part, after, cut, firstCut)}>
               {clonedAfterItem}
             </div>
             <div style={m(gradient, gradientSecondHalfBack)} />
@@ -628,6 +623,7 @@ FlipPage.defaultProps = {
   flipOnTouch: false,
   flipOnTouchZone: 10,
   disableSwipe: false,
+  responsive: false,
 };
 
 FlipPage.propTypes = {
@@ -658,6 +654,7 @@ FlipPage.propTypes = {
   flipOnTouch: PropTypes.bool,
   flipOnTouchZone: PropTypes.number,
   disableSwipe: PropTypes.bool,
+  responsive: PropTypes.bool,
 };
 
 export default FlipPage;

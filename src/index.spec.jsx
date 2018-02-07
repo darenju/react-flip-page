@@ -83,16 +83,6 @@ describe('<FlipPage />', () => {
     });
   });
 
-  describe('getHalfHeight()', () => {
-    it('should return the half height with pixel unit', () => {
-      const target = 123;
-      const wrapper = shallow(<FlipPage height={target} />);
-      const result = wrapper.instance().getHalfHeight();
-
-      expect(result).toEqual(`${target / 2}px`);
-    });
-  });
-
   describe('getWidth()', () => {
     it('should return the width with pixel unit', () => {
       const target = 123;
@@ -100,16 +90,6 @@ describe('<FlipPage />', () => {
       const result = wrapper.instance().getWidth();
 
       expect(result).toEqual(`${target}px`);
-    });
-  });
-
-  describe('getHalfWidth()', () => {
-    it('should return the half width with pixel unit', () => {
-      const target = 123;
-      const wrapper = shallow(<FlipPage width={target} />);
-      const result = wrapper.instance().getHalfWidth();
-
-      expect(result).toEqual(`${target / 2}px`);
     });
   });
 
@@ -203,6 +183,9 @@ describe('<FlipPage />', () => {
         preventDefault: jest.fn(),
         pageX: 1,
         pageY: 2,
+        target: {
+          tagName: 'div',
+        },
         touches: [{
           pageX: 3,
           pageY: 4,
