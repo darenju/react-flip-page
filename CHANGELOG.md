@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 	- `props.orientation`: 100% covered
 	- `moveGesture()`: 90% covered (WIP)
 
+## Changed
+
+- Change `eslintrc` run config, as it was given different error outputs based on the OS of the developer. It was basically change `eslint src/**/*.js* --quiet` to `eslint --ext .jsx --ext .js --quiet src/`.
+
 ## 0.14.1
 
 ## Fixed
