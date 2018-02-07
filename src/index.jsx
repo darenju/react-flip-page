@@ -623,6 +623,7 @@ FlipPage.defaultProps = {
   flipOnTouch: false,
   flipOnTouchZone: 10,
   disableSwipe: false,
+  responsive: false,
 };
 
 FlipPage.propTypes = {
@@ -630,14 +631,7 @@ FlipPage.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
-  orientation: (props, propName, componentName) => {
-    if (!/(vertical|horizontal)/.test(props[propName])) {
-      return new Error(`Invalid prop \`${propName}\` supplied to ` +
-        ` \`${componentName}\`. Expected \`horizontal\` or \`vertical\`. Validation failed.`);
-    }
-
-    return '';
-  },
+  orientation: PropTypes.oneOf(['vertical', 'horizontal']),
   animationDuration: PropTypes.number,
   treshold: PropTypes.number,
   maxAngle: PropTypes.number,
@@ -660,6 +654,7 @@ FlipPage.propTypes = {
   flipOnTouch: PropTypes.bool,
   flipOnTouchZone: PropTypes.number,
   disableSwipe: PropTypes.bool,
+  responsive: PropTypes.bool,
 };
 
 export default FlipPage;

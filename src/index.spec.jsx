@@ -5,7 +5,7 @@ import FlipPage from './index';
 
 jest.useFakeTimers();
 
-const getState = (wrapper) => wrapper.instance().state;
+const getState = wrapper => wrapper.instance().state;
 
 describe('<FlipPage />', () => {
   it('renders without crashing', () => {
@@ -32,7 +32,6 @@ describe('<FlipPage />', () => {
   describe('showHint()', () => {
     it('should update state', () => {
       const wrapper = shallow(<FlipPage showHint />);
-      const transition = wrapper.instance().transition;
       wrapper.instance().showHint();
 
       expect(Object.keys(getState(wrapper).secondHalfStyle)).toEqual(['transition', 'transform']);
@@ -212,6 +211,230 @@ describe('<FlipPage />', () => {
       expect(wrapper.state().startX).toEqual(event.touches[0].pageX);
       expect(wrapper.state().startY).toEqual(event.touches[0].pageY);
     });
+  });
+
+  describe('moveGesture', () => {
+    let wrapper;
+    let event;
+
+    beforeEach(() => {
+      wrapper = shallow(<FlipPage />);
+      event = {
+        preventDefault: jest.fn(),
+        pageX: 1,
+        pageY: 1,
+      };
+    });
+
+    it('should not change state when startY is -1', () => {
+      wrapper.instance().moveGesture(event);
+      const initialState = { ...wrapper.state() };
+      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+      expect(wrapper.state()).toEqual(initialState);
+    });
+
+    describe('Horizontal', () => {
+      beforeEach(() => {
+        wrapper.setProps({ orientation: 'horizontal' });
+      });
+
+      it('should move LEFT with an angle of -180deg', () => {
+        wrapper.setState({
+          startX: 251,
+          startY: 1,
+        });
+        wrapper.instance().moveGesture(event);
+
+        const { timestamp, ...timelessState } = wrapper.state();
+        expect(timelessState).toEqual({
+          angle: -180,
+          diffX: -250,
+          diffY: 0,
+          direction: 'left',
+          firstHalfStyle: {},
+          lastDirection: '',
+          page: 0,
+          rotate: 180,
+          secondHalfStyle: {
+            transform: 'perspective(130em) rotateY(-180deg)',
+          },
+          startX: 251,
+          startY: 1,
+        });
+      });
+
+      it('should move RIGHT with an angle of 90deg', () => {
+        wrapper.setState({
+          startX: -124,
+          startY: 1,
+        });
+        wrapper.instance().moveGesture(event);
+
+        const { timestamp, ...timelessState } = wrapper.state();
+        expect(timelessState).toEqual({
+          angle: 90,
+          diffX: 125,
+          diffY: 0,
+          direction: 'right',
+          firstHalfStyle: {
+            transform: 'perspective(130em) rotateY(90deg)',
+            zIndex: 2,
+          },
+          lastDirection: '',
+          page: 0,
+          rotate: 90,
+          secondHalfStyle: {},
+          startX: -124,
+          startY: 1,
+        });
+      });
+    });
+
+    describe('Vertical', () => {
+      beforeEach(() => {
+        wrapper.setProps({ orientation: 'vertical' });
+      });
+
+      it('should move UP with an angle of -135deg', () => {
+        wrapper.setState({
+          startX: 1,
+          startY: 188.5,
+        });
+        wrapper.instance().moveGesture(event);
+
+        const { timestamp, ...timelessState } = wrapper.state();
+        expect(timelessState).toEqual({
+          angle: 0,
+          diffX: 0,
+          diffY: -187.5,
+          direction: 'up',
+          firstHalfStyle: {},
+          lastDirection: 'up',
+          page: 0,
+          rotate: 0,
+          secondHalfStyle: {
+            transform: 'perspective(130em) rotateX(0deg)',
+          },
+          startX: 1,
+          startY: 188.5,
+        });
+      });
+
+      it('should move DOWN with an angle of 45deg', () => {
+        wrapper.setState({
+          startX: 1,
+          startY: -61.5,
+        });
+        wrapper.instance().moveGesture(event);
+
+        const { timestamp, ...timelessState } = wrapper.state();
+        expect(timelessState).toEqual({
+          angle: 0,
+          diffX: 0,
+          diffY: 62.5,
+          direction: 'down',
+          firstHalfStyle: {
+            transform: 'perspective(130em) rotateX(-0deg)',
+            zIndex: 2,
+          },
+          lastDirection: 'down',
+          page: 0,
+          rotate: 0,
+          secondHalfStyle: {},
+          startX: 1,
+          startY: -61.5,
+        });
+      });
+    });
+  });
+
+  describe('mouseLeave', () => {
+    let wrapper;
+    const mockFn = {
+      stopMoving: undefined,
+      reset: undefined,
+    };
+
+    beforeEach(() => {
+      mockFn.stopMoving = jest.fn();
+      mockFn.reset = jest.fn();
+
+      wrapper = shallow(<FlipPage />);
+      wrapper.instance().stopMoving = mockFn.stopMoving;
+      wrapper.instance().reset = mockFn.reset;
+    });
+
+    it('should call stopMoving() when flipOnLeave === TRUE', () => {
+      wrapper.setProps({ flipOnLeave: true });
+      wrapper.instance().mouseLeave();
+
+      expect(mockFn.stopMoving).toHaveBeenCalledTimes(1);
+      expect(mockFn.reset).not.toHaveBeenCalled();
+    });
+
+    it('should call reset() when flipOnLeave === FALSE', () => {
+      wrapper.setProps({ flipOnLeave: false });
+      wrapper.instance().mouseLeave();
+
+      expect(mockFn.reset).toHaveBeenCalledTimes(1);
+      expect(mockFn.stopMoving).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('reset', () => {
+    it('should reset state to initial values', () => {
+      const wrapper = shallow(<FlipPage />);
+      wrapper.setState({
+        startY: 999,
+        startX: 999,
+        angle: 180,
+        rotate: 180,
+        direction: 'up',
+        lastDirection: 'down',
+        secondHalfStyle: {
+          transform: 'perspective(130em) rotateY(-180deg)',
+        },
+        firstHalfStyle: {
+          transform: 'perspective(130em) rotateX(-0deg)',
+          zIndex: 2,
+        },
+      });
+
+      wrapper.instance().reset();
+      const {
+        timestamp,
+        diffY,
+        page,
+        ...result
+      } = wrapper.state();
+
+      expect(result).toEqual({
+        startY: -1,
+        startX: -1,
+        angle: 0,
+        rotate: 0,
+        direction: '',
+        lastDirection: '',
+        secondHalfStyle: {
+          transition: 'transform 0.2s ease-in-out',
+        },
+        firstHalfStyle: {
+          transition: 'transform 0.2s ease-in-out',
+        },
+      });
+    });
+  });
+});
+
+describe('<FlipPage orientation />', () => {
+  it('should allow "vertical" as an orientation entry', () => {
+    const wrapper = shallow(<FlipPage orientation="vertical" />);
+    expect(wrapper.html()).toMatchSnapshot();
+  });
+
+  it('should allow "horizontal" as an orientation entry', () => {
+    const wrapper = shallow(<FlipPage orientation="horizontal" />);
+    expect(wrapper.html()).toMatchSnapshot();
   });
 });
 

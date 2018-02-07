@@ -5,13 +5,13 @@ describe('generateStyles', () => {
     it('should start with `0 -100px` if direction is down', () => {
       const { gradientFirstHalf } = generateStyles(0, 0, 'down');
       const { boxShadow } = gradientFirstHalf;
-      expect(boxShadow).toMatch(/^0 \-100px/);
+      expect(boxShadow).toMatch(/^0 -100px/);
     });
 
     it('should start with `-100px` if direction is left', () => {
       const { gradientFirstHalf } = generateStyles(0, 0, 'left');
       const { boxShadow } = gradientFirstHalf;
-      expect(boxShadow).toMatch(/^\-100px/);
+      expect(boxShadow).toMatch(/^-100px/);
     });
 
     it('should be empty otherwise', () => {
