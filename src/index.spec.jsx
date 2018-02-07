@@ -5,7 +5,7 @@ import FlipPage from './index';
 
 jest.useFakeTimers();
 
-const getState = (wrapper) => wrapper.instance().state;
+const getState = wrapper => wrapper.instance().state;
 
 describe('<FlipPage />', () => {
   it('renders without crashing', () => {
@@ -32,7 +32,6 @@ describe('<FlipPage />', () => {
   describe('showHint()', () => {
     it('should update state', () => {
       const wrapper = shallow(<FlipPage showHint />);
-      const transition = wrapper.instance().transition;
       wrapper.instance().showHint();
 
       expect(Object.keys(getState(wrapper).secondHalfStyle)).toEqual(['transition', 'transform']);
