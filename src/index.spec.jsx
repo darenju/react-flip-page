@@ -177,6 +177,21 @@ describe('<FlipPage />', () => {
     let wrapper;
     let event;
 
+    it('should stop if event is on a button or a link', () => {
+      wrapper = shallow(<FlipPage />);
+      event = {
+        preventDefault: jest.fn(),
+        target: {
+          tagName: 'A',
+        },
+      };
+
+      const ret = wrapper.instance().startMoving(event);
+
+      expect(ret).toEqual(undefined);
+      expect(event.preventDefault).not.toHaveBeenCalled();
+    });
+
     beforeEach(() => {
       wrapper = shallow(<FlipPage />);
       event = {
@@ -231,6 +246,30 @@ describe('<FlipPage />', () => {
       const initialState = { ...wrapper.state() };
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(wrapper.state()).toEqual(initialState);
+    });
+
+    it('should use maxAngle when on first page', () => {
+      wrapper.setState({
+        direction: 'down',
+        startY: 1,
+      });
+
+      wrapper.instance().hasPreviousPage = jest.fn();
+      wrapper.instance().moveGesture(event);
+
+      expect(wrapper.instance().hasPreviousPage).toHaveBeenCalled();
+    });
+
+    it('should use maxAngle when on last page', () => {
+      wrapper.setState({
+        direction: 'up',
+        startY: 300,
+      });
+
+      wrapper.instance().hasNextPage = jest.fn();
+      wrapper.instance().moveGesture(event);
+
+      expect(wrapper.instance().hasNextPage).toHaveBeenCalled();
     });
 
     describe('Horizontal', () => {
@@ -345,6 +384,146 @@ describe('<FlipPage />', () => {
           startY: -61.5,
         });
       });
+    });
+  });
+
+  describe('gotoNextPage', () => {
+    let wrapper;
+
+    it('should return when no next page', () => {
+      wrapper = shallow(<FlipPage><div /></FlipPage>);
+      wrapper.instance().hasNextPage = jest.fn();
+
+      const ret = wrapper.instance().gotoNextPage();
+
+      expect(ret).toEqual(undefined);
+      expect(wrapper.instance().hasNextPage).toHaveBeenCalled();
+    });
+
+    beforeEach(() => {
+      const onPageChange = jest.fn();
+      wrapper = shallow(<FlipPage onPageChange={onPageChange}><div /><div /></FlipPage>);
+      wrapper.instance().incrementPage = jest.fn();
+      wrapper.instance().decrementPage = jest.fn();
+    });
+
+    describe('Vertical', () => {
+      it('should flip the bottom part', () => {
+        wrapper.instance().gotoNextPage();
+
+        let state = wrapper.state();
+        expect(state.secondHalfStyle.transform).toMatch(/rotateX\(180deg\)$/);
+
+        jest.runOnlyPendingTimers();
+        state = wrapper.state();
+
+        expect(wrapper.instance().incrementPage).toHaveBeenCalled();
+        expect(state.secondHalfStyle).toEqual({});
+        expect(wrapper.instance().props.onPageChange).toHaveBeenCalled();
+      });
+    });
+
+    describe('Horizontal', () => {
+      it('should flip the right part', () => {
+        wrapper.setProps({ orientation: 'horizontal' });
+        wrapper.instance().gotoNextPage();
+
+        let state = wrapper.state();
+        expect(state.secondHalfStyle.transform).toMatch(/rotateY\(-180deg\)$/);
+
+        jest.runOnlyPendingTimers();
+        state = wrapper.state();
+
+        expect(wrapper.instance().incrementPage).toHaveBeenCalled();
+        expect(state.secondHalfStyle).toEqual({});
+        expect(wrapper.instance().props.onPageChange).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('gotoPreviousPage', () => {
+    let wrapper;
+
+    it('should return when no previous page', () => {
+      wrapper = shallow(<FlipPage><div /></FlipPage>);
+      wrapper.instance().hasPreviousPage = jest.fn();
+
+      const ret = wrapper.instance().gotoPreviousPage();
+
+      expect(ret).toEqual(undefined);
+      expect(wrapper.instance().hasPreviousPage).toHaveBeenCalled();
+    });
+
+    beforeEach(() => {
+      const onPageChange = jest.fn();
+      wrapper = shallow(<FlipPage onPageChange={onPageChange}><div /><div /></FlipPage>);
+      wrapper.setState({ page: 1 });
+      wrapper.instance().incrementPage = jest.fn();
+      wrapper.instance().decrementPage = jest.fn();
+    });
+
+    describe('Vertical', () => {
+      it('should flip the top part', () => {
+        wrapper.instance().gotoPreviousPage();
+
+        let state = wrapper.state();
+        expect(state.firstHalfStyle.transform).toMatch(/rotateX\(-180deg\)$/);
+
+        jest.runOnlyPendingTimers();
+        state = wrapper.state();
+
+        expect(wrapper.instance().decrementPage).toHaveBeenCalled();
+        expect(state.firstHalfStyle).toEqual({});
+        expect(wrapper.instance().props.onPageChange).toHaveBeenCalled();
+      });
+    });
+
+    describe('Horizontal', () => {
+      it('should flip the left part', () => {
+        wrapper.setProps({ orientation: 'horizontal' });
+        wrapper.instance().gotoPreviousPage();
+
+        let state = wrapper.state();
+        expect(state.firstHalfStyle.transform).toMatch(/rotateY\(180deg\)$/);
+
+        jest.runOnlyPendingTimers();
+        state = wrapper.state();
+
+        expect(wrapper.instance().decrementPage).toHaveBeenCalled();
+        expect(state.firstHalfStyle).toEqual({});
+        expect(wrapper.instance().props.onPageChange).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('stopMoving', () => {
+    let wrapper;
+
+    beforeEach(() => {
+      wrapper = shallow(<FlipPage><div /><div /></FlipPage>);
+      wrapper.instance().gotoNextPage = jest.fn();
+      wrapper.instance().gotoPreviousPage = jest.fn();
+      wrapper.instance().reset = jest.fn();
+    });
+
+    it('should go to next page if possible', () => {
+      wrapper.setState({ angle: -90 });
+
+      wrapper.instance().stopMoving();
+
+      expect(wrapper.instance().reset).toHaveBeenCalled();
+      expect(wrapper.instance().gotoNextPage).toHaveBeenCalled();
+      expect(wrapper.instance().gotoPreviousPage).not.toHaveBeenCalled();
+    });
+
+    it('should go to previous page if possible', () => {
+      wrapper.setState({ page: 1, angle: 90 });
+
+      wrapper.instance().stopMoving();
+
+      expect(wrapper.instance().reset).toHaveBeenCalled();
+      expect(wrapper.instance().gotoPreviousPage).toHaveBeenCalled();
+      expect(wrapper.instance().gotoNextPage).not.toHaveBeenCalled();
     });
   });
 
