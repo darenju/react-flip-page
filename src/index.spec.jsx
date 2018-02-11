@@ -507,7 +507,12 @@ describe('<FlipPage />', () => {
     });
 
     it('should go to next page if possible', () => {
-      wrapper.setState({ angle: -90 });
+      wrapper.setState({
+        angle: -90,
+        timestamp: Date.now(),
+        direction: 'up',
+        lastDirection: 'up',
+      });
 
       wrapper.instance().stopMoving();
 
@@ -517,7 +522,13 @@ describe('<FlipPage />', () => {
     });
 
     it('should go to previous page if possible', () => {
-      wrapper.setState({ page: 1, angle: 90 });
+      wrapper.setState({
+        page: 1,
+        angle: 90,
+        timestamp: Date.now(),
+        direction: 'down',
+        lastDirection: 'down',
+      });
 
       wrapper.instance().stopMoving();
 
@@ -601,6 +612,38 @@ describe('<FlipPage />', () => {
           transition: 'transform 0.2s ease-in-out',
         },
       });
+    });
+  });
+
+  describe('flipOnTouch click handlers', () => {
+    let wrapper;
+    let stopMoving;
+    let gotoPreviousPage;
+    let gotoNextPage;
+
+    beforeEach(() => {
+      stopMoving = jest.fn();
+      gotoPreviousPage = jest.fn();
+      gotoNextPage = jest.fn();
+
+      wrapper = shallow(<FlipPage flipOnTouch />);
+      wrapper.instance().stopMoving = stopMoving;
+      wrapper.instance().gotoPreviousPage = gotoPreviousPage;
+      wrapper.instance().gotoNextPage = gotoNextPage;
+    });
+
+    it('should call stopMoving and gotoPreviousPage when clicking top zone', () => {
+      wrapper.find('.rfp-touchZone-previous').simulate('mouseup');
+
+      expect(stopMoving).toHaveBeenCalled();
+      expect(gotoPreviousPage).toHaveBeenCalled();
+    });
+
+    it('should call stopMoving and gotoNextPage when clicking bottom zone', () => {
+      wrapper.find('.rfp-touchZone-next').simulate('mouseup');
+
+      expect(stopMoving).toHaveBeenCalled();
+      expect(gotoNextPage).toHaveBeenCalled();
     });
   });
 });
