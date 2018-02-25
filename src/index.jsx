@@ -136,7 +136,7 @@ class FlipPage extends Component {
     this.setState({
       startX: posX,
       startY: posY,
-    });
+    }, this.props.onStartSwiping());
   }
 
   moveGesture(e) {
@@ -338,6 +338,7 @@ class FlipPage extends Component {
 
     // reset everything
     this.reset();
+    this.props.onStopSwiping();
 
     if (goNext) {
       this.gotoNextPage();
@@ -617,6 +618,8 @@ FlipPage.defaultProps = {
   height: 480,
   width: 320,
   onPageChange: () => {},
+  onStartSwiping: () => {},
+  onStopSwiping: () => {},
   className: '',
   flipOnLeave: false,
   loopForever: false, // loop back to first page after last one
@@ -649,6 +652,8 @@ FlipPage.propTypes = {
   height: PropTypes.number,
   width: PropTypes.number,
   onPageChange: PropTypes.func,
+  onStartSwiping: PropTypes.func,
+  onStopSwiping: PropTypes.func,
   className: PropTypes.string,
   loopForever: PropTypes.bool,
   flipOnTouch: PropTypes.bool,

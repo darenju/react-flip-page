@@ -71,12 +71,13 @@ There are a few properties that define the behaviour of the component, here they
 | `height` | `number` | `480` | Height for the flipboard |
 | `width` | `number` | `320` | Width for the flipboard |
 | `onPageChange` | `function` |   | Callback when the page has been changed. Parameter: `pageIndex` |
+| `onStartSwiping` | `function` |   | Callback when the user starts swiping |
+| `onEndSwiping` | `function` |   | Callback when the user stops swiping |
 | `className` | `string` | `''` | Optional CSS class to be applied on the container |
 | `loopForever` | `boolean` | `false` | If `true` flipping after the last page will return to the first (and visa-versa) |
 | `flipOnTouch` | `boolean` | `false` | If `true`, the user can flip pages by touching/clicking a top/bottom or left/right zone. These zones have CSS classes: `rfp-touchZone`, `rfp-touchZone-previous` and `rfp-touchZone-next` so that you can style them |
 | `flipOnTouchZone` | `number` | `210` | Percentage of dimensions of the zone to touch/click to flip pages |
-| `disableSwipe` | `boolean` | `false` | If `true`, users can't use the swipe feature to switch pages while `flipOnTouch` is enabled. Make sure you enable `flipOnTouch` so they can switch pages, or provide
-buttons binded to Methods |
+| `disableSwipe` | `boolean` | `false` | If `true`, users can't use the swipe feature to switch pages while `flipOnTouch` is enabled. Make sure you enable `flipOnTouch` so they can switch pages, or provide buttons binded to Methods |
 | `responsive` | `boolean` | `false` | If `true`, the component will be responsive, meaning it will take all the available space. Place the component in a container before to make sure it is visible |
 
 ## Methods
