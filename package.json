@@ -50,7 +50,8 @@
     "dependencies": {
         "prop-types": "^15.5.10",
         "react": "^16.2.0",
-        "react-dom": "^16.2.0"
+        "react-dom": "^16.2.0",
+        "webpack-cli": "^2.0.9"
     },
     "devDependencies": {
         "babel-core": "^6.26.0",
