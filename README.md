@@ -72,7 +72,7 @@ There are a few properties that define the behaviour of the component, here they
 | `width` | `number` | `320` | Width for the flipboard |
 | `onPageChange` | `function` |   | Callback when the page has been changed. Parameter: `pageIndex` |
 | `onStartSwiping` | `function` |   | Callback when the user starts swiping |
-| `onEndSwiping` | `function` |   | Callback when the user stops swiping |
+| `onStopSwiping` | `function` |   | Callback when the user stops swiping |
 | `className` | `string` | `''` | Optional CSS class to be applied on the container |
 | `loopForever` | `boolean` | `false` | If `true` flipping after the last page will return to the first (and visa-versa) |
 | `flipOnTouch` | `boolean` | `false` | If `true`, the user can flip pages by touching/clicking a top/bottom or left/right zone. These zones have CSS classes: `rfp-touchZone`, `rfp-touchZone-previous` and `rfp-touchZone-next` so that you can style them |
