@@ -93,7 +93,7 @@ class FlipPage extends Component {
     const { page } = this.state;
     this.setState({
       page: (page + 1) % lastPage,
-    });
+    }, () => this.props.onPageChange(this.state.page));
   }
 
   decrementPage() {
@@ -108,7 +108,7 @@ class FlipPage extends Component {
     }
     this.setState({
       page: nextPage,
-    });
+    }, () => this.props.onPageChange(this.state.page));
   }
 
   hasNextPage() {
@@ -243,9 +243,8 @@ class FlipPage extends Component {
     if (!this.hasNextPage()) return;
 
     const {
-      perspective, orientation, onPageChange, animationDuration,
+      perspective, orientation, animationDuration,
     } = this.props;
-    const { page } = this.state;
     const { transition } = this;
 
     let secondHalfTransform = `perspective(${perspective}) `;
@@ -272,8 +271,6 @@ class FlipPage extends Component {
         this.incrementPage();
         this.setState({
           secondHalfStyle: {},
-        }, () => {
-          onPageChange(page);
         });
       }, animationDuration);
     });
@@ -283,9 +280,8 @@ class FlipPage extends Component {
     if (!this.hasPreviousPage()) return;
 
     const {
-      perspective, orientation, onPageChange, animationDuration,
+      perspective, orientation, animationDuration,
     } = this.props;
-    const { page } = this.state;
     const { transition } = this;
 
     let firstHalfTransform = `perspective(${perspective}) `;
@@ -312,8 +308,6 @@ class FlipPage extends Component {
         this.decrementPage();
         this.setState({
           firstHalfStyle: {},
-        }, () => {
-          onPageChange(page);
         });
       }, animationDuration);
     });

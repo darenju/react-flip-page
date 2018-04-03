@@ -137,19 +137,22 @@ describe('<FlipPage />', () => {
     let wrapper;
 
     beforeEach(() => {
-      wrapper = shallow(<FlipPage><div /><div /></FlipPage>);
+      const onPageChange = jest.fn();
+      wrapper = shallow(<FlipPage onPageChange={onPageChange}><div /><div /></FlipPage>);
     });
 
     it('should increment the page by one', () => {
       wrapper.setState({ page: 0 });
       wrapper.instance().incrementPage();
       expect(wrapper.state().page).toEqual(1);
+      expect(wrapper.instance().props.onPageChange).toHaveBeenCalledWith(1);
     });
 
-    it('should return FIRT PAGE when incrementing the last page', () => {
+    it('should return FIRST PAGE when incrementing the last page', () => {
       wrapper.setState({ page: 1 });
       wrapper.instance().incrementPage();
       expect(wrapper.state().page).toEqual(0);
+      expect(wrapper.instance().props.onPageChange).toHaveBeenCalledWith(0);
     });
   });
 
@@ -157,19 +160,22 @@ describe('<FlipPage />', () => {
     let wrapper;
 
     beforeEach(() => {
-      wrapper = shallow(<FlipPage><div /><div /></FlipPage>);
+      const onPageChange = jest.fn();
+      wrapper = shallow(<FlipPage onPageChange={onPageChange}><div /><div /></FlipPage>);
     });
 
     it('should decrement the page by one', () => {
       wrapper.setState({ page: 1 });
       wrapper.instance().decrementPage();
       expect(wrapper.state().page).toEqual(0);
+      expect(wrapper.instance().props.onPageChange).toHaveBeenCalledWith(0);
     });
 
     it('should return LAST PAGE when decrementing the first page', () => {
       wrapper.setState({ page: 0 });
       wrapper.instance().decrementPage();
       expect(wrapper.state().page).toEqual(1);
+      expect(wrapper.instance().props.onPageChange).toHaveBeenCalledWith(1);
     });
   });
 
@@ -401,8 +407,7 @@ describe('<FlipPage />', () => {
     });
 
     beforeEach(() => {
-      const onPageChange = jest.fn();
-      wrapper = shallow(<FlipPage onPageChange={onPageChange}><div /><div /></FlipPage>);
+      wrapper = shallow(<FlipPage><div /><div /></FlipPage>);
       wrapper.instance().incrementPage = jest.fn();
       wrapper.instance().decrementPage = jest.fn();
     });
@@ -419,7 +424,6 @@ describe('<FlipPage />', () => {
 
         expect(wrapper.instance().incrementPage).toHaveBeenCalled();
         expect(state.secondHalfStyle).toEqual({});
-        expect(wrapper.instance().props.onPageChange).toHaveBeenCalled();
       });
     });
 
@@ -436,7 +440,6 @@ describe('<FlipPage />', () => {
 
         expect(wrapper.instance().incrementPage).toHaveBeenCalled();
         expect(state.secondHalfStyle).toEqual({});
-        expect(wrapper.instance().props.onPageChange).toHaveBeenCalled();
       });
     });
   });
@@ -455,8 +458,7 @@ describe('<FlipPage />', () => {
     });
 
     beforeEach(() => {
-      const onPageChange = jest.fn();
-      wrapper = shallow(<FlipPage onPageChange={onPageChange}><div /><div /></FlipPage>);
+      wrapper = shallow(<FlipPage><div /><div /></FlipPage>);
       wrapper.setState({ page: 1 });
       wrapper.instance().incrementPage = jest.fn();
       wrapper.instance().decrementPage = jest.fn();
@@ -474,7 +476,6 @@ describe('<FlipPage />', () => {
 
         expect(wrapper.instance().decrementPage).toHaveBeenCalled();
         expect(state.firstHalfStyle).toEqual({});
-        expect(wrapper.instance().props.onPageChange).toHaveBeenCalled();
       });
     });
 
@@ -491,7 +492,6 @@ describe('<FlipPage />', () => {
 
         expect(wrapper.instance().decrementPage).toHaveBeenCalled();
         expect(state.firstHalfStyle).toEqual({});
-        expect(wrapper.instance().props.onPageChange).toHaveBeenCalled();
       });
     });
   });
