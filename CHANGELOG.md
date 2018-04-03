@@ -5,16 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.15.1
+
+## Fixed
+
+- Fixed `onPageChange` not passing the correct page number.
+
 ## 0.15.0
 
-## Added
+### Added
 
 - Improve code coverage for `<FlipPage />` from `74%` to `99%`.
 - `onStartSwiping` and `onEndSwiping` callback.
 
 ## 0.14.2
 
-## Added
+### Added
 
 - Improve code coverage for `<FlipPage />` from `59%` to `74%`:
 	- `mouseLeave()`: 100% covered
@@ -22,13 +28,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 	- `props.orientation`: 100% covered
 	- `moveGesture()`: 90% covered (WIP)
 
-## Changed
+### Changed
 
 - Change `eslintrc` run config, as it was given different error outputs based on the OS of the developer. It was basically change `eslint src/**/*.js* --quiet` to `eslint --ext .jsx --ext .js --quiet src/`.
 
 ## 0.14.1
 
-## Fixed
+### Fixed
 
 - `button`s and `a` were not clickable.
 
