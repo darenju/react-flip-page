@@ -79,6 +79,7 @@ There are a few properties that define the behaviour of the component, here they
 | `flipOnTouchZone` | `number` | `210` | Percentage of dimensions of the zone to touch/click to flip pages |
 | `disableSwipe` | `boolean` | `false` | If `true`, users can't use the swipe feature to switch pages while `flipOnTouch` is enabled. Make sure you enable `flipOnTouch` so they can switch pages, or provide buttons binded to Methods |
 | `responsive` | `boolean` | `false` | If `true`, the component will be responsive, meaning it will take all the available space. Place the component in a container before to make sure it is visible |
+| `startAt` | `number` | `0` | Default start position of the component |
 
 ## Methods
 

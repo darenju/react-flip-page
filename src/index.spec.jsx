@@ -646,6 +646,14 @@ describe('<FlipPage />', () => {
       expect(gotoNextPage).toHaveBeenCalled();
     });
   });
+
+  describe('startAt', () => {
+    const wrapper = shallow(<FlipPage startAt={1}><div /><div /></FlipPage>);
+
+    it('should have state.page to 1 when startAt = 1', () => {
+      expect(wrapper.state().page).toEqual(1);
+    });
+  });
 });
 
 describe('<FlipPage orientation />', () => {

@@ -14,7 +14,7 @@ class FlipPage extends Component {
     super(props);
 
     this.state = {
-      page: 0, // current index of page
+      page: props.startAt, // current index of page
       startY: -1, // start position of swipe
       diffY: 0, // diffYerence between last swipe position and current position
       timestamp: 0, // time elapsed between two swipes
@@ -621,6 +621,7 @@ FlipPage.defaultProps = {
   flipOnTouchZone: 10,
   disableSwipe: false,
   responsive: false,
+  startAt: 0,
 };
 
 FlipPage.propTypes = {
@@ -654,6 +655,7 @@ FlipPage.propTypes = {
   flipOnTouchZone: PropTypes.number,
   disableSwipe: PropTypes.bool,
   responsive: PropTypes.bool,
+  startAt: PropTypes.number,
 };
 
 export default FlipPage;
