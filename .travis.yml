@@ -10,6 +10,7 @@ before_install:
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
 script:
+  - npm install
   - npm run lint
   - npm test -- --coverage
   - bash <(curl -s https://codecov.io/bash) || echo 'Codecov failed to upload'
