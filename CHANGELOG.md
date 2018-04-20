@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.17.0
+
+### Changed
+
+- Changed the way page components are rendered. To limit number of renders, the component now uses `PureComponent`s wrapper (higher-order components) for actual pages.
+
 ## 0.16.0
 
 ### Added

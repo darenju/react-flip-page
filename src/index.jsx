@@ -1,5 +1,6 @@
-import React, { Component, Children, cloneElement } from 'react';
+import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
+import FlipPageItem from './item';
 import './Hint.css';
 import generateStyles from './generateStyles';
 
@@ -388,16 +389,7 @@ class FlipPage extends Component {
   }
 
   renderPage(_page, key) {
-    const complementaryStyle = {
-      left: 0,
-      position: 'absolute',
-      top: 0,
-      width: '100%',
-    };
-
-    const pageItem = cloneElement(_page, {
-      style: Object.assign({}, _page.props.style, complementaryStyle),
-    });
+    const activeItem = key === this.state.page;
 
     const { page, direction, rotate } = this.state;
     const {
@@ -444,16 +436,22 @@ class FlipPage extends Component {
       maskReverse,
     } = style;
 
+    const pageItem = (<FlipPageItem
+      shouldUpdate={activeItem}
+      component={_page}
+    />);
+
     const beforeItem = this.beforeItem();
     const afterItem = this.afterItem();
 
-    const clonedBeforeItem = beforeItem && cloneElement(beforeItem, {
-      style: Object.assign({}, beforeItem.props.style, complementaryStyle),
-    });
-
-    const clonedAfterItem = afterItem && cloneElement(afterItem, {
-      style: Object.assign({}, afterItem.props.style, complementaryStyle),
-    });
+    const clonedBeforeItem = (<FlipPageItem
+      component={beforeItem}
+      shouldUpdate={activeItem}
+    />);
+    const clonedAfterItem = (<FlipPageItem
+      component={afterItem}
+      shouldUpdate={activeItem}
+    />);
 
     const allowSwipe = (flipOnTouch && !disableSwipe) || !flipOnTouch;
     const onStartTouching = allowSwipe ? this.startMoving : doNotMove;
