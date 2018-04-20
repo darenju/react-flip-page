@@ -10,3 +10,5 @@ class FlipPageItem extends React.PureComponent {
 FlipPageItem.propTypes = {
   component: PropTypes.node.isRequired,
 };
+
+export default FlipPageItem;
