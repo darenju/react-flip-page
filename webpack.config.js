@@ -1,11 +1,11 @@
 const path = require('path');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   context: path.resolve('src'),
   entry: {
     app: './index.jsx'
   },
+  mode: 'production',
   output: {
     path: path.resolve('dist'),
     filename: 'index.js',
@@ -46,12 +46,4 @@ module.exports = {
   externals: {
     'react': 'react'
   },
-  plugins: [
-    new UglifyJSPlugin({
-      uglifyOptions: {
-        ecma: 6
-      },
-      extractComments: false
-    })
-  ]
 };
