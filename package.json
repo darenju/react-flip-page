@@ -48,7 +48,7 @@
         ]
     },
     "dependencies": {
-        "npm": "^5.8.0",
+        "npm": "^6.0.0",
         "prop-types": "^15.5.10",
         "react": "^16.2.0",
         "react-dom": "^16.2.0",
