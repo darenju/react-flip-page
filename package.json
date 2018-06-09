@@ -74,7 +74,7 @@
         "style-loader": "^0.21.0",
         "svg-url-loader": "^2.1.1",
         "webpack": "^4.0.1",
-        "webpack-cli": "^2.0.9"
+        "webpack-cli": "^3.0.0"
     },
     "peerDependencies": {
         "react-dom": "^16.2.0"
