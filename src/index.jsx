@@ -94,7 +94,7 @@ class FlipPage extends Component {
     const { page } = this.state;
     this.setState({
       page: (page + 1) % lastPage,
-    }, () => this.props.onPageChange(this.state.page));
+    }, () => this.props.onPageChange(this.state.page, 'next'));
   }
 
   decrementPage() {
@@ -109,7 +109,7 @@ class FlipPage extends Component {
     }
     this.setState({
       page: nextPage,
-    }, () => this.props.onPageChange(this.state.page));
+    }, () => this.props.onPageChange(this.state.page, 'prev'));
   }
 
   hasNextPage() {

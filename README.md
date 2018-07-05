@@ -70,7 +70,7 @@ There are a few properties that define the behaviour of the component, here they
 | `style` | `object` | `{}` | Additional style for the flipboard |
 | `height` | `number` | `480` | Height for the flipboard |
 | `width` | `number` | `320` | Width for the flipboard |
-| `onPageChange` | `function` |   | Callback when the page has been changed. Parameter: `pageIndex` |
+| `onPageChange` | `function` |   | Callback when the page has been changed. Parameters: `pageIndex`, `direction` |
 | `onStartSwiping` | `function` |   | Callback when the user starts swiping |
 | `onStopSwiping` | `function` |   | Callback when the user stops swiping |
 | `className` | `string` | `''` | Optional CSS class to be applied on the container |
