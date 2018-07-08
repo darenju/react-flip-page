@@ -6,6 +6,8 @@ exports[`<FlipPage flipOnTouch /> should include two touch zones 1`] = `"<div st
 
 exports[`<FlipPage flipOnTouch showTouchHint /> should include a touch hint element 1`] = `"<div style=\\"height:480px;position:relative;width:320px\\" class=\\"\\"><div><div role=\\"presentation\\" style=\\"height:10%;position:absolute;width:100%;z-index:3;left:0;top:0\\" class=\\"rfp-touchZone rfp-touchZone-previous\\"></div><div role=\\"presentation\\" style=\\"height:10%;position:absolute;width:100%;z-index:3;bottom:0;right:0\\" class=\\"rfp-touchZone rfp-touchZone-next\\"></div><div class=\\"rfp-touchHint rfp-touchHint--vertical\\"></div></div></div>"`;
 
+exports[`<FlipPage flipOnTouch showTouchHint /> should include a touch hint element 2`] = `"<div style=\\"height:480px;position:relative;width:320px\\" class=\\"\\"><div><div role=\\"presentation\\" style=\\"height:10%;position:absolute;width:100%;z-index:3;left:0;top:0\\" class=\\"rfp-touchZone rfp-touchZone-previous\\"></div><div role=\\"presentation\\" style=\\"height:10%;position:absolute;width:100%;z-index:3;bottom:0;right:0\\" class=\\"rfp-touchZone rfp-touchZone-next\\"></div><div class=\\"rfp-touchHint rfp-touchHint--vertical\\"></div></div></div>"`;
+
 exports[`<FlipPage orientation /> should allow "horizontal" as an orientation entry 1`] = `"<div style=\\"height:480px;position:relative;width:320px\\" class=\\"\\"></div>"`;
 
 exports[`<FlipPage orientation /> should allow "vertical" as an orientation entry 1`] = `"<div style=\\"height:480px;position:relative;width:320px\\" class=\\"\\"></div>"`;

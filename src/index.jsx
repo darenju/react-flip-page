@@ -84,8 +84,8 @@ class FlipPage extends Component {
         },
       });
 
-      this.hintHideTimeout = setTimeout(() =>
-        this.setState({ secondHalfStyle: { transition } }), 1000);
+      const callback = () => this.setState({ secondHalfStyle: { transition } });
+      this.hintHideTimeout = setTimeout(callback, 1000);
     });
   }
 
@@ -314,21 +314,29 @@ class FlipPage extends Component {
     });
   }
 
+  gotoPage(page) {
+    if (page > 0 && page < this.props.children.length) {
+      this.setState({ page });
+    } else {
+      throw new RangeError('`page` argument is out of bounds.');
+    }
+  }
+
   stopMoving() {
     const {
       timestamp, angle, direction, lastDirection,
     } = this.state;
     const delay = Date.now() - timestamp;
 
-    const goNext = this.hasNextPage() &&
-      (angle <= -90 ||
-        (delay <= 20 && direction === 'up' && lastDirection === 'up') ||
-        (delay <= 20 && direction === 'right' && lastDirection === 'right')
+    const goNext = this.hasNextPage()
+      && (angle <= -90
+        || (delay <= 20 && direction === 'up' && lastDirection === 'up')
+        || (delay <= 20 && direction === 'right' && lastDirection === 'right')
       );
-    const goPrevious = this.hasPreviousPage() &&
-      (angle >= 90 ||
-        (delay <= 20 && direction === 'down' && lastDirection === 'down') ||
-        (delay <= 20 && direction === 'left' && lastDirection === 'left')
+    const goPrevious = this.hasPreviousPage()
+      && (angle >= 90
+        || (delay <= 20 && direction === 'down' && lastDirection === 'down')
+        || (delay <= 20 && direction === 'left' && lastDirection === 'left')
       );
 
     // reset everything
@@ -436,22 +444,28 @@ class FlipPage extends Component {
       maskReverse,
     } = style;
 
-    const pageItem = (<FlipPageItem
-      shouldUpdate={activeItem}
-      component={_page}
-    />);
+    const pageItem = (
+      <FlipPageItem
+        shouldUpdate={activeItem}
+        component={_page}
+      />
+    );
 
     const beforeItem = this.beforeItem();
     const afterItem = this.afterItem();
 
-    const clonedBeforeItem = (<FlipPageItem
-      component={beforeItem}
-      shouldUpdate={activeItem}
-    />);
-    const clonedAfterItem = (<FlipPageItem
-      component={afterItem}
-      shouldUpdate={activeItem}
-    />);
+    const clonedBeforeItem = beforeItem ? (
+      <FlipPageItem
+        component={beforeItem}
+        shouldUpdate={activeItem}
+      />
+    ) : null;
+    const clonedAfterItem = afterItem ? (
+      <FlipPageItem
+        component={afterItem}
+        shouldUpdate={activeItem}
+      />
+    ) : null;
 
     const allowSwipe = (flipOnTouch && !disableSwipe) || !flipOnTouch;
     const onStartTouching = allowSwipe ? this.startMoving : doNotMove;
@@ -474,18 +488,24 @@ class FlipPage extends Component {
           <div style={mask} />
         </div>
         <div style={m(part, cut, after)}>
-          <div style={pull}>{clonedAfterItem}</div>
+          <div style={pull}>
+            {clonedAfterItem}
+          </div>
           <div style={mask} />
         </div>
         <div style={m(part, visiblePart, firstHalf, this.state.firstHalfStyle)}>
           <div style={face}>
-            <div style={m(cut, firstCut)}>{pageItem}</div>
+            <div style={m(cut, firstCut)}>
+              {pageItem}
+            </div>
             <div style={m(mask, maskReverse)} />
             <div style={m(gradient, gradientFirstHalf)} />
           </div>
           <div style={m(face, back)}>
             <div style={cut}>
-              <div style={pull}>{clonedBeforeItem}</div>
+              <div style={pull}>
+                {clonedBeforeItem}
+              </div>
             </div>
             <div style={m(gradient, gradientFirstHalfBack)} />
           </div>
@@ -493,7 +513,9 @@ class FlipPage extends Component {
         <div style={m(part, visiblePart, secondHalf, this.state.secondHalfStyle)}>
           <div style={face}>
             <div style={cut}>
-              <div style={pull}>{pageItem}</div>
+              <div style={pull}>
+                {pageItem}
+              </div>
             </div>
             <div style={m(mask, maskReverse)} />
             <div style={m(gradient, gradientSecondHalf)} />

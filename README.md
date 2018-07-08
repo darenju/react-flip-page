@@ -83,7 +83,7 @@ There are a few properties that define the behaviour of the component, here they
 
 ## Methods
 
-There are currently two methods that can be called on the component. To call them, you can use the
+There are currently three methods that can be called on the component. To call them, you can use the
 `ref` attribute in React:
 
 ```javascript
@@ -101,6 +101,10 @@ This method triggers the effect and switches to the previous page, if possible.
 ### `gotoNextPage()`
 
 This method triggers the effect and switches to the next page, if possible.
+
+### `gotoPage(page)`
+
+This methods positions the component to the wanted page index. The `page` argument should be between `0` and the number of pages. If not, a `RangeError` will be thrown. Also note that this does **not** call the `onPageChange` callback.
 
 ## Contribute
 

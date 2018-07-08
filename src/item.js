@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 class FlipPageItem extends React.PureComponent {
   render() {
-    return this.props.component;
+    const { component } = this.props;
+    return component;
   }
 }
 

@@ -98,7 +98,7 @@ export default (
     boxShadow: (() => {
       if (direction === 'up') {
         return gradientBottom;
-      } else if (direction === 'right') {
+      } if (direction === 'right') {
         return gradientRight;
       }
 
@@ -109,7 +109,7 @@ export default (
     boxShadow: (() => {
       if (direction === 'down') {
         return gradientTop;
-      } else if (direction === 'left') {
+      } if (direction === 'left') {
         return gradientLeft;
       }
 
@@ -120,7 +120,7 @@ export default (
     boxShadow: (() => {
       if (direction === 'up') {
         return gradientTop;
-      } else if (direction === 'left') {
+      } if (direction === 'left') {
         return gradientLeft;
       }
 
@@ -131,7 +131,7 @@ export default (
     boxShadow: (() => {
       if (direction === 'down') {
         return gradientBottom;
-      } else if (direction === 'right') {
+      } if (direction === 'right') {
         return gradientRight;
       }
 

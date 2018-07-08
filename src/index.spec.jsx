@@ -145,14 +145,14 @@ describe('<FlipPage />', () => {
       wrapper.setState({ page: 0 });
       wrapper.instance().incrementPage();
       expect(wrapper.state().page).toEqual(1);
-      expect(wrapper.instance().props.onPageChange).toHaveBeenCalledWith(1);
+      expect(wrapper.instance().props.onPageChange).toHaveBeenCalledWith(1, 'next');
     });
 
     it('should return FIRST PAGE when incrementing the last page', () => {
       wrapper.setState({ page: 1 });
       wrapper.instance().incrementPage();
       expect(wrapper.state().page).toEqual(0);
-      expect(wrapper.instance().props.onPageChange).toHaveBeenCalledWith(0);
+      expect(wrapper.instance().props.onPageChange).toHaveBeenCalledWith(0, 'next');
     });
   });
 
@@ -168,14 +168,14 @@ describe('<FlipPage />', () => {
       wrapper.setState({ page: 1 });
       wrapper.instance().decrementPage();
       expect(wrapper.state().page).toEqual(0);
-      expect(wrapper.instance().props.onPageChange).toHaveBeenCalledWith(0);
+      expect(wrapper.instance().props.onPageChange).toHaveBeenCalledWith(0, 'prev');
     });
 
     it('should return LAST PAGE when decrementing the first page', () => {
       wrapper.setState({ page: 0 });
       wrapper.instance().decrementPage();
       expect(wrapper.state().page).toEqual(1);
-      expect(wrapper.instance().props.onPageChange).toHaveBeenCalledWith(1);
+      expect(wrapper.instance().props.onPageChange).toHaveBeenCalledWith(1, 'prev');
     });
   });
 
@@ -496,6 +496,33 @@ describe('<FlipPage />', () => {
     });
   });
 
+  describe('gotoPage', () => {
+    let wrapper;
+
+    beforeEach(() => {
+      wrapper = shallow(<FlipPage><div /><div /></FlipPage>);
+    });
+
+    it('should go to correct page', () => {
+      wrapper.instance().gotoPage(1);
+
+      let state = wrapper.state();
+      expect(state.page).toEqual(1);
+    });
+
+    it('should throw RangeError when out of bounds (< 0)', () => {
+      expect(() => {
+        wrapper.instance().gotoPage(-1);
+      }).toThrow(RangeError);
+    });
+
+    it('should throw RangeError when out of bounds (> children length)', () => {
+      expect(() => {
+        wrapper.instance().gotoPage(2);
+      }).toThrow(RangeError);
+    });
+  });
+
   describe('stopMoving', () => {
     let wrapper;
 
@@ -685,6 +712,13 @@ describe('<FlipPage flipOnTouch />', () => {
 describe('<FlipPage showTouchHint />', () => {
   it('should not include a touch hint element', () => {
     const wrapper = shallow(<FlipPage showTouchHint />);
+    expect(wrapper.html()).toMatchSnapshot();
+  });
+});
+
+describe('<FlipPage flipOnTouch showTouchHint />', () => {
+  it('should include a touch hint element', () => {
+    const wrapper = shallow(<FlipPage flipOnTouch showTouchHint />);
     expect(wrapper.html()).toMatchSnapshot();
   });
 });
