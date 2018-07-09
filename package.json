@@ -1,6 +1,6 @@
 {
     "name": "react-flip-page",
-    "version": "0.18.0",
+    "version": "1.0.0",
     "description": "A React.js implementation of the Flipboard page swipe.",
     "main": "dist/index.js",
     "files": [
@@ -11,6 +11,11 @@
         "url": "https://github.com/darenju/react-flip-page.git"
     },
     "author": "Julien Fradin",
+    "contributors": [
+      "Everton Nikolas de Oliveira <enikolas.oliveira@gmail.com> (https://br.linkedin.com/in/enikolas/en)",
+      "Dmitry Buravtsov (https://github.com/DimaBur)",
+      "slevy85 (https://github.com/slevy85)"
+    ],
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/darenju/react-flip-page/issues"
