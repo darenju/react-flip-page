@@ -50,7 +50,8 @@
         "coveragePathIgnorePatterns": [
             "<rootDir>/dist/",
             "<rootDir>/src/enzymeSetup.js"
-        ]
+        ],
+        "testURL": "http://localhost"
     },
     "dependencies": {
         "prop-types": "^15.6.2",
