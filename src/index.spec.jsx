@@ -412,6 +412,16 @@ describe('<FlipPage />', () => {
       wrapper.instance().decrementPage = jest.fn();
     });
 
+    it('should call onStartPageChange', () => {
+      const onStartPageChange = jest.fn();
+
+      wrapper = shallow(<FlipPage onStartPageChange={onStartPageChange}><div /><div /></FlipPage>);
+
+      wrapper.instance().gotoNextPage();
+
+      expect(onStartPageChange).toHaveBeenCalledWith(0, 'next');
+    });
+
     describe('Vertical', () => {
       it('should flip the bottom part', () => {
         wrapper.instance().gotoNextPage();
@@ -462,6 +472,17 @@ describe('<FlipPage />', () => {
       wrapper.setState({ page: 1 });
       wrapper.instance().incrementPage = jest.fn();
       wrapper.instance().decrementPage = jest.fn();
+    });
+
+    it('should call onStartPageChange', () => {
+      const onStartPageChange = jest.fn();
+
+      wrapper = shallow(<FlipPage onStartPageChange={onStartPageChange}><div /><div /></FlipPage>);
+      wrapper.setState({ page: 1 });
+
+      wrapper.instance().gotoPreviousPage();
+
+      expect(onStartPageChange).toHaveBeenCalledWith(1, 'prev');
     });
 
     describe('Vertical', () => {
