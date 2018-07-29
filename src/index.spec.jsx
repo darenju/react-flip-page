@@ -266,6 +266,20 @@ describe('<FlipPage />', () => {
       expect(wrapper.instance().hasPreviousPage).toHaveBeenCalled();
     });
 
+    it('should call onStartSwiping', () => {
+      wrapper.setState({
+        direction: 'down',
+        startY: 0,
+      });
+
+      const onStartSwiping = jest.fn();
+
+      wrapper.setProps({ onStartSwiping });
+      wrapper.instance().moveGesture(event);
+
+      expect(onStartSwiping).toHaveBeenCalled();
+    });
+
     it('should use maxAngle when on last page', () => {
       wrapper.setState({
         direction: 'up',

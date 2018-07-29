@@ -39,6 +39,7 @@ class FlipPage extends Component {
     this.hasPreviousPage = this.hasPreviousPage.bind(this);
 
     this.transition = `transform ${this.props.animationDuration / 1000}s ease-in-out`;
+    this.onStartSwipingCalled = false;
   }
 
   componentDidMount() {
@@ -137,7 +138,7 @@ class FlipPage extends Component {
     this.setState({
       startX: posX,
       startY: posY,
-    }, this.props.onStartSwiping());
+    });
   }
 
   moveGesture(e) {
@@ -154,6 +155,11 @@ class FlipPage extends Component {
     } = this.state;
 
     if (startY !== -1) {
+      if (!this.onStartSwipingCalled) {
+        this.props.onStartSwiping();
+        this.onStartSwipingCalled = true;
+      }
+
       const newDiffY = posY - startY;
       const newDiffX = posX - startX;
       const diffToUse = (direction === 'up' || direction === 'down') ? newDiffY : newDiffX;
@@ -388,6 +394,7 @@ class FlipPage extends Component {
 
   reset() {
     const { transition } = this;
+    this.onStartSwipingCalled = false;
 
     this.setState({
       startY: -1,
