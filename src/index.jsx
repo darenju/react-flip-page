@@ -244,9 +244,11 @@ class FlipPage extends Component {
     if (!this.hasNextPage()) return;
 
     const {
-      perspective, orientation, animationDuration,
+      perspective, orientation, animationDuration, onStartPageChange,
     } = this.props;
     const { transition } = this;
+    // Send an event before the end of the change page animation
+    onStartPageChange(this.state.page, 'next');
 
     let secondHalfTransform = `perspective(${perspective}) `;
 
@@ -281,9 +283,12 @@ class FlipPage extends Component {
     if (!this.hasPreviousPage()) return;
 
     const {
-      perspective, orientation, animationDuration,
+      perspective, orientation, animationDuration, onStartPageChange,
     } = this.props;
     const { transition } = this;
+
+    // Send an event before the end of the change page animation
+    onStartPageChange(this.state.page, 'prev');
 
     let firstHalfTransform = `perspective(${perspective}) `;
 
@@ -632,6 +637,7 @@ FlipPage.defaultProps = {
   height: 480,
   width: 320,
   onPageChange: () => {},
+  onStartPageChange: () => {},
   onStartSwiping: () => {},
   onStopSwiping: () => {},
   className: '',
@@ -667,6 +673,7 @@ FlipPage.propTypes = {
   height: PropTypes.number,
   width: PropTypes.number,
   onPageChange: PropTypes.func,
+  onStartPageChange: PropTypes.func,
   onStartSwiping: PropTypes.func,
   onStopSwiping: PropTypes.func,
   className: PropTypes.string,

@@ -71,6 +71,7 @@ There are a few properties that define the behaviour of the component, here they
 | `height` | `number` | `480` | Height for the flipboard |
 | `width` | `number` | `320` | Width for the flipboard |
 | `onPageChange` | `function` |   | Callback when the page has been changed. Parameters: `pageIndex`, `direction` |
+| `onStartPageChange` | `function` |   | Callback when the page starts to change. Parameters: `oldPageIndex`, `direction` |
 | `onStartSwiping` | `function` |   | Callback when the user starts swiping |
 | `onStopSwiping` | `function` |   | Callback when the user stops swiping |
 | `className` | `string` | `''` | Optional CSS class to be applied on the container |
@@ -104,7 +105,7 @@ This method triggers the effect and switches to the next page, if possible.
 
 ### `gotoPage(page)`
 
-This methods positions the component to the wanted page index. The `page` argument should be between `0` and the number of pages. If not, a `RangeError` will be thrown. Also note that this does **not** call the `onPageChange` callback.
+This methods positions the component to the wanted page index. The `page` argument should be between `0` and the number of pages. If not, a `RangeError` will be thrown. Also note that this does **not** call the `onPageChange` nor the `onStartPageChange` callback.
 
 ## Contribute
 
