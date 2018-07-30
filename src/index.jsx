@@ -155,11 +155,6 @@ class FlipPage extends Component {
     } = this.state;
 
     if (startY !== -1) {
-      if (!this.onStartSwipingCalled) {
-        this.props.onStartSwiping();
-        this.onStartSwipingCalled = true;
-      }
-
       const newDiffY = posY - startY;
       const newDiffX = posX - startX;
       const diffToUse = (direction === 'up' || direction === 'down') ? newDiffY : newDiffX;
@@ -172,11 +167,17 @@ class FlipPage extends Component {
       }
 
       const rotate = Math.min(Math.abs(angle), useMaxAngle ? maxAngle : 180);
+      const aboveTreshold = (Math.abs(newDiffX) > treshold || Math.abs(newDiffY) > treshold);
 
       let nextDirection = '';
 
+      if (!this.onStartSwipingCalled && aboveTreshold) {
+        this.props.onStartSwiping();
+        this.onStartSwipingCalled = true;
+      }
+
       // determine direction to prevent two-directions swipe
-      if (direction === '' && (Math.abs(newDiffX) > treshold || Math.abs(newDiffY) > treshold)) {
+      if (direction === '' && aboveTreshold) {
         if (newDiffY < 0 && orientation === 'vertical') {
           nextDirection = 'up';
         } else if (newDiffY > 0 && orientation === 'vertical') {

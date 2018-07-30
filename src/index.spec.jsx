@@ -266,7 +266,7 @@ describe('<FlipPage />', () => {
       expect(wrapper.instance().hasPreviousPage).toHaveBeenCalled();
     });
 
-    it('should call onStartSwiping', () => {
+    it('should call NOT onStartSwiping if under treshold', () => {
       wrapper.setState({
         direction: 'down',
         startY: 0,
@@ -276,6 +276,24 @@ describe('<FlipPage />', () => {
 
       wrapper.setProps({ onStartSwiping });
       wrapper.instance().moveGesture(event);
+
+      expect(onStartSwiping).not.toHaveBeenCalled();
+    });
+
+    it('should call onStartSwiping if over treshold', () => {
+      wrapper.setState({
+        direction: 'down',
+        startY: 0,
+      });
+
+      const onStartSwiping = jest.fn();
+
+      wrapper.setProps({ onStartSwiping });
+      wrapper.instance().moveGesture({
+        preventDefault: jest.fn(),
+        pageX: 1,
+        pageY: 20,
+      });
 
       expect(onStartSwiping).toHaveBeenCalled();
     });
