@@ -82,6 +82,7 @@ export default (
   pull: {
     left: orientation === 'vertical' ? 0 : '-100%',
     position: 'absolute',
+    height: '100%',
     right: 0,
     top: orientation === 'vertical' ? '-100%' : 0,
   },

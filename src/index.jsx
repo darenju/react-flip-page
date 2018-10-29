@@ -25,6 +25,7 @@ class FlipPage extends Component {
       lastDirection: '', // last registered swipe direction
       secondHalfStyle: {}, // transform style of bottom half
       firstHalfStyle: {}, // transform style of top half
+      canAnimate: true, // should the component animate with the methods?
     };
 
     // binding events
@@ -138,6 +139,7 @@ class FlipPage extends Component {
     this.setState({
       startX: posX,
       startY: posY,
+      canAnimate: false,
     });
   }
 
@@ -248,7 +250,7 @@ class FlipPage extends Component {
   }
 
   gotoNextPage() {
-    if (!this.hasNextPage()) return;
+    if (!this.hasNextPage() || !this.state.canAnimate) return;
 
     const {
       perspective, orientation, animationDuration, onStartPageChange,
@@ -276,18 +278,21 @@ class FlipPage extends Component {
         transition,
         transform: secondHalfTransform,
       },
+
+      canAnimate: false,
     }, () => {
       setTimeout(() => {
         this.incrementPage();
         this.setState({
           secondHalfStyle: {},
+          canAnimate: true,
         });
       }, animationDuration);
     });
   }
 
   gotoPreviousPage() {
-    if (!this.hasPreviousPage()) return;
+    if (!this.hasPreviousPage() || !this.state.canAnimate) return;
 
     const {
       perspective, orientation, animationDuration, onStartPageChange,
@@ -316,11 +321,14 @@ class FlipPage extends Component {
         transition,
         transform: '',
       },
+
+      canAnimate: false,
     }, () => {
       setTimeout(() => {
         this.decrementPage();
         this.setState({
           firstHalfStyle: {},
+          canAnimate: true,
         });
       }, animationDuration);
     });
@@ -406,6 +414,7 @@ class FlipPage extends Component {
       lastDirection: '',
       secondHalfStyle: { transition },
       firstHalfStyle: { transition },
+      canAnimate: true,
     });
   }
 

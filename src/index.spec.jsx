@@ -317,6 +317,7 @@ describe('<FlipPage />', () => {
 
       it('should move LEFT with an angle of -180deg', () => {
         wrapper.setState({
+          canAnimate: false,  // Simulate the onStartSwiping behavior.
           startX: 251,
           startY: 1,
         });
@@ -337,11 +338,13 @@ describe('<FlipPage />', () => {
           },
           startX: 251,
           startY: 1,
+          canAnimate: false,
         });
       });
 
       it('should move RIGHT with an angle of 90deg', () => {
         wrapper.setState({
+          canAnimate: false,  // Simulate the onStartSwiping behavior.
           startX: -124,
           startY: 1,
         });
@@ -363,6 +366,7 @@ describe('<FlipPage />', () => {
           secondHalfStyle: {},
           startX: -124,
           startY: 1,
+          canAnimate: false,
         });
       });
     });
@@ -374,6 +378,7 @@ describe('<FlipPage />', () => {
 
       it('should move UP with an angle of -135deg', () => {
         wrapper.setState({
+          canAnimate: false,  // Simulate the onStartSwiping behavior.
           startX: 1,
           startY: 188.5,
         });
@@ -394,11 +399,13 @@ describe('<FlipPage />', () => {
           },
           startX: 1,
           startY: 188.5,
+          canAnimate: false,
         });
       });
 
       it('should move DOWN with an angle of 45deg', () => {
         wrapper.setState({
+          canAnimate: false,  // Simulate the onStartSwiping behavior.
           startX: 1,
           startY: -61.5,
         });
@@ -420,6 +427,7 @@ describe('<FlipPage />', () => {
           secondHalfStyle: {},
           startX: 1,
           startY: -61.5,
+          canAnimate: false,
         });
       });
     });
@@ -668,6 +676,7 @@ describe('<FlipPage />', () => {
           transform: 'perspective(130em) rotateX(-0deg)',
           zIndex: 2,
         },
+        canAnimate: false,
       });
 
       wrapper.instance().reset();
@@ -691,6 +700,7 @@ describe('<FlipPage />', () => {
         firstHalfStyle: {
           transition: 'transform 0.2s ease-in-out',
         },
+        canAnimate: true,
       });
     });
   });
