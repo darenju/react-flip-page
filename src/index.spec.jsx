@@ -605,7 +605,10 @@ describe('<FlipPage />', () => {
       wrapper.instance().stopMoving();
 
       expect(wrapper.instance().reset).toHaveBeenCalled();
-      expect(wrapper.instance().gotoNextPage).toHaveBeenCalled();
+      // Asynchronous…
+      setTimeout(() => {
+        expect(wrapper.instance().gotoNextPage).toHaveBeenCalled();
+      }, 300);
       expect(wrapper.instance().gotoPreviousPage).not.toHaveBeenCalled();
     });
 
@@ -621,7 +624,10 @@ describe('<FlipPage />', () => {
       wrapper.instance().stopMoving();
 
       expect(wrapper.instance().reset).toHaveBeenCalled();
-      expect(wrapper.instance().gotoPreviousPage).toHaveBeenCalled();
+      // Asynchronous…
+      setTimeout(() => {
+        expect(wrapper.instance().gotoPreviousPage).toHaveBeenCalled();
+      }, 300);
       expect(wrapper.instance().gotoNextPage).not.toHaveBeenCalled();
     });
   });

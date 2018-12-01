@@ -360,16 +360,17 @@ class FlipPage extends Component {
       );
 
     // reset everything
-    this.reset();
-    this.props.onStopSwiping();
+    this.reset(() => {
+      this.props.onStopSwiping();
 
-    if (goNext) {
-      this.gotoNextPage();
-    }
+      if (goNext) {
+        this.gotoNextPage();
+      }
 
-    if (goPrevious) {
-      this.gotoPreviousPage();
-    }
+      if (goPrevious) {
+        this.gotoPreviousPage();
+      }
+    });
   }
 
   beforeItem() {
@@ -401,7 +402,7 @@ class FlipPage extends Component {
     }
   }
 
-  reset() {
+  reset(callback) {
     const { transition } = this;
     this.onStartSwipingCalled = false;
 
@@ -415,7 +416,7 @@ class FlipPage extends Component {
       secondHalfStyle: { transition },
       firstHalfStyle: { transition },
       canAnimate: true,
-    });
+    }, callback);
   }
 
   renderPage(_page, key) {
