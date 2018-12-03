@@ -1,0 +1,7 @@
+<FlipPage
+  flipOnLeave
+>
+  {images.map((n, i) =>
+    <img key={i} src={`${baseUrl}${n}`} />
+  )}
+</FlipPage>
