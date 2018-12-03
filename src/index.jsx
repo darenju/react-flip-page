@@ -38,6 +38,8 @@ class FlipPage extends Component {
     this.decrementPage = this.decrementPage.bind(this);
     this.hasNextPage = this.hasNextPage.bind(this);
     this.hasPreviousPage = this.hasPreviousPage.bind(this);
+    this.turnRightOrDown = this.turnRightOrDown.bind(this);
+    this.turnLeftOrUp = this.turnLeftOrUp.bind(this);
 
     this.transition = `transform ${this.props.animationDuration / 1000}s ease-in-out`;
     this.onStartSwipingCalled = false;
@@ -150,7 +152,7 @@ class FlipPage extends Component {
     const posY = e.pageY || e.touches[0].pageY;
 
     const {
-      orientation, treshold, maxAngle, perspective,
+      orientation, treshold, maxAngle, perspective, reverse,
     } = this.props;
     const {
       startX, startY, diffX, diffY, direction, lastDirection,
@@ -163,9 +165,9 @@ class FlipPage extends Component {
       const angle = (diffToUse / 250) * 180;
       let useMaxAngle = false;
       if (direction === 'up' || direction === 'left') {
-        useMaxAngle = !this.hasNextPage();
+        useMaxAngle = reverse ? !this.hasPreviousPage() : !this.hasNextPage();
       } else if (direction === 'down' || direction === 'right') {
-        useMaxAngle = !this.hasPreviousPage();
+        useMaxAngle = reverse ? !this.hasNextPage() : !this.hasPreviousPage();
       }
 
       const rotate = Math.min(Math.abs(angle), useMaxAngle ? maxAngle : 180);
@@ -249,16 +251,11 @@ class FlipPage extends Component {
     }
   }
 
-  gotoNextPage() {
-    if (!this.hasNextPage() || !this.state.canAnimate) return;
-
+  turnRightOrDown(callback) {
     const {
-      perspective, orientation, animationDuration, onStartPageChange,
+      perspective, orientation, animationDuration,
     } = this.props;
     const { transition } = this;
-    // Send an event before the end of the change page animation
-    onStartPageChange(this.state.page, 'next');
-
     let secondHalfTransform = `perspective(${perspective}) `;
 
     if (orientation === 'vertical') {
@@ -282,7 +279,7 @@ class FlipPage extends Component {
       canAnimate: false,
     }, () => {
       setTimeout(() => {
-        this.incrementPage();
+        callback();
         this.setState({
           secondHalfStyle: {},
           canAnimate: true,
@@ -291,17 +288,11 @@ class FlipPage extends Component {
     });
   }
 
-  gotoPreviousPage() {
-    if (!this.hasPreviousPage() || !this.state.canAnimate) return;
-
+  turnLeftOrUp(callback) {
     const {
-      perspective, orientation, animationDuration, onStartPageChange,
+      perspective, orientation, animationDuration,
     } = this.props;
     const { transition } = this;
-
-    // Send an event before the end of the change page animation
-    onStartPageChange(this.state.page, 'prev');
-
     let firstHalfTransform = `perspective(${perspective}) `;
 
     if (orientation === 'vertical') {
@@ -325,13 +316,36 @@ class FlipPage extends Component {
       canAnimate: false,
     }, () => {
       setTimeout(() => {
-        this.decrementPage();
+        callback();
         this.setState({
           firstHalfStyle: {},
           canAnimate: true,
         });
       }, animationDuration);
     });
+  }
+
+  gotoNextPage() {
+    if (!this.hasNextPage() || !this.state.canAnimate) return;
+
+    const { onStartPageChange, reverse } = this.props;
+    // Send an event before the end of the change page animation
+    onStartPageChange(this.state.page, 'next');
+    // We separe the next/previous logic to the right/left logic
+    if (!reverse) this.turnRightOrDown(this.incrementPage);
+    else this.turnLeftOrUp(this.incrementPage);
+  }
+
+  gotoPreviousPage() {
+    if (!this.hasPreviousPage() || !this.state.canAnimate) return;
+
+    const { onStartPageChange, reverse } = this.props;
+
+    // Send an event before the end of the change page animation
+    onStartPageChange(this.state.page, 'prev');
+    // We separe the next/previous logic to the right/left logic
+    if (!reverse) this.turnLeftOrUp(this.decrementPage);
+    else this.turnRightOrDown(this.decrementPage);
   }
 
   gotoPage(page) {
@@ -343,32 +357,33 @@ class FlipPage extends Component {
   }
 
   stopMoving() {
+    const { reverse, onStopSwiping } = this.props;
     const {
       timestamp, angle, direction, lastDirection,
     } = this.state;
     const delay = Date.now() - timestamp;
 
-    const goNext = this.hasNextPage()
-      && (angle <= -90
-        || (delay <= 20 && direction === 'up' && lastDirection === 'up')
-        || (delay <= 20 && direction === 'right' && lastDirection === 'right')
-      );
-    const goPrevious = this.hasPreviousPage()
-      && (angle >= 90
-        || (delay <= 20 && direction === 'down' && lastDirection === 'down')
-        || (delay <= 20 && direction === 'left' && lastDirection === 'left')
-      );
+    // We don't check hasNextPage because it is done in gotoNextPage
+    const goUpOrRight = angle <= -90
+      || (delay <= 20 && direction === 'up' && lastDirection === 'up')
+      || (delay <= 20 && direction === 'right' && lastDirection === 'right');
+
+    const goDownOrLeft = angle >= 90
+      || (delay <= 20 && direction === 'down' && lastDirection === 'down')
+      || (delay <= 20 && direction === 'left' && lastDirection === 'left');
 
     // reset everything
     this.reset(() => {
-      this.props.onStopSwiping();
+      onStopSwiping();
 
-      if (goNext) {
-        this.gotoNextPage();
+      if (goUpOrRight) {
+        if (!reverse) this.gotoNextPage();
+        else this.gotoPreviousPage();
       }
 
-      if (goPrevious) {
-        this.gotoPreviousPage();
+      if (goDownOrLeft) {
+        if (!reverse) this.gotoPreviousPage();
+        else this.gotoNextPage();
       }
     });
   }
@@ -431,6 +446,7 @@ class FlipPage extends Component {
       animationDuration,
       flipOnTouch,
       disableSwipe,
+      reverse,
     } = this.props;
 
     const style = generateStyles(
@@ -474,8 +490,8 @@ class FlipPage extends Component {
       />
     );
 
-    const beforeItem = this.beforeItem();
-    const afterItem = this.afterItem();
+    const beforeItem = reverse ? this.afterItem() : this.beforeItem();
+    const afterItem = reverse ? this.beforeItem() : this.afterItem();
 
     const clonedBeforeItem = beforeItem ? (
       <FlipPageItem
@@ -565,6 +581,7 @@ class FlipPage extends Component {
       flipOnTouch,
       flipOnTouchZone,
       disableSwipe,
+      reverse,
     } = this.props;
 
     const containerStyle = m(style, {
@@ -580,15 +597,11 @@ class FlipPage extends Component {
       zIndex: 3,
     };
 
-    const previousPageTouchZoneStyle = m(touchZoneStyle, {
-      left: 0,
-      top: 0,
-    });
+    const leftZone = { left: 0, top: 0 };
+    const rightZone = { bottom: 0, right: 0 };
 
-    const nextPageTouchZoneStyle = m(touchZoneStyle, {
-      bottom: 0,
-      right: 0,
-    });
+    const previousPageTouchZoneStyle = m(touchZoneStyle, reverse ? rightZone : leftZone);
+    const nextPageTouchZoneStyle = m(touchZoneStyle, reverse ? leftZone : rightZone);
 
     const onStartTouching = !disableSwipe ? this.startMoving : doNotMove;
     const gotoPreviousPage = (e) => {
@@ -666,6 +679,7 @@ FlipPage.defaultProps = {
   disableSwipe: false,
   responsive: false,
   startAt: 0,
+  reverse: false,
 };
 
 FlipPage.propTypes = {
@@ -701,6 +715,7 @@ FlipPage.propTypes = {
   disableSwipe: PropTypes.bool,
   responsive: PropTypes.bool,
   startAt: PropTypes.number,
+  reverse: PropTypes.bool,
 };
 
 export default FlipPage;

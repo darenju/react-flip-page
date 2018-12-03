@@ -5,6 +5,59 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.4.0
+
+### Added
+
+- Added a `reverse` property thanks to **@slevy85**. The property allows the user to swipe pages in reverse order: the first page is visible, to see the second page, he has to swipe down instead of up.
+
+### Fixed
+
+- Tests were not working anymore. Added `babel-core@^7.0.0-bridge.0` and `babel-jest` in `devDependencies`.
+
+## 1.3.0
+
+### Fixed
+
+- Fixed the swiping not being correctly registered.
+
+## 1.2.2
+
+### Fixed
+
+- Fixed `gotoPreviousPage` & `gotoNextPage` method spam.
+- Fixed right side of component being cut off.
+
+## 1.2.1
+
+### Fixed
+
+- Condition in `gotoPage` method for checking inbounds of index was wrong, did not allow to go to first page (index `0`).
+
+## 1.2.0
+
+### Changed
+
+- Call `onStartSwiping` after treshold is reached.
+
+## 1.1.0
+
+### Added
+
+- Added `onStartPageChange` event. This event is triggered when the move gesture begins, in opposition to `onPageChange` event which is triggered after the gesture is complete.
+
+## 1.0.0
+
+### Added
+
+- Added the list of contributors to the project, finalizing v1.0.0.
+
+## 0.18.0
+
+### Added
+
+- Added a `gotoPage` method that takes an index of page in parameter. Places the component to the correct page.
+
 ## 0.17.0
 
 ### Changed
