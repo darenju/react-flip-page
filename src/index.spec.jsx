@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import FlipPage from './index';
+import { expectTurnBottom, expectTurnTop, expectTurnLeft, expectTurnRight } from './expectUtils';
 
 jest.useFakeTimers();
 
@@ -234,12 +235,12 @@ describe('<FlipPage />', () => {
     });
   });
 
-  describe('moveGesture', () => {
+  describe.each([[false], [true]])('moveGesture when reverse is %s', (reverse) => {
     let wrapper;
     let event;
 
     beforeEach(() => {
-      wrapper = shallow(<FlipPage />);
+      wrapper = shallow(<FlipPage reverse={reverse} />);
       event = {
         preventDefault: jest.fn(),
         pageX: 1,
@@ -256,7 +257,7 @@ describe('<FlipPage />', () => {
 
     it('should use maxAngle when on first page', () => {
       wrapper.setState({
-        direction: 'down',
+        direction: !reverse ? 'down' : 'up',
         startY: 1,
       });
 
@@ -300,7 +301,7 @@ describe('<FlipPage />', () => {
 
     it('should use maxAngle when on last page', () => {
       wrapper.setState({
-        direction: 'up',
+        direction: !reverse ? 'up' : 'down',
         startY: 300,
       });
 
@@ -433,11 +434,11 @@ describe('<FlipPage />', () => {
     });
   });
 
-  describe('gotoNextPage', () => {
+  describe.each([[false], [true]])('gotoNextPage when reverse is %s', (reverse) => {
     let wrapper;
 
     it('should return when no next page', () => {
-      wrapper = shallow(<FlipPage><div /></FlipPage>);
+      wrapper = shallow(<FlipPage reverse={reverse}><div /></FlipPage>);
       wrapper.instance().hasNextPage = jest.fn();
 
       const ret = wrapper.instance().gotoNextPage();
@@ -447,7 +448,7 @@ describe('<FlipPage />', () => {
     });
 
     beforeEach(() => {
-      wrapper = shallow(<FlipPage><div /><div /></FlipPage>);
+      wrapper = shallow(<FlipPage reverse={reverse}><div /><div /></FlipPage>);
       wrapper.instance().incrementPage = jest.fn();
       wrapper.instance().decrementPage = jest.fn();
     });
@@ -455,7 +456,7 @@ describe('<FlipPage />', () => {
     it('should call onStartPageChange', () => {
       const onStartPageChange = jest.fn();
 
-      wrapper = shallow(<FlipPage onStartPageChange={onStartPageChange}><div /><div /></FlipPage>);
+      wrapper = shallow(<FlipPage onStartPageChange={onStartPageChange} reverse={reverse}><div /><div /></FlipPage>);
 
       wrapper.instance().gotoNextPage();
 
@@ -463,42 +464,33 @@ describe('<FlipPage />', () => {
     });
 
     describe('Vertical', () => {
-      it('should flip the bottom part', () => {
+      it(`should flip the ${reverse ? 'top' : 'bottom'} part`, () => {
         wrapper.instance().gotoNextPage();
-
-        let state = wrapper.state();
-        expect(state.secondHalfStyle.transform).toMatch(/rotateX\(180deg\)$/);
-
-        jest.runOnlyPendingTimers();
-        state = wrapper.state();
+        if (reverse) expectTurnTop(wrapper);
+        else expectTurnBottom(wrapper);
 
         expect(wrapper.instance().incrementPage).toHaveBeenCalled();
-        expect(state.secondHalfStyle).toEqual({});
       });
     });
 
     describe('Horizontal', () => {
-      it('should flip the right part', () => {
+      it(`should flip the ${reverse ? 'left' : 'right'} part`, () => {
         wrapper.setProps({ orientation: 'horizontal' });
         wrapper.instance().gotoNextPage();
 
-        let state = wrapper.state();
-        expect(state.secondHalfStyle.transform).toMatch(/rotateY\(-180deg\)$/);
-
-        jest.runOnlyPendingTimers();
-        state = wrapper.state();
+        if (reverse) expectTurnLeft(wrapper);
+        else expectTurnRight(wrapper);
 
         expect(wrapper.instance().incrementPage).toHaveBeenCalled();
-        expect(state.secondHalfStyle).toEqual({});
       });
     });
   });
 
-  describe('gotoPreviousPage', () => {
+  describe.each([[false], [true]])('gotoPreviousPage when reverse is %s', (reverse) => {
     let wrapper;
 
     it('should return when no previous page', () => {
-      wrapper = shallow(<FlipPage><div /></FlipPage>);
+      wrapper = shallow(<FlipPage reverse={reverse}><div /></FlipPage>);
       wrapper.instance().hasPreviousPage = jest.fn();
 
       const ret = wrapper.instance().gotoPreviousPage();
@@ -508,7 +500,7 @@ describe('<FlipPage />', () => {
     });
 
     beforeEach(() => {
-      wrapper = shallow(<FlipPage><div /><div /></FlipPage>);
+      wrapper = shallow(<FlipPage reverse={reverse}><div /><div /></FlipPage>);
       wrapper.setState({ page: 1 });
       wrapper.instance().incrementPage = jest.fn();
       wrapper.instance().decrementPage = jest.fn();
@@ -517,7 +509,7 @@ describe('<FlipPage />', () => {
     it('should call onStartPageChange', () => {
       const onStartPageChange = jest.fn();
 
-      wrapper = shallow(<FlipPage onStartPageChange={onStartPageChange}><div /><div /></FlipPage>);
+      wrapper = shallow(<FlipPage onStartPageChange={onStartPageChange} reverse={reverse}><div /><div /></FlipPage>);
       wrapper.setState({ page: 1 });
 
       wrapper.instance().gotoPreviousPage();
@@ -526,33 +518,25 @@ describe('<FlipPage />', () => {
     });
 
     describe('Vertical', () => {
-      it('should flip the top part', () => {
+      it(`should flip the ${reverse ? 'bottom' : 'top'} part`, () => {
         wrapper.instance().gotoPreviousPage();
 
-        let state = wrapper.state();
-        expect(state.firstHalfStyle.transform).toMatch(/rotateX\(-180deg\)$/);
-
-        jest.runOnlyPendingTimers();
-        state = wrapper.state();
+        if (reverse) expectTurnBottom(wrapper);
+        else expectTurnTop(wrapper);
 
         expect(wrapper.instance().decrementPage).toHaveBeenCalled();
-        expect(state.firstHalfStyle).toEqual({});
       });
     });
 
     describe('Horizontal', () => {
-      it('should flip the left part', () => {
+      it(`should flip the ${reverse ? 'right' : 'left'}  part`, () => {
         wrapper.setProps({ orientation: 'horizontal' });
         wrapper.instance().gotoPreviousPage();
 
-        let state = wrapper.state();
-        expect(state.firstHalfStyle.transform).toMatch(/rotateY\(180deg\)$/);
-
-        jest.runOnlyPendingTimers();
-        state = wrapper.state();
+        if (reverse) expectTurnRight(wrapper);
+        else expectTurnLeft(wrapper);
 
         expect(wrapper.instance().decrementPage).toHaveBeenCalled();
-        expect(state.firstHalfStyle).toEqual({});
       });
     });
   });
@@ -561,7 +545,7 @@ describe('<FlipPage />', () => {
     let wrapper;
 
     beforeEach(() => {
-      wrapper = shallow(<FlipPage><div /><div /></FlipPage>);
+      wrapper = shallow(<FlipPage ><div /><div /></FlipPage>);
     });
 
     it('should go to correct page', () => {
@@ -584,41 +568,43 @@ describe('<FlipPage />', () => {
     });
   });
 
-  describe('stopMoving', () => {
+  describe.each([[false], [true]])('stopMoving when reverse is %s', (reverse) => {
     let wrapper;
 
     beforeEach(() => {
-      wrapper = shallow(<FlipPage><div /><div /></FlipPage>);
+      wrapper = shallow(<FlipPage reverse={reverse}><div /><div /></FlipPage>);
       wrapper.instance().gotoNextPage = jest.fn();
       wrapper.instance().gotoPreviousPage = jest.fn();
-      wrapper.instance().reset = jest.fn();
+      wrapper.instance().reset = jest.fn(cb => cb()); // Reset just executes its callback
     });
 
     it('should go to next page if possible', () => {
       wrapper.setState({
-        angle: -90,
+        angle: reverse ? 90 : -90,
         timestamp: Date.now(),
-        direction: 'up',
-        lastDirection: 'up',
+        direction: reverse ? 'down' : 'up',
+        lastDirection: reverse ? 'down' : 'up',
       });
 
       wrapper.instance().stopMoving();
-
       expect(wrapper.instance().reset).toHaveBeenCalled();
+
       // Asynchronous…
       setTimeout(() => {
         expect(wrapper.instance().gotoNextPage).toHaveBeenCalled();
       }, 300);
+      // Need to run fake timers
+      jest.runOnlyPendingTimers();
       expect(wrapper.instance().gotoPreviousPage).not.toHaveBeenCalled();
     });
 
     it('should go to previous page if possible', () => {
       wrapper.setState({
         page: 1,
-        angle: 90,
+        angle: reverse ? -90 : 90,
         timestamp: Date.now(),
-        direction: 'down',
-        lastDirection: 'down',
+        direction: reverse ? 'up' : 'down',
+        lastDirection: reverse ? 'up' : 'down',
       });
 
       wrapper.instance().stopMoving();
@@ -628,6 +614,8 @@ describe('<FlipPage />', () => {
       setTimeout(() => {
         expect(wrapper.instance().gotoPreviousPage).toHaveBeenCalled();
       }, 300);
+      // Need to run fake timers
+      jest.runOnlyPendingTimers();
       expect(wrapper.instance().gotoNextPage).not.toHaveBeenCalled();
     });
   });
