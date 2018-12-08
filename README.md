@@ -81,6 +81,7 @@ There are a few properties that define the behaviour of the component, here they
 | `disableSwipe` | `boolean` | `false` | If `true`, users can't use the swipe feature to switch pages while `flipOnTouch` is enabled. Make sure you enable `flipOnTouch` so they can switch pages, or provide buttons binded to Methods |
 | `responsive` | `boolean` | `false` | If `true`, the component will be responsive, meaning it will take all the available space. Place the component in a container before to make sure it is visible |
 | `startAt` | `number` | `0` | Default start position of the component |
+| `reverse` | `boolean` | `false` | If `true`, the user must swip in reverse order: he must swipe down/right to see the next page, and up/left to see the previous page. |
 
 ## Methods
 
