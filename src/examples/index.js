@@ -12,6 +12,7 @@ const examples = [
   'uncutPages',
   'flipOnTouch',
   'flipOnLeave',
+  'reverse',
 ];
 
 const renderExample = example => {
@@ -19,7 +20,7 @@ const renderExample = example => {
   const component = (require(`./${example}`).default)();
 
   return (
-    <div>
+    <div key={`example-${example}`}>
       <h2>{example}</h2>
       <div className={s.example} key={`example-${example}`}>
         <div className={s.code}>

@@ -124,6 +124,16 @@ own taste.
 
 See also: `maxAngle`
 
+### reverse
+
+Type: `boolean`
+
+Default: `false`
+
+If `true`, the user must swip in reverse order: he must swipe down/right to see the next page, and up/left to see the previous page.
+
+See also: `direction`
+
 ### showHint
 
 Type: `boolean`
@@ -154,6 +164,14 @@ Similar to `showHint`, this option will show a finger touch gesture on the compo
 user understand they can move the pages.
 
 You may style this with the `.rfp-touchHint` CSS class. See examples for more details.
+
+### startAt
+
+Type: `number`
+
+Default: `0`
+
+The index of the page the component should render first.
 
 ### style
 
