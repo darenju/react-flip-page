@@ -716,18 +716,22 @@ describe('<FlipPage />', () => {
       wrapper.instance().gotoNextPage = gotoNextPage;
     });
 
-    it('should call stopMoving and gotoPreviousPage when clicking top zone', () => {
+    it('should call gotoPreviousPage when clicking top zone', () => {
       wrapper.find('.rfp-touchZone-previous').simulate('mouseup');
 
       expect(stopMoving).toHaveBeenCalled();
-      expect(gotoPreviousPage).toHaveBeenCalled();
+      setTimeout(() => {
+        expect(gotoPreviousPage).toHaveBeenCalled();
+      });
     });
 
     it('should call stopMoving and gotoNextPage when clicking bottom zone', () => {
       wrapper.find('.rfp-touchZone-next').simulate('mouseup');
 
       expect(stopMoving).toHaveBeenCalled();
-      expect(gotoNextPage).toHaveBeenCalled();
+      setTimeout(() => {
+        expect(gotoNextPage).toHaveBeenCalled();
+      });
     });
   });
 

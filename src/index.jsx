@@ -356,7 +356,7 @@ class FlipPage extends Component {
     }
   }
 
-  stopMoving() {
+  stopMoving(cb) {
     const { reverse, onStopSwiping } = this.props;
     const {
       timestamp, angle, direction, lastDirection,
@@ -384,6 +384,10 @@ class FlipPage extends Component {
       if (goDownOrLeft) {
         if (!reverse) this.gotoPreviousPage();
         else this.gotoNextPage();
+      }
+
+      if (typeof cb === 'function') {
+        cb();
       }
     });
   }
@@ -604,13 +608,11 @@ class FlipPage extends Component {
     const nextPageTouchZoneStyle = m(touchZoneStyle, reverse ? leftZone : rightZone);
 
     const onStartTouching = !disableSwipe ? this.startMoving : doNotMove;
-    const gotoPreviousPage = (e) => {
-      this.stopMoving(e);
-      this.gotoPreviousPage();
+    const gotoPreviousPage = () => {
+      this.stopMoving(() => this.gotoPreviousPage());
     };
-    const gotoNextPage = (e) => {
-      this.stopMoving(e);
-      this.gotoNextPage();
+    const gotoNextPage = () => {
+      this.stopMoving(() => this.gotoNextPage());
     };
 
     // all the pages are rendered once, to prevent glitching
