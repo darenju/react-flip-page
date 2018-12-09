@@ -128,8 +128,11 @@ class FlipPage extends Component {
 
   startMoving(e) {
     // prevent the button's and a's to not be clickable.
-    const { tagName } = e.target;
-    if (tagName === 'BUTTON' || tagName === 'A') {
+    const { tagName, className } = e.target;
+    const { swipeImmune } = this.props;
+    const cancel = swipeImmune.some(testedClassName => className === testedClassName);
+
+    if (tagName === 'BUTTON' || tagName === 'A' || cancel) {
       return;
     }
 
@@ -682,6 +685,7 @@ FlipPage.defaultProps = {
   responsive: false,
   startAt: 0,
   reverse: false,
+  swipeImmune: [],
 };
 
 FlipPage.propTypes = {
@@ -718,6 +722,7 @@ FlipPage.propTypes = {
   responsive: PropTypes.bool,
   startAt: PropTypes.number,
   reverse: PropTypes.bool,
+  swipeImmune: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default FlipPage;
