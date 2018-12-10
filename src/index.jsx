@@ -129,14 +129,19 @@ class FlipPage extends Component {
   startMoving(e) {
     // prevent the button's and a's to not be clickable.
     const { tagName, className } = e.target;
-    const { swipeImmune } = this.props;
-    const cancel = swipeImmune.some(testedClassName => className.indexOf(testedClassName) !== -1);
 
-    if (tagName === 'BUTTON' || tagName === 'A' || cancel) {
+    if (tagName === 'BUTTON' || tagName === 'A') {
       return;
     }
 
     doNotMove(e);
+
+    const { swipeImmune } = this.props;
+    const cancel = swipeImmune.some(testedClassName => className.indexOf(testedClassName) !== -1);
+
+    if (cancel) {
+      return;
+    }
 
     const posX = e.pageX || e.touches[0].pageX;
     const posY = e.pageY || e.touches[0].pageY;
