@@ -130,7 +130,7 @@ class FlipPage extends Component {
     // prevent the button's and a's to not be clickable.
     const { tagName, className } = e.target;
     const { swipeImmune } = this.props;
-    const cancel = swipeImmune.some(testedClassName => className === testedClassName);
+    const cancel = swipeImmune.some(testedClassName => className.indexOf(testedClassName) !== -1);
 
     if (tagName === 'BUTTON' || tagName === 'A' || cancel) {
       return;

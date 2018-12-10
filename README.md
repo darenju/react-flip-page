@@ -82,6 +82,7 @@ There are a few properties that define the behaviour of the component, here they
 | `responsive` | `boolean` | `false` | If `true`, the component will be responsive, meaning it will take all the available space. Place the component in a container before to make sure it is visible |
 | `startAt` | `number` | `0` | Default start position of the component |
 | `reverse` | `boolean` | `false` | If `true`, the user must swip in reverse order: he must swipe down/right to see the next page, and up/left to see the previous page. |
+| `swipeImmune` | `array` | `[]` | This array holds the CSS class names that the user can not initiate a swipe gesture from. |
 
 ## Methods
 
