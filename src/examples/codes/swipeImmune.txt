@@ -1,0 +1,11 @@
+<FlipPage
+  swipeImmune={['red']}
+  pageBackground="green"
+>
+  <div>
+    <div className="otherClass red somethingCool">
+      You can’t swipe from here
+    </div>
+    <button onClick={() => alert('Hello there!')}>I can be clicked!</button>
+  </div>
+</FlipPage>

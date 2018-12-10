@@ -13,6 +13,7 @@ const examples = [
   'flipOnTouch',
   'flipOnLeave',
   'reverse',
+  'swipeImmune',
 ];
 
 const renderExample = example => {
