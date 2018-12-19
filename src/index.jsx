@@ -10,6 +10,11 @@ const doNotMove = (e) => {
   e.preventDefault();
 };
 
+const getPosition = e => ({
+  posX: e.pageX || e.clientX || (e.touches && e.touches[0].pageX),
+  posY: e.pageY || e.clientY || (e.touches && e.touches[0].pageY),
+});
+
 class FlipPage extends Component {
   constructor(props) {
     super(props);
@@ -143,8 +148,7 @@ class FlipPage extends Component {
       return;
     }
 
-    const posX = e.pageX || e.touches[0].pageX;
-    const posY = e.pageY || e.touches[0].pageY;
+    const { posX, posY } = getPosition(e);
 
     this.setState({
       startX: posX,
@@ -156,8 +160,7 @@ class FlipPage extends Component {
   moveGesture(e) {
     e.preventDefault();
 
-    const posX = e.pageX || e.touches[0].pageX;
-    const posY = e.pageY || e.touches[0].pageY;
+    const { posX, posY } = getPosition(e);
 
     const {
       orientation, treshold, maxAngle, perspective, reverse,
