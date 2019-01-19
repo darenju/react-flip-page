@@ -3,6 +3,7 @@
 [![codecov](https://codecov.io/gh/darenju/react-flip-page/branch/master/graph/badge.svg)](https://codecov.io/gh/darenju/react-flip-page)
 [![Greenkeeper badge](https://badges.greenkeeper.io/darenju/react-flip-page.svg)](https://greenkeeper.io/)
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-airbnb-brightgreen.svg)](https://github.com/airbnb/javascript)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](darenju@live.com)
 
 # react-flip-page
 
@@ -114,3 +115,11 @@ This methods positions the component to the wanted page index. The `page` argume
 Since this is an open source project and it's far from perfect, contribution is welcome. Fork the repository and start working on your fix or new feature. Remember, it's good practice to work in your own branch, to avoid painful merge conflicts.
 
 Once you think your work is ready, fire a [pull request](https://github.com/darenju/react-flip-page/pulls) with an understandable description of what you're bringing to the project. If it's alright, chances are high your work will be merged!
+
+## Donate
+
+This project takes some of my time, and I do it for free. If you're kind enough, you can show your support for my work by making a small donation here:
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](darenju@live.com)
+
+I would very much appreciate it!
