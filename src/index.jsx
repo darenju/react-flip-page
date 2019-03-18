@@ -377,8 +377,12 @@ class FlipPage extends Component {
   }
 
   gotoPage(page) {
-    if (page >= 0 && page < this.props.children.length) {
-      this.setState({ page });
+    const { children, onPageChange } = this.props;
+
+    if (page >= 0 && page < children.length) {
+      this.setState({ page }, () => {
+        onPageChange(page, 'set');
+      });
     } else {
       throw new RangeError('`page` argument is out of bounds.');
     }
