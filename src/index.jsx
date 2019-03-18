@@ -15,6 +15,13 @@ const getPosition = e => ({
   posY: e.pageY || e.clientY || (e.touches && e.touches[0].pageY),
 });
 
+const isMouseEventOnMobile = e => (
+  e !== undefined
+  && typeof e.type === 'string'
+  && e.type.indexOf('mouse') === 0
+  && 'ontouchstart' in window
+);
+
 class FlipPage extends Component {
   constructor(props) {
     super(props);
@@ -336,8 +343,13 @@ class FlipPage extends Component {
     });
   }
 
-  gotoNextPage() {
+  gotoNextPage(e) {
     if (!this.hasNextPage() || !this.state.canAnimate) return;
+
+    // Prevent mouse event from happening.
+    if (isMouseEventOnMobile(e)) {
+      return;
+    }
 
     const { onStartPageChange, reverse } = this.props;
     // Send an event before the end of the change page animation
@@ -347,8 +359,13 @@ class FlipPage extends Component {
     else this.turnLeftOrUp(this.incrementPage);
   }
 
-  gotoPreviousPage() {
+  gotoPreviousPage(e) {
     if (!this.hasPreviousPage() || !this.state.canAnimate) return;
+
+    // Prevent mouse event from happening.
+    if (isMouseEventOnMobile(e)) {
+      return;
+    }
 
     const { onStartPageChange, reverse } = this.props;
 
