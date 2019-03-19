@@ -51,7 +51,6 @@ export default (
     position: 'absolute',
     right: 0,
     top: 0,
-    transformStyle: 'preserve-3d',
   },
   back: {
     transform: orientation === 'vertical' ? 'rotateX(180deg)' : 'rotateY(180deg)',
