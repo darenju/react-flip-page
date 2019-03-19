@@ -3,7 +3,6 @@
 [![codecov](https://codecov.io/gh/darenju/react-flip-page/branch/master/graph/badge.svg)](https://codecov.io/gh/darenju/react-flip-page)
 [![Greenkeeper badge](https://badges.greenkeeper.io/darenju/react-flip-page.svg)](https://greenkeeper.io/)
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-airbnb-brightgreen.svg)](https://github.com/airbnb/javascript)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](darenju@live.com)
 
 # react-flip-page
 
