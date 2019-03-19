@@ -15,13 +15,6 @@ const getPosition = e => ({
   posY: e.pageY || e.clientY || (e.touches && e.touches[0].pageY),
 });
 
-const isMouseEventOnMobile = e => (
-  e !== undefined
-  && typeof e.type === 'string'
-  && e.type.indexOf('mouse') === 0
-  && 'ontouchstart' in window
-);
-
 class FlipPage extends Component {
   constructor(props) {
     super(props);
@@ -343,13 +336,8 @@ class FlipPage extends Component {
     });
   }
 
-  gotoNextPage(e) {
+  gotoNextPage() {
     if (!this.hasNextPage() || !this.state.canAnimate) return;
-
-    // Prevent mouse event from happening.
-    if (isMouseEventOnMobile(e)) {
-      return;
-    }
 
     const { onStartPageChange, reverse } = this.props;
     // Send an event before the end of the change page animation
@@ -359,13 +347,8 @@ class FlipPage extends Component {
     else this.turnLeftOrUp(this.incrementPage);
   }
 
-  gotoPreviousPage(e) {
+  gotoPreviousPage() {
     if (!this.hasPreviousPage() || !this.state.canAnimate) return;
-
-    // Prevent mouse event from happening.
-    if (isMouseEventOnMobile(e)) {
-      return;
-    }
 
     const { onStartPageChange, reverse } = this.props;
 
@@ -629,6 +612,7 @@ class FlipPage extends Component {
     const touchZoneStyle = {
       height: orientation === 'vertical' ? `${flipOnTouchZone}%` : '100%',
       position: 'absolute',
+      touchAction: 'none',
       width: orientation === 'vertical' ? '100%' : `${flipOnTouchZone}%`,
       zIndex: 3,
     };
@@ -661,7 +645,6 @@ class FlipPage extends Component {
                 onMouseDown={onStartTouching}
                 onTouchStart={onStartTouching}
                 onMouseUp={gotoPreviousPage}
-                onTouchEnd={gotoPreviousPage}
                 style={previousPageTouchZoneStyle}
                 className="rfp-touchZone rfp-touchZone-previous"
               />
@@ -670,7 +653,6 @@ class FlipPage extends Component {
                 onMouseDown={onStartTouching}
                 onTouchStart={onStartTouching}
                 onMouseUp={gotoNextPage}
-                onTouchEnd={gotoNextPage}
                 style={nextPageTouchZoneStyle}
                 className="rfp-touchZone rfp-touchZone-next"
               />

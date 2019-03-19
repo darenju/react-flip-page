@@ -19,6 +19,7 @@ export default (
     height: '100%',
     overflow: uncutPages === false ? 'hidden' : '',
     position: 'relative',
+    touchAction: 'none',
     width: '100%',
   },
   part: {
