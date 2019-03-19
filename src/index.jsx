@@ -645,6 +645,10 @@ class FlipPage extends Component {
                 onMouseDown={onStartTouching}
                 onTouchStart={onStartTouching}
                 onMouseUp={gotoPreviousPage}
+                onMouseMove={this.moveGesture}
+                onTouchMove={this.moveGesture}
+                onTouchEnd={this.stopMoving}
+                onMouseLeave={this.mouseLeave}
                 style={previousPageTouchZoneStyle}
                 className="rfp-touchZone rfp-touchZone-previous"
               />
@@ -653,6 +657,10 @@ class FlipPage extends Component {
                 onMouseDown={onStartTouching}
                 onTouchStart={onStartTouching}
                 onMouseUp={gotoNextPage}
+                onMouseMove={this.moveGesture}
+                onTouchMove={this.moveGesture}
+                onTouchEnd={this.stopMoving}
+                onMouseLeave={this.mouseLeave}
                 style={nextPageTouchZoneStyle}
                 className="rfp-touchZone rfp-touchZone-next"
               />
