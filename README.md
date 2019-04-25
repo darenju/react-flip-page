@@ -10,6 +10,8 @@
 
 This package allows you to use the cool Flipboard page swipe effect in your React.js apps.
 
+> Please keep in mind that static content will work best with this component. Content like videos and related can produce undesired effects.
+
 It has a `responsive` option, so you can possibly cover your entire page with it!
 
 ![Demo GIF](https://raw.githubusercontent.com/darenju/react-flip-page/master/demo.gif)
