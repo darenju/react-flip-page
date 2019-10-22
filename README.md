@@ -85,6 +85,7 @@ There are a few properties that define the behaviour of the component, here they
 | `startAt` | `number` | `0` | Default start position of the component |
 | `reverse` | `boolean` | `false` | If `true`, the user must swip in reverse order: he must swipe down/right to see the next page, and up/left to see the previous page. |
 | `swipeImmune` | `array` | `[]` | This array holds the CSS class names that the user can not initiate a swipe gesture from. |
+| `noShadow` | `boolean` | `false` | This disables the inset drop shadow on the inside of the flipping pages. |
 
 ## Methods
 
