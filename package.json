@@ -35,7 +35,7 @@
         "pretest": "check-dependencies",
         "build": "webpack",
         "lint": "eslint --ext .jsx --ext .js --ignore-pattern *spec* --quiet src/",
-        "test": "jest",
+        "test": "jest -u",
         "test:coverage": "jest --coverage"
     },
     "precommit": [
@@ -68,7 +68,7 @@
         "babel-core": "^7.0.0-bridge.0",
         "babel-eslint": "^10.0.1",
         "babel-jest": "^23.6.0",
-        "babel-loader": "8.0.5",
+        "babel-loader": "8.0.6",
         "check-dependencies": "^1.1.0",
         "css-loader": "^2.0.1",
         "enzyme": "^3.6.0",
