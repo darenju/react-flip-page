@@ -466,6 +466,7 @@ class FlipPage extends Component {
       flipOnTouch,
       disableSwipe,
       reverse,
+      noShadow,
     } = this.props;
 
     const style = generateStyles(
@@ -557,7 +558,7 @@ class FlipPage extends Component {
               {pageItem}
             </div>
             <div style={m(mask, maskReverse)} />
-            <div style={m(gradient, gradientFirstHalf)} />
+            {!noShadow && <div style={m(gradient, gradientFirstHalf)} />}
           </div>
           <div style={m(face, back)}>
             <div style={cut}>
@@ -565,7 +566,7 @@ class FlipPage extends Component {
                 {clonedBeforeItem}
               </div>
             </div>
-            <div style={m(gradient, gradientFirstHalfBack)} />
+            {!noShadow && <div style={m(gradient, gradientFirstHalfBack)} />}
           </div>
         </div>
         <div style={m(part, visiblePart, secondHalf, this.state.secondHalfStyle)}>
@@ -576,13 +577,13 @@ class FlipPage extends Component {
               </div>
             </div>
             <div style={m(mask, maskReverse)} />
-            <div style={m(gradient, gradientSecondHalf)} />
+            {!noShadow && <div style={m(gradient, gradientSecondHalf)} />}
           </div>
           <div style={m(face, back)}>
             <div style={m(part, after, cut, firstCut)}>
               {clonedAfterItem}
             </div>
-            <div style={m(gradient, gradientSecondHalfBack)} />
+            {!noShadow && <div style={m(gradient, gradientSecondHalfBack)} />}
           </div>
         </div>
       </div>
@@ -705,6 +706,7 @@ FlipPage.defaultProps = {
   startAt: 0,
   reverse: false,
   swipeImmune: [],
+  noShadow: false,
 };
 
 FlipPage.propTypes = {
@@ -742,6 +744,7 @@ FlipPage.propTypes = {
   startAt: PropTypes.number,
   reverse: PropTypes.bool,
   swipeImmune: PropTypes.arrayOf(PropTypes.string),
+  noShadow: PropTypes.bool,
 };
 
 export default FlipPage;

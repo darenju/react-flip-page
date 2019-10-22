@@ -784,9 +784,9 @@ describe('<FlipPage flipOnTouch showTouchHint />', () => {
   });
 });
 
-describe('<FlipPage flipOnTouch showTouchHint />', () => {
-  it('should include a touch hint element', () => {
-    const wrapper = shallow(<FlipPage flipOnTouch showTouchHint />);
+describe('<FlipPage noShadow />', () => {
+  it('should not have gradient elements', () => {
+    const wrapper = shallow(<FlipPage noShadow />);
     expect(wrapper.html()).toMatchSnapshot();
   });
 });
