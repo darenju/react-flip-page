@@ -61,7 +61,7 @@
         "uglifyjs-webpack-plugin": "^2.0.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.0.0",
+        "@babel/core": "^7.9.0",
         "@babel/preset-env": "^7.0.0",
         "@babel/preset-react": "^7.0.0",
         "@babel/register": "^7.0.0",
