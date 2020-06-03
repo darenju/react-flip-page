@@ -1,4 +1,5 @@
 const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   context: path.resolve('src'),
@@ -11,6 +12,10 @@ module.exports = {
     filename: 'index.js',
     libraryTarget: 'umd',
     library: 'ReactFlipPage'
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
   },
   module: {
     rules: [

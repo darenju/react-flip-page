@@ -6,6 +6,6 @@
         "jest": true
     },
     "rules": {
-        "react/destructuring-assignment": ["always"]
+        "react/destructuring-assignment": 0
     }
 }

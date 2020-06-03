@@ -10,7 +10,7 @@ const doNotMove = (e) => {
   e.preventDefault();
 };
 
-const getPosition = e => ({
+const getPosition = (e) => ({
   posX: e.pageX || e.clientX || (e.touches && e.touches[0].pageX),
   posY: e.pageY || e.clientY || (e.touches && e.touches[0].pageY),
 });
@@ -142,7 +142,7 @@ class FlipPage extends Component {
     doNotMove(e);
 
     const { swipeImmune } = this.props;
-    const cancel = swipeImmune.some(testedClassName => className.indexOf(testedClassName) !== -1);
+    const cancel = swipeImmune.some((testedClassName) => className.indexOf(testedClassName) !== -1);
 
     if (cancel) {
       return;

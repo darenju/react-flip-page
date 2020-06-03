@@ -57,8 +57,7 @@
     "dependencies": {
         "prop-types": "^15.6.2",
         "react": "^16.8.4",
-        "react-dom": "^16.8.4",
-        "uglifyjs-webpack-plugin": "^2.0.0"
+        "react-dom": "^16.8.4"
     },
     "devDependencies": {
         "@babel/core": "^7.9.0",
@@ -84,6 +83,7 @@
         "pre-commit": "^1.2.2",
         "style-loader": "^1.0.0",
         "svg-url-loader": "^5.0.0",
+        "terser-webpack-plugin": "^3.0.2",
         "webpack": "^4.15.1",
         "webpack-cli": "^3.0.0"
     },
