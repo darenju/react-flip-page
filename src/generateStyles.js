@@ -1,7 +1,4 @@
-const gradientTop = '0 -100px 100px -100px rgba(0,0,0,0.25) inset';
-const gradientLeft = '-100px 0 100px -100px rgba(0,0,0,0.25) inset';
-const gradientBottom = '0 100px 100px -100px rgba(0,0,0,0.25) inset';
-const gradientRight = '100px 0 100px -100px rgba(0,0,0,0.25) inset';
+const makeGradient = (direction) => `linear-gradient(to ${direction}, rgba(0,0,0,0.25) 0%,rgba(0,0,0,0) 50px)`;
 
 export default (
   currentPage,
@@ -94,47 +91,67 @@ export default (
     position: 'absolute',
     right: 0,
     top: 0,
-    transition: `box-shadow ${animationDuration / 1000}s ease-in-out`,
+    transition: `opacity ${animationDuration / 1000}s ease-in-out`,
+    opacity: (() => {
+      if (direction) {
+        return 1;
+      }
+      return 0;
+    })(),
   },
-  gradientSecondHalf: {
-    boxShadow: (() => {
+  gradientBefore: {
+    background: (() => {
+      if (direction === 'right') {
+        return makeGradient('left');
+      }
+      if (direction === 'down') {
+        return makeGradient('top');
+      }
+
+      return '';
+    })(),
+    width: (() => {
+      if (orientation === 'horizontal') {
+        return '50%';
+      }
+      return '100%';
+    })(),
+    height: (() => {
+      if (orientation === 'vertical') {
+        return '50%';
+      }
+      return '100%';
+    })(),
+  },
+  gradientAfter: {
+    background: (() => {
+      if (direction === 'left') {
+        return makeGradient('right');
+      }
       if (direction === 'up') {
-        return gradientBottom;
-      } if (direction === 'right') {
-        return gradientRight;
+        return makeGradient('bottom');
       }
 
       return '';
     })(),
   },
   gradientFirstHalf: {
-    boxShadow: (() => {
-      if (direction === 'down') {
-        return gradientTop;
-      } if (direction === 'left') {
-        return gradientLeft;
+    background: (() => {
+      if (direction === 'left') {
+        return makeGradient('left');
+      } if (direction === 'up') {
+        return makeGradient('top');
       }
 
       return '';
     })(),
   },
-  gradientSecondHalfBack: {
-    boxShadow: (() => {
-      if (direction === 'up') {
-        return gradientTop;
-      } if (direction === 'left') {
-        return gradientLeft;
-      }
-
-      return '';
-    })(),
-  },
-  gradientFirstHalfBack: {
-    boxShadow: (() => {
-      if (direction === 'down') {
-        return gradientBottom;
-      } if (direction === 'right') {
-        return gradientRight;
+  gradientSecondHalf: {
+    background: (() => {
+      if (direction === 'right') {
+        return makeGradient('right');
+      } if (direction === 'down') {
+        return makeGradient('bottom');
       }
 
       return '';

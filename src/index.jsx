@@ -495,8 +495,8 @@ class FlipPage extends Component {
       firstCut,
       pull,
       gradient,
-      gradientSecondHalfBack,
-      gradientFirstHalfBack,
+      gradientBefore,
+      gradientAfter,
       gradientSecondHalf,
       gradientFirstHalf,
       mask,
@@ -545,12 +545,14 @@ class FlipPage extends Component {
         <div style={m(part, before, cut)}>
           {clonedBeforeItem}
           <div style={mask} />
+          <div style={m(gradient, gradientBefore)} />
         </div>
         <div style={m(part, cut, after)}>
           <div style={pull}>
             {clonedAfterItem}
           </div>
           <div style={mask} />
+          <div style={m(gradient, gradientAfter)} />
         </div>
         <div style={m(part, visiblePart, firstHalf, this.state.firstHalfStyle)}>
           <div style={face}>
@@ -566,7 +568,6 @@ class FlipPage extends Component {
                 {clonedBeforeItem}
               </div>
             </div>
-            {!noShadow && <div style={m(gradient, gradientFirstHalfBack)} />}
           </div>
         </div>
         <div style={m(part, visiblePart, secondHalf, this.state.secondHalfStyle)}>
@@ -583,7 +584,6 @@ class FlipPage extends Component {
             <div style={m(part, after, cut, firstCut)}>
               {clonedAfterItem}
             </div>
-            {!noShadow && <div style={m(gradient, gradientSecondHalfBack)} />}
           </div>
         </div>
       </div>
