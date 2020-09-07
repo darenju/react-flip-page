@@ -73,8 +73,12 @@ class FlipPage extends Component {
     return !responsive ? `${this.props.width}px` : '100%';
   }
 
+  flatChildren() {
+    return Array.prototype.flat.call(this.props.children);
+  }
+
   isLastPage() {
-    return this.state.page + 1 === Children.count(this.props.children.flat());
+    return this.state.page + 1 === Children.count(this.flatChildren());
   }
 
   isFirstPage() {
@@ -99,7 +103,7 @@ class FlipPage extends Component {
   }
 
   incrementPage() {
-    const lastPage = Children.count(this.props.children.flat());
+    const lastPage = Children.count(this.flatChildren());
     const { page } = this.state;
     this.setState({
       page: (page + 1) % lastPage,
@@ -107,7 +111,7 @@ class FlipPage extends Component {
   }
 
   decrementPage() {
-    const lastPage = Children.count(this.props.children.flat());
+    const lastPage = Children.count(this.flatChildren());
     const { page } = this.state;
     let nextPage;
 
@@ -360,7 +364,7 @@ class FlipPage extends Component {
   }
 
   gotoPage(page) {
-    const children = this.props.children.flat();
+    const children = this.flatChildren();
     const { onPageChange } = this.props;
 
     if (page >= 0 && page < children.length) {
@@ -411,7 +415,7 @@ class FlipPage extends Component {
   beforeItem() {
     const lastPage = Children.count(this.props.children);
     const { firstComponent, loopForever } = this.props;
-    const children = this.props.children.flat();
+    const children = this.flatChildren();
 
     if (!this.isFirstPage()) {
       return children[this.state.page - 1];
@@ -422,7 +426,7 @@ class FlipPage extends Component {
 
   afterItem() {
     const { lastComponent, loopForever } = this.props;
-    const children = this.props.children.flat();
+    const children = this.flatChildren();
 
     if (!this.isLastPage()) {
       return children[this.state.page + 1];
@@ -606,7 +610,7 @@ class FlipPage extends Component {
       reverse,
     } = this.props;
 
-    const children = this.props.children.flat();
+    const children = this.flatChildren();
 
     const containerStyle = m(style, {
       height: this.getHeight(),
