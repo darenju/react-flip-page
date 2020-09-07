@@ -74,7 +74,7 @@ class FlipPage extends Component {
   }
 
   isLastPage() {
-    return this.state.page + 1 === Children.count(this.props.children);
+    return this.state.page + 1 === Children.count(this.props.children.flat());
   }
 
   isFirstPage() {
@@ -99,7 +99,7 @@ class FlipPage extends Component {
   }
 
   incrementPage() {
-    const lastPage = Children.count(this.props.children);
+    const lastPage = Children.count(this.props.children.flat());
     const { page } = this.state;
     this.setState({
       page: (page + 1) % lastPage,
@@ -107,7 +107,7 @@ class FlipPage extends Component {
   }
 
   decrementPage() {
-    const lastPage = Children.count(this.props.children);
+    const lastPage = Children.count(this.props.children.flat());
     const { page } = this.state;
     let nextPage;
 
@@ -360,7 +360,8 @@ class FlipPage extends Component {
   }
 
   gotoPage(page) {
-    const { children, onPageChange } = this.props;
+    const children = this.props.children.flat();
+    const { onPageChange } = this.props;
 
     if (page >= 0 && page < children.length) {
       this.setState({ page }, () => {
@@ -409,7 +410,8 @@ class FlipPage extends Component {
 
   beforeItem() {
     const lastPage = Children.count(this.props.children);
-    const { children, firstComponent, loopForever } = this.props;
+    const { firstComponent, loopForever } = this.props;
+    const children = this.props.children.flat();
 
     if (!this.isFirstPage()) {
       return children[this.state.page - 1];
@@ -419,7 +421,8 @@ class FlipPage extends Component {
   }
 
   afterItem() {
-    const { children, lastComponent, loopForever } = this.props;
+    const { lastComponent, loopForever } = this.props;
+    const children = this.props.children.flat();
 
     if (!this.isLastPage()) {
       return children[this.state.page + 1];
@@ -593,7 +596,6 @@ class FlipPage extends Component {
   render() {
     const {
       style,
-      children,
       className,
       orientation,
       showSwipeHint,
@@ -603,6 +605,8 @@ class FlipPage extends Component {
       disableSwipe,
       reverse,
     } = this.props;
+
+    const children = this.props.children.flat();
 
     const containerStyle = m(style, {
       height: this.getHeight(),
